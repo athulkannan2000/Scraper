@@ -1,0 +1,14 @@
+setup.py
+arabic_scrapper/__init__.py
+arabic_scrapper/items.py
+arabic_scrapper/middlewares.py
+arabic_scrapper/pipelines.py
+arabic_scrapper/settings.py
+arabic_scrapper/spiders/__init__.py
+arabic_scrapper/spiders/alanba_scrapper.py
+arabic_scrapper/spiders/alrai_scrapper.py
+project.egg-info/PKG-INFO
+project.egg-info/SOURCES.txt
+project.egg-info/dependency_links.txt
+project.egg-info/entry_points.txt
+project.egg-info/top_level.txt
