@@ -10,7 +10,7 @@ load_dotenv()
 try:
     news_agencies_list =  pd.read_csv(os.getenv("news_sites_list"))
 except:
-    news_agencies_list = pd.read_csv('spiders/News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv')
+    news_agencies_list = pd.read_csv('/root/Scraper/arabic_scrapper/arabic_scrapper/spiders/News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv')
 def load_dataset_lists(news_agency_name,url_type):
     try:
         if(url_type == True):
