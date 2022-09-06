@@ -73,7 +73,7 @@ class ArabicScrapperPipeline:
         self.agency_result = self.cur.fetchall()
         
     def process_item(self, item, spider):
-
+        
         select_stmt = "INSERT INTO scraped_data (news_agency_name, page_url, category, title, contents, image_url, published_date_and_time, author_name, main_category, sub_category, platform, media_type, urgency, created_at, updated_at, deleted_at, tweet_created_at, tweet_text, tweet_id, vdo_title, vdo_description, vdo_published_at, vdo_thumbnail, vdo_url) SELECT %(news_agency_name)s, %(page_url)s, %(category)s, %(title)s, %(contents)s, %(image_url)s, %(published_date_and_time)s, %(author_name)s,%(main_category)s,%(sub_category)s,%(platform)s,%(media_type)s,%(urgency)s,%(created_at)s,%(updated_at)s,%(deleted_at)s,%(tweet_created_at)s,%(tweet_text)s,%(tweet_id)s,%(vdo_title)s,%(vdo_description)s,%(vdo_published_at)s,%(vdo_thumbnail)s,%(vdo_url)s  FROM dual WHERE NOT EXISTS (SELECT * FROM scraped_data WHERE title = %(title)s AND page_url = %(page_url)s)"
         try:
             agency   =  [tuple[0] for id, tuple in enumerate(self.agency_result) if tuple[1] == item["news_agency_name"]][0]

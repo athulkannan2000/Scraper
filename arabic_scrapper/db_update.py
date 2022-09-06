@@ -96,7 +96,8 @@ platform_en = df["Platform -EN"].replace(to_replace= ['\r','\n'], value= '', reg
 platform_ar = df["Platform - AR"].replace(to_replace= ['\r','\n'], value= '', regex=True).unique().tolist()
    
 
- ################################ inserting in reference table correspondingly ###################################
+################################ inserting in reference table correspondingly ###################################
+
 for en,ar in zip(main_cat_en,main_cat_ar):
     select_stmt = "INSERT INTO main_cat (main_category_name_en,main_category_name_ar,main_category_identifier) SELECT %(category_name_en)s, %(category_name_ar)s,%(category_identifier)s FROM dual WHERE NOT EXISTS (SELECT * FROM main_cat WHERE main_category_name_en = %(category_name_en)s)"
     cur.execute(select_stmt,{
