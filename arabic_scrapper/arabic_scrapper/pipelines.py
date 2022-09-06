@@ -69,7 +69,7 @@ class ArabicScrapperPipeline:
         self.category = self.cur.execute("SELECT id,category_name_en FROM category")
         self.category_result = self.cur.fetchall()
 
-        self.agency = self.cur.execute("SELECT id,agency_category_name_en FROM agency")
+        self.agency = self.cur.execute("SELECT id,agency_name_en FROM agency")
         self.agency_result = self.cur.fetchall()
         
     def process_item(self, item, spider):
