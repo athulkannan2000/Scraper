@@ -115,10 +115,12 @@ class YoutubeSpider(scrapy.Spider):
             vdo_info_request = youtube.videos().list(part='snippet, statistics',id = video_id)
             vdo_info_response = vdo_info_request.execute()
             # print(vdo_info_response["items"])
-            title=vdo_info_response["items"][0]["snippet"]["title"]
-            description=vdo_info_response["items"][0]["snippet"]["description"]
-
-            published_at=vdo_info_response["items"][0]["snippet"]["publishedAt"]
+            try:
+                title=vdo_info_response["items"][0]["snippet"]["title"]
+                description=vdo_info_response["items"][0]["snippet"]["description"]
+                published_at=vdo_info_response["items"][0]["snippet"]["publishedAt"]
+            except IndexError:
+                continue
             date=published_at.split("T")[0]
             time=published_at.split("T")[1]
             dt = str(parser.parse(date)).split(" ")[0]+" "+str(parser.parse(time)).split(" ")[1]

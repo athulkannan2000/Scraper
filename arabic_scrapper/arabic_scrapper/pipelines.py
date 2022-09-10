@@ -2,8 +2,9 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 # useful for handling different item types with a single interface
-
 import os
+from platform import platform
+from slugify import slugify
 from dotenv import load_dotenv
 import mysql.connector
 try:
@@ -12,6 +13,10 @@ except ImportError:
     from helper import news_list,agos_changer #useful in twitter update
 import re
 load_dotenv()
+
+exp='[\u0627-\u064a0-9A-Za-z]+' #regular expression to take only arabic and english words for slugging ,using RE because sluggify library  doesn't work with arabic
+
+# print()
 
 class ArabicScrapperPipeline:
     def __init__(self):
@@ -39,7 +44,7 @@ class ArabicScrapperPipeline:
                 author_name varchar(255),
                 main_category int NOT NULL,
                 sub_category int NOT NULL, 
-                platform varchar(255), 
+                source_id int, 
                 media_type varchar(255), 
                 urgency varchar(255), 
                 created_at text, 
@@ -53,10 +58,13 @@ class ArabicScrapperPipeline:
                 vdo_published_at text DEFAULT Null,
                 vdo_thumbnail text DEFAULT Null,
                 vdo_url text DEFAULT Null,
+                slug text,
+                status int DEFAULT 1,
                 FOREIGN KEY (main_category) REFERENCES main_cat(id),
                 FOREIGN KEY (sub_category) REFERENCES sub_cat(id),
                 FOREIGN KEY (category) REFERENCES category(id),
-                FOREIGN KEY (news_agency_name) REFERENCES agency(id)
+                FOREIGN KEY (news_agency_name) REFERENCES agency(id),
+                FOREIGN KEY (source_id) REFERENCES source(id)
             )
         """)
         
@@ -69,17 +77,21 @@ class ArabicScrapperPipeline:
         self.category = self.cur.execute("SELECT id,category_name_en FROM category")
         self.category_result = self.cur.fetchall()
 
-        self.agency = self.cur.execute("SELECT id,agency_category_name_en FROM agency")
+        self.agency = self.cur.execute("SELECT id,agency_name_en FROM agency")
         self.agency_result = self.cur.fetchall()
+
+        self.source = self.cur.execute("select id,platform_name_en from source")
+        self.source_result = self.cur.fetchall()
         
     def process_item(self, item, spider):
-
-        select_stmt = "INSERT INTO scraped_data (news_agency_name, page_url, category, title, contents, image_url, published_date_and_time, author_name, main_category, sub_category, platform, media_type, urgency, created_at, updated_at, deleted_at, tweet_created_at, tweet_text, tweet_id, vdo_title, vdo_description, vdo_published_at, vdo_thumbnail, vdo_url) SELECT %(news_agency_name)s, %(page_url)s, %(category)s, %(title)s, %(contents)s, %(image_url)s, %(published_date_and_time)s, %(author_name)s,%(main_category)s,%(sub_category)s,%(platform)s,%(media_type)s,%(urgency)s,%(created_at)s,%(updated_at)s,%(deleted_at)s,%(tweet_created_at)s,%(tweet_text)s,%(tweet_id)s,%(vdo_title)s,%(vdo_description)s,%(vdo_published_at)s,%(vdo_thumbnail)s,%(vdo_url)s  FROM dual WHERE NOT EXISTS (SELECT * FROM scraped_data WHERE title = %(title)s AND page_url = %(page_url)s)"
+        
+        select_stmt = "INSERT INTO scraped_data (news_agency_name, page_url, category, title, contents, image_url, published_date_and_time, author_name, main_category, sub_category, source_id, media_type, urgency, created_at, updated_at, deleted_at, tweet_created_at, tweet_text, tweet_id, vdo_title, vdo_description, vdo_published_at, vdo_thumbnail, vdo_url, slug) SELECT %(news_agency_name)s, %(page_url)s, %(category)s, %(title)s, %(contents)s, %(image_url)s, %(published_date_and_time)s, %(author_name)s,%(main_category)s,%(sub_category)s,%(source_id)s,%(media_type)s,%(urgency)s,%(created_at)s,%(updated_at)s,%(deleted_at)s,%(tweet_created_at)s,%(tweet_text)s,%(tweet_id)s,%(vdo_title)s,%(vdo_description)s,%(vdo_published_at)s,%(vdo_thumbnail)s,%(vdo_url)s,%(slug)s  FROM dual WHERE NOT EXISTS (SELECT * FROM scraped_data WHERE title = %(title)s AND page_url = %(page_url)s)"
         try:
             agency   =  [tuple[0] for id, tuple in enumerate(self.agency_result) if tuple[1] == item["news_agency_name"]][0]
             main_cat_ = [tuple[0] for id, tuple in enumerate(self.main_cat_result) if tuple[1] == item["main_category"]][0]
             sub_cat_ =  [tuple[0] for id, tuple in enumerate(self.sub_cat_result) if tuple[1] == item["sub_category"]][0]  
             catagory =  [tuple[0] for id, tuple in enumerate(self.category_result) if tuple[1] == item["category"]][0]
+            source_ =  [tuple[0] for id, tuple in enumerate(self.source_result) if tuple[1] == item["platform"]][0]
             self.cur.execute(select_stmt, {
                 "news_agency_name": agency,
                 "page_url" : item['page_url'],
@@ -91,7 +103,7 @@ class ArabicScrapperPipeline:
                 "author_name" : item["author_name"],
                 "main_category" : main_cat_, 
                 "sub_category": sub_cat_, 
-                "platform":item["platform"],
+                "source_id":source_,
                 "media_type":item["media_type"], 
                 "urgency":item["urgency"], 
                 "created_at":item["created_at"], 
@@ -106,17 +118,21 @@ class ArabicScrapperPipeline:
                 "vdo_published_at":item["vdo_published_at"],
                 "vdo_thumbnail":item["vdo_thumbnail"],
                 "vdo_url":item["vdo_url"],
+
+    
+                "slug":"-".join(re.findall(exp,item["title"]))
                 })
             self.conn.commit()
             return item
 
         except KeyError: # handling key error because spiders done have data for tweets
             print("$$$$$$$$$%%%%%%%%%%%%%%%insise%%%%%%%%%%%%%%%%%%%%%%$$$$$$$$$$$$$$")
-            select_stmt = "INSERT INTO scraped_data (news_agency_name, page_url, category, title, contents, image_url, published_date_and_time, author_name, main_category, sub_category, platform, media_type, urgency, created_at, updated_at, deleted_at) SELECT %(news_agency_name)s, %(page_url)s, %(category)s, %(title)s, %(contents)s, %(image_url)s, %(published_date_and_time)s, %(author_name)s,%(main_category)s,%(sub_category)s,%(platform)s,%(media_type)s,%(urgency)s,%(created_at)s,%(updated_at)s,%(deleted_at)s  FROM dual WHERE NOT EXISTS (SELECT * FROM scraped_data WHERE title = %(title)s AND page_url = %(page_url)s)"
+            select_stmt = "INSERT INTO scraped_data (news_agency_name, page_url, category, title, contents, image_url, published_date_and_time, author_name, main_category, sub_category, source_id, media_type, urgency, created_at, updated_at, deleted_at, slug) SELECT %(news_agency_name)s, %(page_url)s, %(category)s, %(title)s, %(contents)s, %(image_url)s, %(published_date_and_time)s, %(author_name)s,%(main_category)s,%(sub_category)s,%(source_id)s,%(media_type)s,%(urgency)s,%(created_at)s,%(updated_at)s,%(deleted_at)s,%(slug)s  FROM dual WHERE NOT EXISTS (SELECT * FROM scraped_data WHERE title = %(title)s AND page_url = %(page_url)s)"
             agency   =  [tuple[0] for id, tuple in enumerate(self.agency_result) if tuple[1] == item["news_agency_name"]][0]
             main_cat_ = [tuple[0] for id, tuple in enumerate(self.main_cat_result) if tuple[1] == item["main_category"]][0]
             sub_cat_ =  [tuple[0] for id, tuple in enumerate(self.sub_cat_result) if tuple[1] == item["sub_category"]][0]  
             catagory =  [tuple[0] for id, tuple in enumerate(self.category_result) if tuple[1] == item["category"]][0]
+            source_ =  [tuple[0] for id, tuple in enumerate(self.source_result) if tuple[1] == item["platform"]][0]
             self.cur.execute(select_stmt, {
                 "news_agency_name": agency,
                 "page_url" : item['page_url'],
@@ -128,12 +144,13 @@ class ArabicScrapperPipeline:
                 "author_name" : item["author_name"],
                 "main_category" : main_cat_, 
                 "sub_category": sub_cat_, 
-                "platform":item["platform"],
+                "source_id":source_,
                 "media_type":item["media_type"], 
                 "urgency":item["urgency"], 
                 "created_at":item["created_at"], 
                 "updated_at":item["updated_at"], 
                 "deleted_at":item["deleted_at"],
+                "slug":"-".join(re.findall(exp,item["title"]))
                 })
             self.conn.commit()
             return item
