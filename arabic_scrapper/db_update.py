@@ -4,7 +4,15 @@ import mysql.connector
 from dotenv import load_dotenv
 from slugify import slugify
 
+#################### for verifying cron job####################
+from datetime import datetime
+now=datetime.now()
+with open('/tmp/cron_log.txt',"a") as f:
+    f.write("cornjob of db_update started at {} \n".format(now))
+##############################################################
+
 load_dotenv()
+
 
 conn = mysql.connector.connect(
             host = 'localhost',
@@ -60,7 +68,7 @@ cur.execute("""create table IF NOT EXISTS agency(
             );
             """)
 
-cur.execute("""create table IF NOT EXISTS platform(
+cur.execute("""create table IF NOT EXISTS source(
             id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
             platform_name_en varchar(255),
             platform_name_ar text,
@@ -139,7 +147,7 @@ for en,ar in zip(agency_en,agency_ar):
 
 
 for en,ar in zip(platform_en,platform_ar):
-    select_stmt = "INSERT INTO platform (platform_name_en,platform_name_ar,platform_identifier) SELECT  %(category_name_en)s, %(category_name_ar)s, %(category_identifier)s FROM dual WHERE NOT EXISTS (SELECT * FROM platform WHERE platform_name_en = %(category_name_en)s)"
+    select_stmt = "INSERT INTO source (platform_name_en,platform_name_ar,platform_identifier) SELECT  %(category_name_en)s, %(category_name_ar)s, %(category_identifier)s FROM dual WHERE NOT EXISTS (SELECT * FROM source WHERE platform_name_en = %(category_name_en)s)"
     cur.execute(select_stmt,{
         "category_name_en": en,
         "category_name_ar": ar,
