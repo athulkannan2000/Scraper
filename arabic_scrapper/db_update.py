@@ -11,6 +11,13 @@ with open('/tmp/cron_log.txt',"a") as f:
     f.write("cornjob of db_update started at {} \n".format(now))
 ##############################################################
 
+#################### for verifying cron job####################
+from datetime import datetime
+now=datetime.now()
+with open('/tmp/cron_log.txt',"a") as f:
+    f.write("cornjob of db_update started at {} \n".format(now))
+##############################################################
+
 load_dotenv()
 
 

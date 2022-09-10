@@ -15,7 +15,9 @@ runner = CrawlerRunner(settings)
 spider_loader = spiderloader.SpiderLoader.from_settings(settings)
 spiders = spider_loader.list()
 classes = [spider_loader.load(name) for name in spiders]
+
 print("############classes##########",classes)
+
 
 ###################testing cron execution
 
