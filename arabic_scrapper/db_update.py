@@ -37,6 +37,7 @@ cur.execute("""create table IF NOT EXISTS main_categories(
 
 cur.execute("""create table IF NOT EXISTS sub_categories(
             id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            category_id int NOT NULL,
             sub_category_name_en varchar(255),
             sub_category_name_ar text,
             sub_category_identifier varchar(255),
@@ -102,7 +103,9 @@ agency_ar = df["News Agency in arabic"].replace(to_replace= ['\r','\n'], value= 
 #platform
 platform_en = df["Platform -EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).unique().tolist()
 platform_ar = df["Platform - AR"].replace(to_replace= ['\r','\n'], value= '', regex=True).unique().tolist()
-   
+
+
+
 
 ################################ inserting in reference table correspondingly ###################################
 
@@ -116,9 +119,18 @@ for en,ar in zip(main_cat_en,main_cat_ar):
     conn.commit()
 
 
+main_cat_ref = cur.execute("SELECT id,main_category_name_en FROM main_categories")
+main_cat_result = cur.fetchall()
+
 for en,ar in zip(sub_cat_en,sub_cat_ar):
-    select_stmt = "INSERT INTO sub_categories (sub_category_name_en,sub_category_name_ar,sub_category_identifier) SELECT  %(category_name_en)s, %(category_name_ar)s, %(category_identifier)s FROM dual WHERE NOT EXISTS (SELECT * FROM sub_categories WHERE sub_category_name_en = %(category_name_en)s)"
+
+    map_main_to_sub_category = df.loc[df["Sub Category En"] == en]["Main Category EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).unique().tolist()[0]
+    
+    main_cat_ = [tuple[0] for id, tuple in enumerate(main_cat_result) if tuple[1] == map_main_to_sub_category][0]
+
+    select_stmt = "INSERT INTO sub_categories (category_id,sub_category_name_en,sub_category_name_ar,sub_category_identifier) SELECT  %(category_id)s, %(category_name_en)s, %(category_name_ar)s, %(category_identifier)s FROM dual WHERE NOT EXISTS (SELECT * FROM sub_categories WHERE sub_category_name_en = %(category_name_en)s)"
     cur.execute(select_stmt,{
+        "category_id": main_cat_,
         "category_name_en": en,
         "category_name_ar": ar,
         "category_identifier": slugify(en)
