@@ -35,6 +35,11 @@ def crawlerSetTwo():
     e.addBoth(lambda _: reactor.stop())
     reactor.run() 
     
+<<<<<<< HEAD
+=======
+
+##################testing cron execution
+>>>>>>> e7607109fcb672de1657f10ce7b54e805fb55e18
 
 ##################testing cron execution
 from datetime import datetime
