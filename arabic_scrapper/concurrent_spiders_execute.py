@@ -7,8 +7,8 @@ import os
 from multiprocessing import Process
 
 print("#################inside#################")
-# os.chdir("/root/Scraper/arabic_scrapper")
-# print("######current directory is###########",os.getcwd())
+os.chdir("/root/Scraper/arabic_scrapper")
+print("######current directory is###########",os.getcwd())
 configure_logging()
 settings = get_project_settings() 
 runner = CrawlerRunner(settings)  
@@ -17,7 +17,7 @@ spider_loader = spiderloader.SpiderLoader.from_settings(settings)
 spiders = spider_loader.list()
 classes = [spider_loader.load(name) for name in spiders]
 
-print("############classes##########\n",len(classes))
+# print("############classes##########\n",len(classes))
 
 def crawlerSetOne():
     classes_one = classes[:40]
@@ -38,10 +38,10 @@ def crawlerSetTwo():
 
 ##################testing cron execution
 
-# from datetime import datetime
-# now=datetime.now()
-# with open('/tmp/cron_log.txt',"a") as f:
-#     f.write("cornjob of concurrent spiders started at {} \n".format(now))
+from datetime import datetime
+now=datetime.now()
+with open('/tmp/cron_log.txt',"a") as f:
+    f.write("cornjob of concurrent spiders started at {} \n".format(now))
 ###############################################
     
 
