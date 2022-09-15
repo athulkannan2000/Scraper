@@ -2,7 +2,7 @@ import scrapy
 from arabic_scrapper.helper import load_dataset_lists, datetime_now_isoformat, parser_parse_isoformat, translate_text
 
 
-news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Berwaz News",False)
+news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Berwaz News")
 now = datetime_now_isoformat()
 
 class BerwazSpider(scrapy.Spider):

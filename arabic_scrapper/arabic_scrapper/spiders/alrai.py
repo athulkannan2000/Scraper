@@ -9,7 +9,7 @@ from dateutil import parser
 from deep_translator import GoogleTranslator
 
 
-site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Alrai",False)
+site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Alrai")
 now = datetime.now()
 
 
