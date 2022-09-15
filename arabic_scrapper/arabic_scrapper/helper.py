@@ -11,11 +11,6 @@ try:
     news_agencies_list =  pd.read_csv(os.getenv("news_sites_list"))
 except:
     news_agencies_list = pd.read_csv('/root/Scraper/arabic_scrapper/arabic_scrapper/spiders/News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv')
-<<<<<<< HEAD
-
-
-=======
->>>>>>> e7607109fcb672de1657f10ce7b54e805fb55e18
 def load_dataset_lists(news_agency_name,url_type=None):
     try:
         if(url_type is not None):
