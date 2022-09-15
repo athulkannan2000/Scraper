@@ -1,7 +1,7 @@
 import scrapy
 from arabic_scrapper.helper import parser_parse_isoformat, load_dataset_lists, datetime_now_isoformat
 
-news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("al wasat",False)
+news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("al wasat")
 now = datetime_now_isoformat()
 
 class AlwasatSpider(scrapy.Spider):

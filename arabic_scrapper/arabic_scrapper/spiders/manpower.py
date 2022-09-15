@@ -3,7 +3,7 @@ from arabic_scrapper.items import GeneralItem
 from arabic_scrapper.helper import load_dataset_lists
 from datetime import datetime
 
-site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Public authority of manpower",False)
+site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Public authority of manpower")
 now = datetime.now()
 
 class Manpower(scrapy.Spider):

@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from lxml import etree
 
 
-site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists(" Youth Public Authority",False)
+site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists(" Youth Public Authority")
 now = datetime.now()
 
 class YouthPublicAuthoritySpider(scrapy.Spider):

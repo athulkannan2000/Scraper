@@ -7,7 +7,7 @@ from arabic_scrapper.helper import load_dataset_lists, date_today, datetime_now_
 This site has robots.txt setup to block crawlers. Currently ROBOTSTXT_OBEY = False in settings.py 
 """
 
-news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("alsabah",False)
+news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("alsabah")
 now = datetime_now_isoformat()
 news_sites_list = []
 

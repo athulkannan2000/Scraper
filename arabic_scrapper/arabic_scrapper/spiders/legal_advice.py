@@ -11,7 +11,7 @@ from lxml import etree
 from datetime import datetime
 
 
-site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Legal Advice and Legislation ",False)
+site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Legal Advice and Legislation ")
 now = datetime.now()
 
 class LegalAdviceSpider(scrapy.Spider):

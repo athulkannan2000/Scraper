@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 
 
-site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("apressnews",False)
+site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("apressnews")
 now = datetime.now()
 
 class ApressnewsSpider(scrapy.Spider):

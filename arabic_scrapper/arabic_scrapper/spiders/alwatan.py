@@ -8,7 +8,7 @@ from lxml import etree
 from datetime import datetime
 
 
-site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("alwatan",False)
+site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("alwatan")
 now = datetime.now()
 
 class AlwatanSpider(scrapy.Spider):

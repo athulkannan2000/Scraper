@@ -5,7 +5,7 @@ from arabic_scrapper.helper import load_dataset_lists
 from datetime import datetime
 
 
-site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("central agency for information technology",False)
+site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("central agency for information technology")
 now = datetime.now()
 
 class CentralAgencySpider(scrapy.Spider):
