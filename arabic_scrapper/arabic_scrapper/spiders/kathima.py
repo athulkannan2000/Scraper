@@ -11,12 +11,12 @@ class KathimaSpider(scrapy.Spider):
     name = 'kathima'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            # print("////page,catagori///",page,catagori)
             yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
         news_links = response.xpath('//*[@class="more-link button"]/@href').extract()
-        print("/////////////news links//////////",news_links)
+        # print("/////////////news links//////////",news_links)
         for link in news_links:
             print("link",link)
             if link=="":
@@ -29,7 +29,7 @@ class KathimaSpider(scrapy.Spider):
         kathija_item=GeneralItem()
         date = response.xpath('//*[@id="single-post-meta"]/span[@class="date meta-item tie-icon"]/text()').extract_first()
         date = str(parser.parse(date)).replace("-","/")
-        print("////////Date///////",date)
+        # print("////////Date///////",date)
       
         kathija_item["news_agency_name"]="kathima newspaper"
         kathija_item["page_url"]=response.meta["page_link"]
@@ -43,7 +43,7 @@ class KathimaSpider(scrapy.Spider):
         img_url=response.xpath('//*[@class="wp-block-image size-large"]/img/@src').extract_first()
         if img_url==None:
             img_url=response.xpath('//*[@class="wp-block-image size-full"]/img/@src').extract_first()
-            
+
         kathija_item["image_url"]=img_url
 
         kathija_item["date"]=date

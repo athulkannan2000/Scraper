@@ -48,7 +48,7 @@ class NazahaSpider(scrapy.Spider):
         driver.quit()
         soup=BeautifulSoup(html,"lxml")
         dom = etree.HTML(str(soup))
-        print("\n news page use this to find date \n",dom)
+        # print("\n news page use this to find date \n",dom)
      
 
         contents=dom.xpath('//p/text()')
@@ -59,7 +59,7 @@ class NazahaSpider(scrapy.Spider):
 
         date=dom.xpath('//td[@class="NewsDescription"]/table/tbody/tr/td[2]/text()')
         date=date[0]
-        print("###################### date :",date,"#####################")
+        # print("###################### date :",date,"#####################")
         date=str(parser.parse(date)).replace("-","/")
 
         # print("########### Data types ########",type(response.meta["current_url"]),"\n",type(response.meta["catagory"]),type(title),type(contents),type(date))
