@@ -4,6 +4,7 @@ from scrapy import spiderloader
 from scrapy.utils.log import configure_logging
 from scrapy.utils.project import get_project_settings
 import os
+from multiprocessing import Process
 
 print("#################inside#################")
 os.chdir("/root/Scraper/arabic_scrapper")
@@ -16,19 +17,43 @@ spider_loader = spiderloader.SpiderLoader.from_settings(settings)
 spiders = spider_loader.list()
 classes = [spider_loader.load(name) for name in spiders]
 
-print("############classes##########",classes)
+# print("############classes##########\n",len(classes))
 
+def crawlerSetOne():
+    classes_one = classes[:40]
+    for spiderClass in classes_one:
+        runner.crawl(spiderClass)
+    d = runner.join()
+    d.addBoth(lambda _: reactor.stop())
+    reactor.run() 
 
-###################testing cron execution
+def crawlerSetTwo():
+    classes_two = classes[40:]
+    for spiderClass in classes_two:
+        runner.crawl(spiderClass)
+    e = runner.join()
+    e.addBoth(lambda _: reactor.stop())
+    reactor.run() 
+    
 
+##################testing cron execution
 from datetime import datetime
 now=datetime.now()
 with open('/tmp/cron_log.txt',"a") as f:
     f.write("cornjob of concurrent spiders started at {} \n".format(now))
 ###############################################
     
-for spiderClass in classes:
-    runner.crawl(spiderClass)
-d = runner.join()
-d.addBoth(lambda _: reactor.stop())
-reactor.run() 
+
+if __name__ == "__main__":
+
+    processes = [
+                    Process(target=crawlerSetOne),
+                    Process(target=crawlerSetTwo)
+                ]
+
+
+    for process in processes:
+        process.start()
+
+    for process in processes:
+        process.join()
