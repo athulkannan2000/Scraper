@@ -7,7 +7,7 @@ from lxml import etree
 import requests
 
 
-site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Public Institution for Social Security in Kuwait",False)
+site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Public Institution for Social Security in Kuwait")
 now = datetime.now()
 
 class PublicInstitutionSpider(scrapy.Spider):

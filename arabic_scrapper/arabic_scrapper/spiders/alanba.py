@@ -4,7 +4,7 @@ from arabic_scrapper.helper import load_dataset_lists
 from arabic_scrapper.items import GeneralItem
 from datetime import datetime
 
-site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("alanba ",False)
+site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("alanba ")
 now = datetime.now()
 
 class AlanbaScrapperSpider(scrapy.Spider):

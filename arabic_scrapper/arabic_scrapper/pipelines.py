@@ -21,7 +21,6 @@ exp='[\u0627-\u064a0-9A-Za-z]+' #regular expression to take only arabic and engl
 class ArabicScrapperPipeline:
     def __init__(self):
         self.conn = mysql.connector.connect(
-            host = 'localhost',
             user = 'root',
             password = os.getenv("db_password"),
             database = os.getenv("db_name")

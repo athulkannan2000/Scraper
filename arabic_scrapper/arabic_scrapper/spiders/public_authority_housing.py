@@ -8,7 +8,7 @@ from lxml import etree
 import requests
 
 
-site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Public Authority for Housing Welfare",False)
+site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Public Authority for Housing Welfare")
 now = datetime.now()
 
 

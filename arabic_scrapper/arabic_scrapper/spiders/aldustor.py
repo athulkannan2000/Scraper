@@ -2,7 +2,7 @@ import scrapy
 import pandas as pd
 from arabic_scrapper.helper import parser_parse_isoformat, translate_text, load_dataset_lists, datetime_now_isoformat
 
-news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("parliament aldustor agency",False)
+news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("parliament aldustor agency")
 now = datetime_now_isoformat()
 
 class AlwasatSpider(scrapy.Spider):

@@ -9,7 +9,7 @@ import requests
 from lxml import etree
 from datetime import datetime
 
-site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("General Secretariat of Supreme Council for Planning and Development (GSSCPD)",False)
+site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("General Secretariat of Supreme Council for Planning and Development (GSSCPD)")
 now = datetime.now()
 
 class GeneralSecretariatSpider(scrapy.Spider):

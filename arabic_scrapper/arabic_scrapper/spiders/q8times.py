@@ -4,7 +4,7 @@ from arabic_scrapper.items import GeneralItem
 from datetime import datetime
 
 
-site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("q8times",False)
+site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("q8times")
 now = datetime.now()
 
 class Q8timesSpider(scrapy.Spider):
