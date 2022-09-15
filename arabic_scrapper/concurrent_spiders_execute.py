@@ -6,9 +6,9 @@ from scrapy.utils.project import get_project_settings
 import os
 from multiprocessing import Process
 
-# print("#################inside#################")
-# os.chdir("/root/Scraper/arabic_scrapper")
-# print("######current directory is###########",os.getcwd())
+print("#################inside#################")
+os.chdir("/root/Scraper/arabic_scrapper")
+print("######current directory is###########",os.getcwd())
 configure_logging()
 settings = get_project_settings() 
 runnerOne = CrawlerRunner(settings)  
@@ -47,11 +47,10 @@ def crawlerSetTwo():
     
 
 ##################testing cron execution
-
-# from datetime import datetime
-# now=datetime.now()
-# with open('/tmp/cron_log.txt',"a") as f:
-#     f.write("cornjob of concurrent spiders started at {} \n".format(now))
+from datetime import datetime
+now=datetime.now()
+with open('/tmp/cron_log.txt',"a") as f:
+    f.write("cornjob of concurrent spiders started at {} \n".format(now))
 ###############################################
     
 
