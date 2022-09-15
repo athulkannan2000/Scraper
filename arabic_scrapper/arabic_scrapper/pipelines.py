@@ -50,9 +50,9 @@ class ArabicScrapperPipeline:
                 source_id int, 
                 status int DEFAULT 1,
                 
-                created_at text, 
-                updated_at text, 
-                deleted_at text,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP, 
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+                deleted_at DATETIME DEFAULT NULL,
                 tweet_created_at text DEFAULT NULL,
                 tweet_text text DEFAULT NULL,
                 tweet_id text DEFAULT NULL,
