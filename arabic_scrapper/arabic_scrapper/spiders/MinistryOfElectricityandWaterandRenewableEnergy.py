@@ -4,7 +4,7 @@ from arabic_scrapper.helper import load_dataset_lists, datetime_now_isoformat, p
 news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Ministry Of Electricity and Water and Renewable Energy")
 now = datetime_now_isoformat()
 
-class SoutalkhaleejSpider(scrapy.Spider):
+class MinistryOfElectricityandWaterandRenewableEnergySpider(scrapy.Spider):
     name = "ministry-of-electricity-and-Water-and-renewable-energy"
     start_urls = news_sites_list
 

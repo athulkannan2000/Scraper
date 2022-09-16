@@ -5,7 +5,7 @@ from arabic_scrapper.helper import parser_parse_isoformat, translate_text, load_
 news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("parliament aldustor agency")
 now = datetime_now_isoformat()
 
-class AlwasatSpider(scrapy.Spider):
+class AldustorSpider(scrapy.Spider):
     name = 'aldustor'
     start_urls = news_sites_list
 
