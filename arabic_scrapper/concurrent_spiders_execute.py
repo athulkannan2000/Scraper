@@ -11,27 +11,37 @@ os.chdir("/root/Scraper/arabic_scrapper")
 print("######current directory is###########",os.getcwd())
 configure_logging()
 settings = get_project_settings() 
-runner = CrawlerRunner(settings)  
+runnerOne = CrawlerRunner(settings)  
+runnerTwo = CrawlerRunner(settings)  
 
 spider_loader = spiderloader.SpiderLoader.from_settings(settings)
 spiders = spider_loader.list()
 classes = [spider_loader.load(name) for name in spiders]
 
 # print("############classes##########\n",len(classes))
+class_length = len(classes)
+first_part = 0
+second_part = 0
+
+if(class_length % 2 == 0):
+    first_part, second_part = int(class_length / 2), int(class_length / 2)
+else:
+    first_part, second_part = class_length / 2, int(class_length / 2) + 1
+
 
 def crawlerSetOne():
-    classes_one = classes[:40]
+    classes_one = classes[:first_part]
     for spiderClass in classes_one:
-        runner.crawl(spiderClass)
-    d = runner.join()
+        runnerOne.crawl(spiderClass)
+    d = runnerOne.join()
     d.addBoth(lambda _: reactor.stop())
     reactor.run() 
 
 def crawlerSetTwo():
-    classes_two = classes[40:]
+    classes_two = classes[second_part:]
     for spiderClass in classes_two:
-        runner.crawl(spiderClass)
-    e = runner.join()
+        runnerTwo.crawl(spiderClass)
+    e = runnerTwo.join()
     e.addBoth(lambda _: reactor.stop())
     reactor.run() 
     
