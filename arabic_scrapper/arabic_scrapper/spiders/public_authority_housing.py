@@ -25,7 +25,7 @@ class PublicAuthorityHousingSpider(scrapy.Spider):
             dates = [str(parser.parse(i)).replace("-","/") for i in dates]
             images=dom.xpath('//*[@class="imgframe"]/img/@src')
 
-            # print(contents,len(contents),"\n",dates,len(dates),"\n",titles,len(titles),"\n")
+            # #print(contents,len(contents),"\n",dates,len(dates),"\n",titles,len(titles),"\n")
             for title,content,date,image in zip(titles,contents,dates,images):
                 content="https://www.pahw.gov.kw"+content
                 title=str(title)

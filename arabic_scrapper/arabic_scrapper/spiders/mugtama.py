@@ -32,13 +32,13 @@ class MugtamaSpider(scrapy.Spider):
         author = response.xpath("//span[@class='itemAuthor']/text()").extract_first()
         author = author.replace('\n','')
         author = author.replace('\t','')
-    
+        contents=" ".join(response.xpath("//div[@class='itemFullText']/p[@style='text-align: justify;']/strong/span/text()").extract())+" ".join(response.xpath("//div[@class='itemFullText']//p/span/text()").extract())+" ".join(response.xpath('//*[@class="itemFullText"]/div[2]//p/strong/span/text()').extract())
         yield {
                 "news_agency_name": "mugtama magazine",
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" : title,
-                "contents": response.xpath("//div[@class='itemFullText']/p[@style='text-align: justify;']/strong/span/text()").extract_first(),
+                "contents": contents,
                 "date" :  parser_parse_isoformat(translate_text(response.xpath("//span[@class='itemDateCreated']/text()").extract_first())),
                 "author_name" : author,
                 "image_url" : "https://mugtama.com/" + response.xpath("//span[@class='itemImage']/a/@href").extract_first(),

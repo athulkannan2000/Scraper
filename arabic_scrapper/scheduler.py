@@ -3,7 +3,7 @@ import time
 import os
 
 
-print('Scheduler initialised')
+#print('Scheduler initialised')
 # schedule.every(3).minutes.do(lambda: os.system('python db_update.py'))
 schedule.every(1).minutes.do(lambda: os.system('python3 concurrent_spiders_execute.py'))
 

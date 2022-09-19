@@ -14,26 +14,26 @@ class AlhrerSpider(scrapy.Spider):
     name = 'alhrer'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            #print("////page,catagori///",page,catagori)
             # yield scrapy.Request(url=page,callback=self.pagination_handler,meta={"current_url":page,"catagory":catagori})
             yield scrapy.Request(url=page,callback=self.pagination_handler,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
 
     def pagination_handler(self,response):
-        # print("//////////////self.urls///////////",self.urls)
+        # #print("//////////////self.urls///////////",self.urls)
         urls=[]
         max_page = response.xpath('//*[@class="pagination"]//a/@href').extract()
         max_page = max_page[len(max_page)-1]
         max_page = max_page.split("/")
-        print("///////////////Max page link//////////////////",max_page)
+        #print("///////////////Max page link//////////////////",max_page)
         max_page = max_page[len(max_page)-1]
-        print("///////////////Max number of pages//////////////////",max_page)
+        #print("///////////////Max number of pages//////////////////",max_page)
         for page_num in range(1,int(max_page)+1):
             page=response.meta["current_url"]+f"/page/{page_num}"
             urls.append(page)
         
         for url in urls:
-            print(url)
+            #print(url)
             # yield scrapy.Request(url=url,callback=self.link_extractor,meta={"catagory":response.meta["catagory"]})
             yield scrapy.Request(url=url,callback=self.link_extractor,meta={"catagory":response.meta["catagory"],"main_category":response.meta["main_category"],"sub_category":response.meta["sub_category"],"platform":response.meta["platform"],"media_type":response.meta["media_type"],"urgency":response.meta["urgency"]})
             
@@ -42,9 +42,9 @@ class AlhrerSpider(scrapy.Spider):
     
     def link_extractor(self,response):
         news_links = response.xpath('//*[@class="bp-head"]/h2/a/@href').extract()
-        print("/////////////news links//////////",news_links)
+        #print("/////////////news links//////////",news_links)
         for link in news_links:
-            print("link",link)
+            #print("link",link)
             if link=="":
                 continue #some pages may not have textual contents on that case it become empty
             else:  
@@ -57,7 +57,7 @@ class AlhrerSpider(scrapy.Spider):
         alhrer_item=GeneralItem()
         date = response.xpath('//*[@class="mom-post-meta single-post-meta"]/span/time/text()').extract_first()
         date = str(parser.parse(GoogleTranslator(source='auto', target='en').translate(date))).replace("-","/")
-        print("/////////////////////////",date)
+        #print("/////////////////////////",date)
       
         alhrer_item["news_agency_name"]="alhrernews"
         alhrer_item["page_url"]=response.meta["page_link"]

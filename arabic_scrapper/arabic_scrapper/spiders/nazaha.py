@@ -8,7 +8,7 @@ from lxml import etree
 from datetime import datetime
 from dateutil import parser
 
-print("selenium path",selenium_path())
+#print("selenium path",selenium_path())
 site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("NAZAHA Kuwait Anti-Corruption Authority")
 now = datetime.now()
 
@@ -29,7 +29,7 @@ class NazahaSpider(scrapy.Spider):
             driver.get(url)
             # time.sleep(5)
             html=driver.page_source
-            # print("Page source :",html)
+            # #print("Page source :",html)
             driver.quit()
             soup=BeautifulSoup(html,"lxml") #donwloading the entiring page 
             dom = etree.HTML(str(soup)) 
@@ -39,7 +39,7 @@ class NazahaSpider(scrapy.Spider):
                 yield scrapy.Request(url=page_url,callback=self.link_extractor,meta={"current_url":page_url,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
-        print("/////////////////////////////News page//////////////////////",response.meta["current_url"])
+        #print("/////////////////////////////News page//////////////////////",response.meta["current_url"])
         #download
         driver = webdriver.Chrome(self.chromedriver,options=self.chrome_options)
         driver.delete_all_cookies()
@@ -48,7 +48,7 @@ class NazahaSpider(scrapy.Spider):
         driver.quit()
         soup=BeautifulSoup(html,"lxml")
         dom = etree.HTML(str(soup))
-        # print("\n news page use this to find date \n",dom)
+        # #print("\n news page use this to find date \n",dom)
      
 
         contents=dom.xpath('//p/text()')
@@ -59,10 +59,10 @@ class NazahaSpider(scrapy.Spider):
 
         date=dom.xpath('//td[@class="NewsDescription"]/table/tbody/tr/td[2]/text()')
         date=date[0]
-        # print("###################### date :",date,"#####################")
+        # #print("###################### date :",date,"#####################")
         date=str(parser.parse(date)).replace("-","/")
 
-        # print("########### Data types ########",type(response.meta["current_url"]),"\n",type(response.meta["catagory"]),type(title),type(contents),type(date))
+        # #print("########### Data types ########",type(response.meta["current_url"]),"\n",type(response.meta["catagory"]),type(title),type(contents),type(date))
         alwatan_item=GeneralItem()
         alwatan_item["news_agency_name"]="NAZAHA Kuwait Anti-Corruption Authority"
         alwatan_item["page_url"]=str(response.meta["current_url"])

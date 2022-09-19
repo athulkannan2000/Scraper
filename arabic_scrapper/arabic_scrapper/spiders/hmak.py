@@ -14,14 +14,14 @@ class HmakSpider(scrapy.Spider):
     name = 'hmak'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            #print("////page,catagori///",page,catagori)
             yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
         news_links = response.xpath('//*[@class="post-title"]/a/@href').extract()
-        print("/////////////news links//////////",news_links)
+        #print("/////////////news links//////////",news_links)
         for link in news_links:
-            print("link",link)
+            #print("link",link)
             if link=="":
                 continue #some pages may not have textual contents on that case it become empty
             else:  
@@ -31,7 +31,7 @@ class HmakSpider(scrapy.Spider):
         ###########################Used to store data in Mysql################################
         hmak_item=GeneralItem()
         date = response.xpath('//*[@id="single-post-meta"]/span[2]/text()').extract_first()
-        print("/////////////////////////",date)
+        #print("/////////////////////////",date)
         date=agos_changer(date) #used to change 5 mins/week/day/month/seconds/year ago to exact date and time
       
         hmak_item["news_agency_name"]="hmak news"
@@ -39,7 +39,7 @@ class HmakSpider(scrapy.Spider):
         hmak_item["category"]=response.meta["catagory"]
         hmak_item["title"]=response.xpath('//*[@class="post-title entry-title"]/text()').extract_first()
         
-        contents=response.xpath('//*[@class="entry-content entry clearfix"]//p/text()').extract()
+        contents=response.xpath('//*[@class="entry-content entry clearfix"]//p/text()').extract()+response.xpath('//*[@class="entry-content entry clearfix"]//ul//li/text()').extract()
         contents="".join(contents[0:len(contents)])
         hmak_item["contents"]=contents
 

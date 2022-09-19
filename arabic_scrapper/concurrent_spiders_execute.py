@@ -6,9 +6,9 @@ from scrapy.utils.project import get_project_settings
 import os
 from multiprocessing import Process
 
-print("#################inside#################")
+#print("#################inside#################")
 os.chdir("/root/Scraper/arabic_scrapper")
-print("######current directory is###########",os.getcwd())
+#print("######current directory is###########",os.getcwd())
 configure_logging()
 settings = get_project_settings() 
 runnerOne = CrawlerRunner(settings)  
@@ -18,7 +18,7 @@ spider_loader = spiderloader.SpiderLoader.from_settings(settings)
 spiders = spider_loader.list()
 classes = [spider_loader.load(name) for name in spiders]
 
-# print("############classes##########\n",len(classes))
+# #print("############classes##########\n",len(classes))
 class_length = len(classes)
 first_part = 0
 second_part = 0

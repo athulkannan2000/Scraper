@@ -21,9 +21,9 @@ class GovernmentPerformanceSpider(scrapy.Spider):
             req=requests.get(page)
             dom = etree.HTML(req.text)
             urls=dom.xpath('//div/a/@href')
-            print("///////////urls/////////////",urls)
+            #print("///////////urls/////////////",urls)
             for url in urls:
-                # print("//////////url//////////",url)
+                # #print("//////////url//////////",url)
                 url="https://www.gpf.gov.kw/Ar/"+url
                 # yield scrapy.Request(url="https://www.google.com/",callback=self.details_scrapper,meta={"current_url":url,"catagory":catagori},dont_filter=True  )
                 yield scrapy.Request(url="https://www.google.com/",callback=self.details_scrapper,dont_filter=True,meta={"current_url":url,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
@@ -49,8 +49,8 @@ class GovernmentPerformanceSpider(scrapy.Spider):
             image_url=str(dom.xpath('//div/div/img/@src')[0])
         except IndexError:
             image_url=str(" ".join(dom.xpath('//div/div/img/@src')))
-        # print(contents)
-        print(title,contents,date,image_url)
+        # #print(contents)
+        #print(title,contents,date,image_url)
         gov_perf_item=GeneralItem()
         gov_perf_item["news_agency_name"]="government performance follow up"
         gov_perf_item["page_url"]=response.meta["current_url"]

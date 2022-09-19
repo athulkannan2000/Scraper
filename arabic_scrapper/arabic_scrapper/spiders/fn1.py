@@ -15,14 +15,14 @@ class Fn1Spider(scrapy.Spider):
     name = 'fn1'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            #print("////page,catagori///",page,catagori)
             yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
         news_links = response.xpath('//*[@class="post-title"]/a/@href').extract()
-        print("/////////////news links//////////",news_links)
+        #print("/////////////news links//////////",news_links)
         for link in news_links:
-            print("link",link)
+            #print("link",link)
             if link=="":
                 continue #some pages may not have textual contents on that case it become empty
             else:  
@@ -41,7 +41,7 @@ class Fn1Spider(scrapy.Spider):
 
         f1_item["title"]=response.xpath('//*[@class="name post-title entry-title"]/span/text()').extract_first()
         
-        contents=response.xpath('//*[@class="entry"]//p/strong/text()').extract()
+        contents=response.xpath('//*[@class="entry"]//p/strong/text()').extract()+response.xpath('//*[@class="entry"]//p/text()').extract()
         contents="".join(contents[0:len(contents)])
         f1_item["contents"]=contents
 

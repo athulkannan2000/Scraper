@@ -10,9 +10,9 @@ now = datetime.now()
 class AlanbaScrapperSpider(scrapy.Spider):
     name = 'alanba'
     def start_requests(self):
-        print("///////////////////////inside/////////////////////")
+        #print("///////////////////////inside/////////////////////")
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("//////Page,catgory/////////",page,catagori)
+            #print("//////Page,catgory/////////",page,catagori)
             yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
@@ -34,14 +34,14 @@ class AlanbaScrapperSpider(scrapy.Spider):
         # news=news[60]
         image_url=response.xpath('//*[@class="pic_multipic post_thumb"]/a/@href').extract_first()
         topic_id=response.meta["catagory"]+"_"+date+'_'+str(response.meta["id"])
-        # print("///////////////////",topic_id,"\\\\\\\\\\\\\\\\\\\\\\\\")
+        # #print("///////////////////",topic_id,"\\\\\\\\\\\\\\\\\\\\\\\\")
         yield {'topic_id':topic_id,'news_agency_name':"alanba",'page_url':response.meta["page_link"],"catagory":response.meta["catagory"],'title':title,"contents":news,"image_url":image_url,'date':date,}
         """
         ###########################Used to store data in Mysql################################
         alanba_item=GeneralItem()
         date=response.xpath('//div[@class="post_date"]/text()').extract()
         date=date[1][1:-1]
-        # print("/////////////////",date)
+        # #print("/////////////////",date)
         alanba_item["news_agency_name"]="alanba "
         alanba_item["page_url"]=response.meta["page_link"]
         alanba_item["category"]=response.meta["catagory"]

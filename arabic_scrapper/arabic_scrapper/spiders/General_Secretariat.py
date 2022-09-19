@@ -16,7 +16,7 @@ class GeneralSecretariatSpider(scrapy.Spider):
     name = 'General_Secretariat'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            #print("////page,catagori///",page,catagori)
             # yield scrapy.Request(url="https://www.google.com/",callback=self.details_scrapper,meta={"current_url":page,"catagory":catagori})
             yield scrapy.Request(url="https://www.google.com/",callback=self.details_scrapper,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 

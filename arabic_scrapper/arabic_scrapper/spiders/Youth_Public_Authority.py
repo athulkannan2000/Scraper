@@ -14,16 +14,16 @@ class YouthPublicAuthoritySpider(scrapy.Spider):
     name = 'Youth_Public_Authority'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            #print("////page,catagori///",page,catagori)
             req=requests.get(page,verify=False)
             soup=BeautifulSoup(req.text,"lxml")
             dom = etree.HTML(str(soup)) 
             links=dom.xpath('//h3/a/@href')
             dates=dom.xpath("//div[@class='activities-list']/ul/li/text()")
-            print("///////////////links///////////////",links)
+            #print("///////////////links///////////////",links)
             for link,date in zip(links,dates):
                 link="https://www.youth.gov.kw/"+link
-                print(link)
+                #print(link)
                 req=requests.get(link)
                 soup=BeautifulSoup(req.text,"lxml")
                 dom = etree.HTML(str(soup)) 
@@ -36,7 +36,7 @@ class YouthPublicAuthoritySpider(scrapy.Spider):
 
     def details_scrapper(self,response):
         ###########################Used to store data in Mysql################################
-        print("////////%%%%%%%%%%%%%%%% i am here %%%%%%%%%%%%%%%%%%%///////////////")
+        #print("////////%%%%%%%%%%%%%%%% i am here %%%%%%%%%%%%%%%%%%%///////////////")
         Youth_Public_item=GeneralItem()
 
         Youth_Public_item["news_agency_name"]=" Youth Public Authority"

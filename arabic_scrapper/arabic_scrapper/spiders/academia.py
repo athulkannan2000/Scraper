@@ -16,10 +16,10 @@ class AcademiaSpider(scrapy.Spider):
     name = 'academia'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("///////////////",page,catagori)
+            # #print("///////////////",page,catagori)
             response=requests.get(page)
             dict_data = xmltodict.parse(response.content)
-            # print("////////dict data//////",dict_data)
+            # #print("////////dict data//////",dict_data)
             for news in  dict_data["rss"]["channel"]["item"]:
                 title=news["title"]
                 page_url=news["link"]
@@ -33,7 +33,7 @@ class AcademiaSpider(scrapy.Spider):
  
  
     def data_extractor(self, response):
-        # print('//////////////////////////////response',response)
+        # #print('//////////////////////////////response',response)
         academia_item=GeneralItem() 
         academia_item["news_agency_name"]="academia"
         academia_item["page_url"]=response.meta["page_url"]

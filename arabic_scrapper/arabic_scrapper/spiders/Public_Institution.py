@@ -18,7 +18,7 @@ class PublicInstitutionSpider(scrapy.Spider):
             soup=BeautifulSoup(req.text,"lxml")
             dom = etree.HTML(str(soup)) 
             links=dom.xpath('//*[@class="row gray-box"]/div[2]/a/@href')
-            print("/////////////links////////////",links)
+            #print("/////////////links////////////",links)
             for link in links:
                 yield scrapy.Request(url="https://www.google.com/",callback=self.details_scrapper,meta={"page_link":link,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc},dont_filter=True)
                 

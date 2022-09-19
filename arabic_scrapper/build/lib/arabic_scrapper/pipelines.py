@@ -16,7 +16,7 @@ class ArabicScrapperPipeline:
         
     def process_item(self, item, spider):
         spider=re.findall(r"'(.*?)'", str(spider))[0]
-        print("/////////////////////Spider//////////////",spider)
+        #print("/////////////////////Spider//////////////",spider)
 
         if spider=="alanba_scrapper":
             self.curr.execute("""CREATE TABLE IF NOT EXISTS alanba_news(

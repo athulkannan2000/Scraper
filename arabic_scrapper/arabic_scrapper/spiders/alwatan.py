@@ -37,7 +37,7 @@ class AlwatanSpider(scrapy.Spider):
                 yield scrapy.Request(url=page_url,callback=self.link_extractor,meta={"current_url":page_url,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
-        print("/////////////////////////////News page//////////////////////",response.meta["current_url"])
+        #print("/////////////////////////////News page//////////////////////",response.meta["current_url"])
         #download
         driver = webdriver.Chrome(self.chromedriver,options=self.chrome_options)
         driver.delete_all_cookies()

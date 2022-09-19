@@ -16,15 +16,15 @@ class NokhbahSpider(scrapy.Spider):
     name = 'nokhbah'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            #print("////page,catagori///",page,catagori)
             # yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori})
             yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
         news_links = response.xpath('//h2[@class="title"]/a/@href').extract()
-        print("/////////////news links//////////",news_links)
+        #print("/////////////news links//////////",news_links)
         for link in news_links:
-            print("link",link)
+            #print("link",link)
             if link=="":
                 continue #some pages may not have textual contents on that case it become empty
             else:  
@@ -44,13 +44,13 @@ class NokhbahSpider(scrapy.Spider):
 
         nokhbah_news["title"]=response.xpath('//h1[@class="single-post-title"]/span/text()').extract_first()
         
-        contents=response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/strong/text()').extract()+response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/text()').extract()+response.xpath('//div[@id="pastingspan1"]/text()').extract()+response.xpath('//section[@id="paragraphs"]/p/text()').extract()+response.xpath('//span[@id="divArtContent"]/text()').extract()+response.xpath('//span[@id="divArtContent"]/p/text()').extract()+response.xpath('//div[@id="maincontent"]/p/text()').extract()+response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/strong/span/text()').extract()
-        print("/////////////contents//////////////",contents,type(contents))
+        contents=response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/strong/text()').extract()+response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/text()').extract()+response.xpath('//div[@id="pastingspan1"]/text()').extract()+response.xpath('//section[@id="paragraphs"]/p/text()').extract()+response.xpath('//span[@id="divArtContent"]/text()').extract()+response.xpath('//span[@id="divArtContent"]/p/text()').extract()+response.xpath('//div[@id="maincontent"]/p/text()').extract()+response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/strong/span/text()').extract()+response.xpath('//*[@class="desc"]/text()').extract()
+        #print("/////////////contents//////////////",contents,type(contents))
         contents="".join(contents[0:len(contents)])
         nokhbah_news["contents"]=contents
 
         nokhbah_news["image_url"]= response.xpath('//div[@class="single-featured"]/a/img/@data-src').extract_first()
-        print("\n nokhbah_news['image_url']", nokhbah_news["image_url"])
+        #print("\n nokhbah_news['image_url']", nokhbah_news["image_url"])
         nokhbah_news["date"]=date
         nokhbah_news["author_name"]= "النخبة الإخبارية"
 

@@ -12,13 +12,13 @@ class MinistryJusticeSpider(scrapy.Spider):
     name = 'ministry_justice'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            #print("////page,catagori///",page,catagori)
             # yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori})
             yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
         news_links = response.xpath('//*[@class="site-news-items site-flex"]//a/@href').extract()
-        print("/////////////news links//////////",news_links)
+        #print("/////////////news links//////////",news_links)
         for link in news_links:
             link="https://pp.moj.gov.kw"+link
             if link=="":
@@ -31,7 +31,7 @@ class MinistryJusticeSpider(scrapy.Spider):
         ###########################Used to store data in Mysql################################
         ministry_justice=GeneralItem()
         date = response.xpath('//*[@class="site-news-item-date"]/text()').extract_first()
-        print("/////Date/////",date)
+        #print("/////Date/////",date)
         date = str(parser.parse(date)).replace("-","/")
 
         ministry_justice["news_agency_name"]="Ministry of Justice"

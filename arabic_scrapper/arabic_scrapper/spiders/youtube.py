@@ -31,7 +31,7 @@ class YoutubeSpider(scrapy.Spider):
     name = 'youtube'
     def start_requests(self):
         for name,site,cat,main_cat,sub_cat,plat,med_type,urgency in zip(names,site_list,catagory,main_category,sub_category,platform,media_type,urgenci):
-            print(name,site,urgency)
+            #print(name,site,urgency)
             diff=site.split("/")[-1]
             if diff=="videos":
                 channel_name=site.split("/")[-2]
@@ -43,7 +43,7 @@ class YoutubeSpider(scrapy.Spider):
                     continue
                 titles,descriptions,dts,image_urls,video_urls=self.scrapper(playlist_id,name,site,cat,main_cat,sub_cat,plat,med_type,urgency)
                 if titles==None:
-                    print("############returned title#################")
+                    #print("############returned title#################")
                     continue
                 else:
                     for title,description,dt,image_url,video_url in zip(titles,descriptions,dts,image_urls,video_urls):
@@ -55,7 +55,7 @@ class YoutubeSpider(scrapy.Spider):
                 playlist_id=site.split("/")[3].split("=")[1]
                 titles,descriptions,dts,image_urls,video_urls=self.scrapper(playlist_id,name,site,cat,main_cat,sub_cat,plat,med_type,urgency)
                 if titles==None:
-                    print("############returned title#################")
+                    #print("############returned title#################")
                     continue
                 else:
                     for title,description,dt,image_url,video_url in zip(titles,descriptions,dts,image_urls,video_urls):
@@ -64,7 +64,7 @@ class YoutubeSpider(scrapy.Spider):
 
     def details_saver(self,response):
         db_item=GeneralItem()
-        print("$$$$$$$$$$$$$$$$$$$$$$$$$ Hey there $$$$$$$$$$$$$$$$$$$$$$$$$$$$$",str(response.meta["name"]),str(response.meta["site"]),str(response.meta["cat"]),str(response.meta["title"]),str(now.strftime("%Y:%m:%d %H:%M:%S")),str(response.meta["main_cat"]),str(response.meta["sub_cat"]),str(response.meta["plat"]),str(response.meta["med_type"]),str(response.meta["urgency"]),str(now.strftime("%Y:%m:%d %H:%M:%S")),str(now.strftime("%Y:%m:%d %H:%M:%S")),str(response.meta["title"]),str(response.meta["description"]),str(response.meta["dt"]),str(response.meta["image_url"]),str(response.meta["video_url"]))
+        #print("$$$$$$$$$$$$$$$$$$$$$$$$$ Hey there $$$$$$$$$$$$$$$$$$$$$$$$$$$$$",str(response.meta["name"]),str(response.meta["site"]),str(response.meta["cat"]),str(response.meta["title"]),str(now.strftime("%Y:%m:%d %H:%M:%S")),str(response.meta["main_cat"]),str(response.meta["sub_cat"]),str(response.meta["plat"]),str(response.meta["med_type"]),str(response.meta["urgency"]),str(now.strftime("%Y:%m:%d %H:%M:%S")),str(now.strftime("%Y:%m:%d %H:%M:%S")),str(response.meta["title"]),str(response.meta["description"]),str(response.meta["dt"]),str(response.meta["image_url"]),str(response.meta["video_url"]))
         db_item["news_agency_name"]=str(response.meta["name"])
         db_item["page_url"]=str(response.meta["site"])
         db_item["category"]=str(response.meta["cat"])
@@ -89,7 +89,7 @@ class YoutubeSpider(scrapy.Spider):
         db_item["vdo_published_at"]=str(response.meta["dt"])
         db_item["vdo_thumbnail"]=str(response.meta["image_url"])
         db_item["vdo_url"]=str(response.meta["video_url"])
-        print("$$$$$$$$$$$$$$$$$$$$$ OOOOOKKKKKK saved sucessfully $$$$$$$$$$$$$$$$$$$$$$$:\n",db_item)
+        #print("$$$$$$$$$$$$$$$$$$$$$ OOOOOKKKKKK saved sucessfully $$$$$$$$$$$$$$$$$$$$$$$:\n",db_item)
         yield db_item
 
 
@@ -99,7 +99,7 @@ class YoutubeSpider(scrapy.Spider):
         try:
             id_response = id_request.execute()
         except :
-            print(playlist_id,"###########playlist not existing#########")
+            #print(playlist_id,"###########playlist not existing#########")
             return None,None,None,None,None
         tit=[]
         desc=[]
@@ -109,12 +109,12 @@ class YoutubeSpider(scrapy.Spider):
         for res in range(len(id_response["items"])):
             video_id=id_response["items"][res]["contentDetails"]["videoId"]
             video_url="https://www.youtube.com/watch?v"+video_id
-            print("\n video url",video_url)
+            #print("\n video url",video_url)
 
             #getting video details
             vdo_info_request = youtube.videos().list(part='snippet, statistics',id = video_id)
             vdo_info_response = vdo_info_request.execute()
-            # print(vdo_info_response["items"])
+            # #print(vdo_info_response["items"])
             try:
                 title=vdo_info_response["items"][0]["snippet"]["title"]
                 description=vdo_info_response["items"][0]["snippet"]["description"]
@@ -127,7 +127,7 @@ class YoutubeSpider(scrapy.Spider):
 
             image_url=vdo_info_response["items"][0]['snippet']['thumbnails']['default']['url'] 
 
-            print("\ntitle :",type(title),"\n description :",type(description),"\npublished at :",type(published_at),"\n image_url :",type(image_url),"\n date and time",type(dt))
+            #print("\ntitle :",type(title),"\n description :",type(description),"\npublished at :",type(published_at),"\n image_url :",type(image_url),"\n date and time",type(dt))
             
             tit.append(title)
             desc.append(description)
