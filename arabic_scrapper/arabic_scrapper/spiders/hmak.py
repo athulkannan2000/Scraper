@@ -39,7 +39,7 @@ class HmakSpider(scrapy.Spider):
         hmak_item["category"]=response.meta["catagory"]
         hmak_item["title"]=response.xpath('//*[@class="post-title entry-title"]/text()').extract_first()
         
-        contents=response.xpath('//*[@class="entry-content entry clearfix"]//p/text()').extract()
+        contents=response.xpath('//*[@class="entry-content entry clearfix"]//p/text()').extract()+response.xpath('//*[@class="entry-content entry clearfix"]//ul//li/text()').extract()
         contents="".join(contents[0:len(contents)])
         hmak_item["contents"]=contents
 

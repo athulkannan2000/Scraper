@@ -39,7 +39,7 @@ class KhalejianewsSpider(scrapy.Spider):
         khalejinews_item["category"]=response.meta["catagory"]
         khalejinews_item["title"]=response.xpath('//*[@class="title"]/h2/text()').extract_first()
         
-        contents=response.xpath('//*[@class="article-body"]//p/span//strong/text()').extract()
+        contents=response.xpath('//*[@class="article-body"]//p/span//strong/text()').extract()+response.xpath('//*[@class="article-body"]//p//strong/text()').extract()+response.xpath('//*[@class="article-body"]//p/text()').extract()
         contents="".join(contents[0:len(contents)])
         khalejinews_item["contents"]=contents
 

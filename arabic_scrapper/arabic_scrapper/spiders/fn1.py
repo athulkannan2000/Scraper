@@ -41,7 +41,7 @@ class Fn1Spider(scrapy.Spider):
 
         f1_item["title"]=response.xpath('//*[@class="name post-title entry-title"]/span/text()').extract_first()
         
-        contents=response.xpath('//*[@class="entry"]//p/strong/text()').extract()
+        contents=response.xpath('//*[@class="entry"]//p/strong/text()').extract()+response.xpath('//*[@class="entry"]//p/text()').extract()
         contents="".join(contents[0:len(contents)])
         f1_item["contents"]=contents
 
