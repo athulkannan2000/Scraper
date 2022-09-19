@@ -6,7 +6,7 @@ from datetime import datetime
 site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("Public authority of manpower")
 now = datetime.now()
 
-class Manpower(scrapy.Spider):
+class ManpowerSpider(scrapy.Spider):
     name = 'manpower'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 

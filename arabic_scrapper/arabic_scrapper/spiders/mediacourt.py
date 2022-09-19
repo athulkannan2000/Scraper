@@ -5,7 +5,7 @@ from arabic_scrapper.helper import parser_parse_isoformat,load_dataset_lists, da
 news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("mediacourt")
 now = datetime_now_isoformat()
 
-class AssafeerSpider(scrapy.Spider):
+class MediacourtSpider(scrapy.Spider):
     name = 'mediacourt'
     start_urls = news_sites_list
 
