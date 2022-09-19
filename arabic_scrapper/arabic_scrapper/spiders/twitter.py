@@ -31,23 +31,23 @@ auth.set_access_token(access_token,access_token_secret)
 api = tweepy.API(auth)
 try:
     api.verify_credentials()
-    print('Successful Authentication')
+    #print('Successful Authentication')
 except:
-    print('###############Failed authentication################')
+    #print('###############Failed authentication################')
 now = datetime.now()
 
 class TwitterSpider(scrapy.Spider):
     name = 'twitter'
     def start_requests(self):
         for name,page_url,cat,main_cat,sub_cat,plat,media_typ,urgenc in zip(names,site_list,catagory,main_category,sub_category,platform,media_type,urgency):
-            print(page_url,type(page_url))
+            #print(page_url,type(page_url))
             username=page_url.split("/")[-1]
             try:
                 user = api.get_user(screen_name=username) # Store user as a variable
             except: #some of the users doesn't exist so that may result in 404
                 continue
             tweets = api.user_timeline(id=username, count=10)
-            print("$$$$$$$$$$$$$$$$$$$$$$NO of tweets$$$$$$$$$$$$$$$$$$",len(tweets))
+            #print("$$$$$$$$$$$$$$$$$$$$$$NO of tweets$$$$$$$$$$$$$$$$$$",len(tweets))
             for tweet in tweets:
                 yield scrapy.Request(url="https://google.com",callback=self.details_saver,dont_filter=True,meta={"tweet":tweet,"name":name,"page_url":page_url,"cat":cat,"main_cat":main_cat,"sub_cat":sub_cat,"plat":plat,"media_typ":media_typ,"urgency":urgenc})
                 
@@ -61,7 +61,7 @@ class TwitterSpider(scrapy.Spider):
             tw_text=response.meta["tweet"].text
         except:
             tw_text=response.meta["tweet"].full_tex
-        # print("$$$$$$$$$$$$$$",type(id),type(tw_text),type(page_url),"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        # #print("$$$$$$$$$$$$$$",type(id),type(tw_text),type(page_url),"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         db_item=GeneralItem()
         db_item["news_agency_name"]= response.meta["name"]
         db_item["page_url"]= response.meta["page_url"]
@@ -88,6 +88,6 @@ class TwitterSpider(scrapy.Spider):
         db_item["vdo_published_at"]=None
         db_item["vdo_thumbnail"]=None
         db_item["vdo_url"]=None
-        print("$$$$$$$$$$$$$$$$$$$$$ OOOOOKKKKKK saved sucessfully $$$$$$$$$$$$$$$$$$$$$$$:\n",db_item)
+        #print("$$$$$$$$$$$$$$$$$$$$$ OOOOOKKKKKK saved sucessfully $$$$$$$$$$$$$$$$$$$$$$$:\n",db_item)
         yield db_item
             # ea

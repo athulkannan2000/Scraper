@@ -21,9 +21,9 @@ class AlraiSpider(scrapy.Spider):
             
     def link_extractor(self,response):
         news_links = response.xpath('//*[@class="container-details-text fontsize14height44"]/a/@href').extract()
-        print("/////////////news links//////////",news_links)
+        #print("/////////////news links//////////",news_links)
         for link in news_links:
-            print("link",link)
+            #print("link",link)
             if link=="":
                 continue #some pages may not have textual contents on that case it become empty
             else:  

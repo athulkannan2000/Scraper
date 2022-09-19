@@ -35,19 +35,19 @@ class DiwanSpider(scrapy.Spider):
             html=driver.page_source
             driver.quit()
             soup=BeautifulSoup(html,"lxml") #donwloading the entiring page 
-            print("////////////////soup////////////",soup)
+            #print("////////////////soup////////////",soup)
             dom = etree.HTML(str(soup)) 
-            # print("//////////////////dom/////////////////",dom)
+            # #print("//////////////////dom/////////////////",dom)
             urls=dom.xpath('//*[@class="news-texts"]/a/@href')    
-            print("///////////////////all urls/////////////////////////",urls)
+            #print("///////////////////all urls/////////////////////////",urls)
             for url in urls:
                 page_url="https://cpd.gov.kw/Ar/"+url
-                print("/////////////////////pageurl//////////////////",page_url)
+                #print("/////////////////////pageurl//////////////////",page_url)
                 # yield scrapy.Request(url=page_url,callback=self.link_extractor,meta={"current_url":page_url,"catagory":catagori})
                 yield scrapy.Request(url=page_url,callback=self.link_extractor,meta={"current_url":page_url,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
-        print("/////////////////////////////News page//////////////////////",response.meta["current_url"])
+        #print("/////////////////////////////News page//////////////////////",response.meta["current_url"])
         #download
         driver = webdriver.Chrome(self.chromedriver,options=self.chrome_options)
         driver.delete_all_cookies()

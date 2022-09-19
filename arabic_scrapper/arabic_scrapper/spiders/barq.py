@@ -15,7 +15,7 @@ class BarqSpider(scrapy.Spider):
     name = 'barq'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            #print("////page,catagori///",page,catagori)
             yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
@@ -24,9 +24,9 @@ class BarqSpider(scrapy.Spider):
         listed_news = response.xpath('//li[@class="c2 four-posts "]/a/@href').extract()
         banner_news = response.xpath('//li[@class="c2 titled-posts col-sm-4  five-post "]/a/@href').extract()+response.xpath('//li[@class="c2 titled-posts col-sm-4 "]/a/@href').extract()
         news_links=pinned_news+listed_news+banner_news
-        print("/////////////news links//////////",news_links)
+        #print("/////////////news links//////////",news_links)
         for link in news_links:
-            print("link",link)
+            #print("link",link)
             if link=="":
                 continue #some pages may not have textual contents on that case it become empty
             else:  

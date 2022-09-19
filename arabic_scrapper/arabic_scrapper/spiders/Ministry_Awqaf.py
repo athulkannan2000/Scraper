@@ -13,15 +13,15 @@ class MinistryAwqafSpider(scrapy.Spider):
     name = 'Ministry_Awqaf'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            #print("////page,catagori///",page,catagori)
             yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
         news_links = response.xpath('//*[@class="col-md-10"]/h5/a/@href').extract()
-        print("/////////////news links//////////",news_links)
+        #print("/////////////news links//////////",news_links)
         for link in news_links:
             link="https://www.awqaf.gov.kw"+link
-            print("////////link//////////////",link)
+            #print("////////link//////////////",link)
             if link=="":
                 continue #some pages may not have textual contents on that case it become empty
             else:  
@@ -34,7 +34,7 @@ class MinistryAwqafSpider(scrapy.Spider):
 
         date = response.xpath('//*[@id="MainContent_date"]/text()').extract_first()
         date = str(parser.parse(GoogleTranslator(source='auto', target='en').translate(date))).replace("-","/")
-        print("/////Date/////",date)
+        #print("/////Date/////",date)
 
         ministry_awqaf["news_agency_name"]="Ministry of Awqaf and Islamic Affairs"
         ministry_awqaf["page_url"]=response.meta["page_link"]

@@ -12,15 +12,15 @@ class MinistryElecSpider(scrapy.Spider):
     name = 'Ministry_Elec'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            #print("////page,catagori///",page,catagori)
             yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
         news_links = response.xpath('//*[@class="col-xs-12 col-sm-6 col-md-4 col-lg-3"]/a/@href').extract()
-        print("/////////////news links//////////",news_links)
+        #print("/////////////news links//////////",news_links)
         for link in news_links:
             link="https://www.mew.gov.kw/ar/media-center/news"+link
-            print("/////////link////////",link)
+            #print("/////////link////////",link)
             if link=="":
                 continue #some pages may not have textual contents on that case it become empty
             else:  
@@ -31,7 +31,7 @@ class MinistryElecSpider(scrapy.Spider):
         ministry_elec=GeneralItem()
         date = response.xpath('//*[@class="news_date"]/text()').extract_first()
         date = str(parser.parse(date)).replace("-","/")
-        print("/////Date/////",date)
+        #print("/////Date/////",date)
 
         ministry_elec["news_agency_name"]="Ministry Of Electricity and Water and Renewable Energy"
         ministry_elec["page_url"]=response.meta["page_link"]

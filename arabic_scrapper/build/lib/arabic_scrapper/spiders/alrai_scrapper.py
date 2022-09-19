@@ -15,7 +15,7 @@ class AlraiSpider(scrapy.Spider):
     id=0
     def start_requests(self):
         for page,catagori in zip(site_list,catagory):
-            print("///////////////",page,catagori)
+            #print("///////////////",page,catagori)
             response=requests.get(page)
             dict_data = xmltodict.parse(response.content)
             for news in  dict_data["rss"]["channel"]["item"]:
@@ -36,7 +36,7 @@ class AlraiSpider(scrapy.Spider):
 
 
     def data_extractor(self, response):
-        # print('//////////////////////////////response',response)
+        # #print('//////////////////////////////response',response)
         
         contents=response.xpath('//*[@class="article-desc selectionShareable"]//p/text()').extract()
         contents=" ".join(contents[0:len(contents)])

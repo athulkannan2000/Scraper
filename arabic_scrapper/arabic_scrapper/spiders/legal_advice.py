@@ -35,19 +35,19 @@ class LegalAdviceSpider(scrapy.Spider):
             soup=BeautifulSoup(html,"lxml") 
          
             dom = etree.HTML(str(soup)) 
-            # print("//////////dom/////////", etree.tostring(dom))
+            # #print("//////////dom/////////", etree.tostring(dom))
     
             titles=dom.xpath('//*[@class="title1"]/text()')
-            # print("///////////title///////////",titles,len(titles))
+            # #print("///////////title///////////",titles,len(titles))
             contents=dom.xpath('//div[@dir="rtl"]/text()')
-            # print("////////////////contents///////////",contents,len(contents))
+            # #print("////////////////contents///////////",contents,len(contents))
             images=dom.xpath('//img[@id="ctl00_ctl34_g_a18aeaf6_582e_4f53_a965_7edb5b850eb7_GridView1_ctl02__newsImage"]/@src')
-            print("//////////////images////////////////",images,len(images))
+            #print("//////////////images////////////////",images,len(images))
         
             for title,content,image in zip(titles,contents,images):
                 image="https://www.fatwa.gov.kw"+str(image)
-                print("/////////////////////",image,"\n",content,"\n",title)
-                print("/////////////////page/////////////////",page,len(page))
+                #print("/////////////////////",image,"\n",content,"\n",title)
+                #print("/////////////////page/////////////////",page,len(page))
                 # yield scrapy.Request(url=page,callback=self.data_saver,meta={'title':str(title),'content':str(content),'image':image},dont_filter=True)
                 yield scrapy.Request(url=page,callback=self.data_saver,dont_filter=True,meta={'title':str(title),'content':str(content),'image':image,"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 

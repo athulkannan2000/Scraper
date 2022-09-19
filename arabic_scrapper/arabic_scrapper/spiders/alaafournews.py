@@ -17,7 +17,7 @@ class AlaafournewsSpider(scrapy.Spider):
         self.urls=[]
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            #print("////page,catagori///",page,catagori)
             self.urls.append(page)
             yield scrapy.Request(url=page,callback=self.pagination_handler,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
@@ -25,7 +25,7 @@ class AlaafournewsSpider(scrapy.Spider):
         next_page = response.xpath('//*[@class="pagination"]/li[13]/a/@href').extract_first()
 
         if next_page==None or next_page=="None": #all page links are extracted
-            # print("///////////////////// Crawled all pages /////////////////////")
+            # #print("///////////////////// Crawled all pages /////////////////////")
             for url in self.urls:
                 yield scrapy.Request(url=url,callback=self.link_extractor,dont_filter=True,meta={"catagory":response.meta["catagory"],"main_category":response.meta["main_category"],"sub_category":response.meta["sub_category"],"platform":response.meta["platform"],"media_type":response.meta["media_type"],"urgency":response.meta["urgency"]})
                 
@@ -38,9 +38,9 @@ class AlaafournewsSpider(scrapy.Spider):
     def link_extractor(self,response):
         news_links=response.xpath('//*[@class="catItemTitle"]/a/@href').extract()
 
-        print("/////////////news links//////////",news_links,"/////////////",response.meta["catagory"])
+        #print("/////////////news links//////////",news_links,"/////////////",response.meta["catagory"])
         for link in news_links:
-            print("link",link)
+            #print("link",link)
             link="https://mugtama.com"+link
             if link=="":
                 continue #some pages may not have textual contents on that case it become empty
@@ -50,9 +50,9 @@ class AlaafournewsSpider(scrapy.Spider):
     def details_scrapper(self,response):
         alaafournews=GeneralItem()
         date = response.xpath('//*[@class="itemDateCreated"]/text()').extract_first()
-        print("/////////////date//////////",date,type(date))
+        #print("/////////////date//////////",date,type(date))
         date = str(parser.parse(GoogleTranslator(source='auto', target='en').translate(date))).replace("-","/")
-        print("////////////date after/////////////",date)
+        #print("////////////date after/////////////",date)
       
         alaafournews["news_agency_name"]= "AlaafourNews_"
         alaafournews["page_url"]=response.meta["page_link"]

@@ -15,17 +15,17 @@ class CentralBankKuwaitSpider(scrapy.Spider):
     name = 'central_bank_kuwait'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            print("////page,catagori///",page,catagori)
+            #print("////page,catagori///",page,catagori)
             yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
         news_links = response.xpath('//*[@class="media-body"]/h4/a/@href').extract()
         date=response.xpath('//*[@class="media-meta"]/span[1]/text()').extract() #date is present in the outside page
         date=[str(parser.parse(i)).replace("-","/") for i in date]
-        print("//////news_links/////////",news_links,date,len(news_links),len(date))
+        #print("//////news_links/////////",news_links,date,len(news_links),len(date))
         for link,date in zip(news_links,date):
             link="https://www.cbk.gov.kw/"+link
-            print("////////link//////////////",link)
+            #print("////////link//////////////",link)
             if link=="":
                 continue #some pages may not have textual contents on that case it become empty
             else:  

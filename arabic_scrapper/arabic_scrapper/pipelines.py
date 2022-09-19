@@ -16,7 +16,7 @@ load_dotenv()
 
 exp='[\u0627-\u064a0-9A-Za-z]+' #regular expression to take only arabic and english words for slugging ,using RE because sluggify library  doesn't work with arabic
 
-# print()
+# #print()
 
 class ArabicScrapperPipeline:
     def __init__(self):
@@ -127,7 +127,7 @@ class ArabicScrapperPipeline:
             return item
 
         except KeyError: # handling key error because spiders done have data for tweets
-            print("$$$$$$$$$$$$$$$$$$$$$$$$$$$ Handling Exception Error $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+            #print("$$$$$$$$$$$$$$$$$$$$$$$$$$$ Handling Exception Error $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
             select_stmt = "INSERT INTO posts (agency_id, post_url, category_id, title, contents, image_url, published_date_and_time, author_name, main_category_id, sub_category_id, source_id, media_type, urgency, created_at, updated_at, deleted_at, slug) SELECT %(agency_id)s, %(post_url)s, %(category_id)s, %(title)s, %(contents)s, %(image_url)s, %(published_date_and_time)s, %(author_name)s,%(main_category_id)s,%(sub_category_id)s,%(source_id)s,%(media_type)s,%(urgency)s,%(created_at)s,%(updated_at)s,%(deleted_at)s,%(slug)s  FROM dual WHERE NOT EXISTS (SELECT * FROM posts WHERE title = %(title)s AND post_url = %(post_url)s)"
             
             agency   =  [tuple[0] for id, tuple in enumerate(self.agency_result) if tuple[1] == item["news_agency_name"]][0]
