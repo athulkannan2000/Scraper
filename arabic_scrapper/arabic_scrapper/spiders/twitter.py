@@ -33,7 +33,8 @@ try:
     api.verify_credentials()
     #print('Successful Authentication')
 except:
-    #print('###############Failed authentication################')
+    print('###############Failed authentication################')
+     
 now = datetime.now()
 
 class TwitterSpider(scrapy.Spider):
