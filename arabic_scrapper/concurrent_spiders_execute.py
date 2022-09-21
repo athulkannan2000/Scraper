@@ -4,66 +4,31 @@ from scrapy import spiderloader
 from scrapy.utils.log import configure_logging
 from scrapy.utils.project import get_project_settings
 import os
-from multiprocessing import Process
 
-#print("#################inside#################")
+print("#################inside#################")
 os.chdir("/root/Scraper/arabic_scrapper")
-#print("######current directory is###########",os.getcwd())
+print("######current directory is###########",os.getcwd())
 configure_logging()
 settings = get_project_settings() 
-runnerOne = CrawlerRunner(settings)  
-runnerTwo = CrawlerRunner(settings)  
+runner = CrawlerRunner(settings)  
 
 spider_loader = spiderloader.SpiderLoader.from_settings(settings)
 spiders = spider_loader.list()
 classes = [spider_loader.load(name) for name in spiders]
 
-# #print("############classes##########\n",len(classes))
-class_length = len(classes)
-first_part = 0
-second_part = 0
-
-if(class_length % 2 == 0):
-    first_part, second_part = int(class_length / 2), int(class_length / 2)
-else:
-    first_part, second_part = class_length / 2, int(class_length / 2) + 1
+print("############classes##########",classes)
 
 
-def crawlerSetOne():
-    classes_one = classes[:first_part]
-    for spiderClass in classes_one:
-        runnerOne.crawl(spiderClass)
-    d = runnerOne.join()
-    d.addBoth(lambda _: reactor.stop())
-    reactor.run() 
+###################testing cron execution
 
-def crawlerSetTwo():
-    classes_two = classes[second_part:]
-    for spiderClass in classes_two:
-        runnerTwo.crawl(spiderClass)
-    e = runnerTwo.join()
-    e.addBoth(lambda _: reactor.stop())
-    reactor.run() 
-    
-
-##################testing cron execution
 from datetime import datetime
 now=datetime.now()
 with open('/tmp/cron_log.txt',"a") as f:
     f.write("cornjob of concurrent spiders started at {} \n".format(now))
 ###############################################
     
-
-if __name__ == "__main__":
-
-    processes = [
-                    Process(target=crawlerSetOne),
-                    Process(target=crawlerSetTwo)
-                ]
-
-
-    for process in processes:
-        process.start()
-
-    for process in processes:
-        process.join()
+for spiderClass in classes:
+    runner.crawl(spiderClass)
+d = runner.join()
+d.addBoth(lambda _: reactor.stop())
+reactor.run() 
