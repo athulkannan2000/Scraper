@@ -61,18 +61,26 @@ class TwitterSpider(scrapy.Spider):
         try:
             tw_text=response.meta["tweet"].text
         except:
-            tw_text=response.meta["tweet"].full_tex
+            tw_text=response.meta["tweet"].full_text
         media_type="text"
-        type=response.meta["tweet"].extended_entities["media"][0]["type"]
+
+        try:
+            type=response.meta["tweet"].extended_entities["media"][0]["type"] #added try beacuse in some response extended entities is not there it is present only if the tweet contains image or video
+        except:
+            type="text"
+            pass
+
         if type=="video":
             media_type="media"
+
         try:
             video_url=response.meta["tweet"].extended_entities["media"][0]["video_info"]["variants"][0]["url"]
-        except KeyError:
+        except :
             video_url=None
+
         try:
             image_url=response.meta["tweet"].extended_entities["media"][0]["media_url"]
-        except KeyError:
+        except:
             image_url=None
 
         # #print("$$$$$$$$$$$$$$",type(id),type(tw_text),type(page_url),"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
