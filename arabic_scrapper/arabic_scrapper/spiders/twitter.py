@@ -62,6 +62,19 @@ class TwitterSpider(scrapy.Spider):
             tw_text=response.meta["tweet"].text
         except:
             tw_text=response.meta["tweet"].full_tex
+        media_type="text"
+        type=response.meta["tweet"].extended_entities["media"][0]["type"]
+        if type=="video":
+            media_type="media"
+        try:
+            video_url=response.meta["tweet"].extended_entities["media"][0]["video_info"]["variants"][0]["url"]
+        except KeyError:
+            video_url=None
+        try:
+            image_url=response.meta["tweet"].extended_entities["media"][0]["media_url"]
+        except KeyError:
+            image_url=None
+
         # #print("$$$$$$$$$$$$$$",type(id),type(tw_text),type(page_url),"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         db_item=GeneralItem()
         db_item["news_agency_name"]= response.meta["name"]
@@ -69,13 +82,13 @@ class TwitterSpider(scrapy.Spider):
         db_item["category"]= response.meta["cat"]
         db_item["title"]=str(tw_text)     
         db_item["contents"]=None
-        db_item["image_url"]=None
+        db_item["image_url"]=image_url
         db_item["date"]=str(now.strftime("%Y:%m:%d %H:%M:%S"))
         db_item["author_name"]=None
         db_item["main_category"]=str(response.meta["main_cat"])
         db_item["sub_category"]=str(response.meta["sub_cat"])
         db_item["platform"]=str(response.meta["plat"])
-        db_item["media_type"]=str(response.meta["media_typ"])
+        db_item["media_type"]=media_type
         db_item["urgency"]=str(response.meta["urgency"])
         db_item["created_at"]=str(now.strftime("%Y:%m:%d %H:%M:%S"))
         db_item["updated_at"]=str(now.strftime("%Y:%m:%d %H:%M:%S"))
@@ -88,7 +101,7 @@ class TwitterSpider(scrapy.Spider):
         db_item["vdo_description"]=None
         db_item["vdo_published_at"]=None
         db_item["vdo_thumbnail"]=None
-        db_item["vdo_url"]=None
+        db_item["vdo_url"]=video_url
         #print("$$$$$$$$$$$$$$$$$$$$$ OOOOOKKKKKK saved sucessfully $$$$$$$$$$$$$$$$$$$$$$$:\n",db_item)
         yield db_item
             # ea

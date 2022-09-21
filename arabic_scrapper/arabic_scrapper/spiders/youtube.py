@@ -108,7 +108,7 @@ class YoutubeSpider(scrapy.Spider):
         vdo_url=[]
         for res in range(len(id_response["items"])):
             video_id=id_response["items"][res]["contentDetails"]["videoId"]
-            video_url="https://www.youtube.com/watch?v"+video_id
+            video_url="https://www.youtube.com/embed/"+video_id
             #print("\n video url",video_url)
 
             #getting video details
