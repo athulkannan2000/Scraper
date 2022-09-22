@@ -28,9 +28,9 @@ cur.execute("""create table IF NOT EXISTS main_categories(
             main_category_name_en varchar(255),
             main_category_name_ar text,
             main_category_identifier varchar(255),
-            status int DEFAULT 1,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            status int DEFAULT 0,
+            created_at TIMESTAMP NULL DEFAULT NULL,
+            updated_at TIMESTAMP NULL DEFAULT NULL
             );
             """)
 
@@ -40,9 +40,9 @@ cur.execute("""create table IF NOT EXISTS sub_categories(
             sub_category_name_en varchar(255),
             sub_category_name_ar text,
             sub_category_identifier varchar(255),
-            status int DEFAULT 1,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            status int DEFAULT 0,
+            created_at TIMESTAMP NULL DEFAULT NULL,
+            updated_at TIMESTAMP NULL DEFAULT NULL
             );
             """)
 
@@ -51,9 +51,9 @@ cur.execute("""create table IF NOT EXISTS categories(
             category_name_en varchar(255),
             category_name_ar text,
             category_identifier varchar(255),
-            status int DEFAULT 1,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            status int DEFAULT 0,
+            created_at TIMESTAMP NULL DEFAULT NULL,
+            updated_at TIMESTAMP NULL DEFAULT NULL
             );
             """)
 
@@ -62,9 +62,9 @@ cur.execute("""create table IF NOT EXISTS agencies(
             agency_name_en varchar(255),
             agency_name_ar text,
             agency_identifier varchar(255),
-            status int DEFAULT 1,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            status int DEFAULT 0,
+            created_at TIMESTAMP NULL DEFAULT NULL,
+            updated_at TIMESTAMP NULL DEFAULT NULL
             );
             """)
 
@@ -73,9 +73,9 @@ cur.execute("""create table IF NOT EXISTS sources(
             platform_name_en varchar(255),
             platform_name_ar text,
             platform_identifier varchar(255),
-            status int DEFAULT 1,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            status int DEFAULT 0,
+            created_at TIMESTAMP NULL DEFAULT NULL,
+            updated_at TIMESTAMP NULL DEFAULT NULL
             );
             """)
 
