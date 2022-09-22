@@ -1,12 +1,12 @@
-import os
+﻿import os
 import pandas as pd
 import mysql.connector 
 from dotenv import load_dotenv
 from slugify import slugify
 
 ################### for verifying cron job####################
-from datetime import datetime
-now=datetime.now()
+from TIMESTAMP import TIMESTAMP
+now=TIMESTAMP.now()
 with open('/tmp/cron_log.txt',"a") as f:
     f.write("cornjob of db_update started at {} \n".format(now))
 #############################################################
@@ -29,8 +29,8 @@ cur.execute("""create table IF NOT EXISTS main_categories(
             main_category_name_ar text,
             main_category_identifier varchar(255),
             status int DEFAULT 1,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             );
             """)
 
@@ -41,8 +41,8 @@ cur.execute("""create table IF NOT EXISTS sub_categories(
             sub_category_name_ar text,
             sub_category_identifier varchar(255),
             status int DEFAULT 1,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             );
             """)
 
@@ -52,8 +52,8 @@ cur.execute("""create table IF NOT EXISTS categories(
             category_name_ar text,
             category_identifier varchar(255),
             status int DEFAULT 1,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             );
             """)
 
@@ -63,8 +63,8 @@ cur.execute("""create table IF NOT EXISTS agencies(
             agency_name_ar text,
             agency_identifier varchar(255),
             status int DEFAULT 1,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             );
             """)
 
@@ -74,8 +74,8 @@ cur.execute("""create table IF NOT EXISTS sources(
             platform_name_ar text,
             platform_identifier varchar(255),
             status int DEFAULT 1,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             );
             """)
 
