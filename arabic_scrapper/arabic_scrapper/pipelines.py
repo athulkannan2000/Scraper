@@ -92,6 +92,7 @@ class ArabicScrapperPipeline:
         select_stmt = "INSERT INTO posts (agency_id, post_url, category_id, title, contents, image_url, published_date_and_time, author_name, main_category_id, sub_category_id, source_id, media_type, urgency, created_at, updated_at, deleted_at, tweet_created_at, tweet_text, tweet_id, vdo_title, vdo_description, vdo_published_at, vdo_thumbnail, vdo_url, slug) SELECT %(agency_id)s, %(post_url)s, %(category_id)s, %(title)s, %(contents)s, %(image_url)s, %(published_date_and_time)s, %(author_name)s,%(main_category_id)s,%(sub_category_id)s,%(source_id)s,%(media_type)s,%(urgency)s,%(created_at)s,%(updated_at)s,%(deleted_at)s,%(tweet_created_at)s,%(tweet_text)s,%(tweet_id)s,%(vdo_title)s,%(vdo_description)s,%(vdo_published_at)s,%(vdo_thumbnail)s,%(vdo_url)s,%(slug)s  FROM dual WHERE NOT EXISTS (SELECT * FROM posts WHERE title = %(title)s AND post_url = %(post_url)s)"
         try:
             agency   =  [tuple[0] for id, tuple in enumerate(self.agency_result) if tuple[1] == item["news_agency_name"]][0]
+            # print("$$$$$$$$$$$$ News agency name from ")
             main_cat_ = [tuple[0] for id, tuple in enumerate(self.main_cat_result) if tuple[1] == item["main_category"]][0]
             sub_cat_ =  [tuple[0] for id, tuple in enumerate(self.sub_cat_result) if tuple[1] == item["sub_category"]][0]  
             catagory =  [tuple[0] for id, tuple in enumerate(self.category_result) if tuple[1] == item["category"]][0]
@@ -132,7 +133,6 @@ class ArabicScrapperPipeline:
             #print("$$$$$$$$$$$$$$$$$$$$$$$$$$$ Handling Exception Error $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
             select_stmt = "INSERT INTO posts (agency_id, post_url, category_id, title, contents, image_url, published_date_and_time, author_name, main_category_id, sub_category_id, source_id, media_type, urgency, created_at, updated_at, deleted_at, slug) SELECT %(agency_id)s, %(post_url)s, %(category_id)s, %(title)s, %(contents)s, %(image_url)s, %(published_date_and_time)s, %(author_name)s,%(main_category_id)s,%(sub_category_id)s,%(source_id)s,%(media_type)s,%(urgency)s,%(created_at)s,%(updated_at)s,%(deleted_at)s,%(slug)s  FROM dual WHERE NOT EXISTS (SELECT * FROM posts WHERE title = %(title)s AND post_url = %(post_url)s)"
             
-            agency   =  [tuple[0] for id, tuple in enumerate(self.agency_result) if tuple[1] == item["news_agency_name"]][0]
             agency   =  [tuple[0] for id, tuple in enumerate(self.agency_result) if tuple[1] == item["news_agency_name"]][0]
             main_cat_ = [tuple[0] for id, tuple in enumerate(self.main_cat_result) if tuple[1] == item["main_category"]][0]
             sub_cat_ =  [tuple[0] for id, tuple in enumerate(self.sub_cat_result) if tuple[1] == item["sub_category"]][0]  
