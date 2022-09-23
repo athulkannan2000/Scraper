@@ -86,40 +86,44 @@ def translate_text(value):
 def agos_changer(value): # used to change "1 year/min/sec ago" to accurate date and time
     
     curr = datetime.now()
-    date=value
+    date = value
     date = GoogleTranslator(source='auto', target='en').translate(date).split(" ")
-    if date[0]=="a": # in some cases one is translated as a -->one year ago(in arabic)-->a year ago(english)
-        date[0]="one"
-    if date[1]=="seconds" or date[1]=="second":
-        second=w2n.word_to_num(date[0])
-        date = curr+timedelta(seconds=-second)
-        return str(date)
-    elif date[1]=="minutes"or date[1]=="minute":
-        minutes=w2n.word_to_num(date[0])
-        date = curr+timedelta(minutes=-minutes)
-        return str(date)
-    elif date[1]=="hours"or date[1]=="hour":
-        hours=w2n.word_to_num(date[0])
-        date = curr+timedelta(hours=-hours)
-        return str(date)
-    elif date[1]=="days"or date[1]=="day":
-        days=w2n.word_to_num(date[0])
-        date = curr+timedelta(days = -days)
-        return str(date)   
-    elif date[1]=="weeks"or  date[1]=="week":
-        week=w2n.word_to_num(date[0])
-        date = curr+timedelta(weeks=-week)
-        return str(date)
-    elif date[1]=="months"or date[1]=="month":
-        month=w2n.word_to_num(date[0])
-        week=4*month
-        date = curr+timedelta(weeks=-week)
-        return str(date)
-    elif date[1]=="year"or date[1]=="years":
-        year=w2n.word_to_num(date[0])
-        week=52*year
-        date = curr+timedelta(weeks=week)
-        return str(date)
+
+    if(date[0].count("/") == 2):
+        return parser.parse(date[0]).isoformat()
+    else:
+        if date[0]=="a": # in some cases one is translated as a -->one year ago(in arabic)-->a year ago(english)
+            date[0]="one"
+        if date[1]=="seconds" or date[1]=="second":
+            second=w2n.word_to_num(date[0])
+            date = curr+timedelta(seconds=-second)
+            return str(date)
+        elif date[1]=="minutes"or date[1]=="minute":
+            minutes=w2n.word_to_num(date[0])
+            date = curr+timedelta(minutes=-minutes)
+            return str(date)
+        elif date[1]=="hours"or date[1]=="hour":
+            hours=w2n.word_to_num(date[0])
+            date = curr+timedelta(hours=-hours)
+            return str(date)
+        elif date[1]=="days"or date[1]=="day":
+            days=w2n.word_to_num(date[0])
+            date = curr+timedelta(days = -days)
+            return str(date)   
+        elif date[1]=="weeks"or  date[1]=="week":
+            week=w2n.word_to_num(date[0])
+            date = curr+timedelta(weeks=-week)
+            return str(date)
+        elif date[1]=="months"or date[1]=="month":
+            month=w2n.word_to_num(date[0])
+            week=4*month
+            date = curr+timedelta(weeks=-week)
+            return str(date)
+        elif date[1]=="year"or date[1]=="years":
+            year=w2n.word_to_num(date[0])
+            week=52*year
+            date = curr+timedelta(weeks=week)
+            return str(date)
 
 
 def word_to_num(value):
