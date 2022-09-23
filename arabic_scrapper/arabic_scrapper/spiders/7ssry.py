@@ -32,7 +32,7 @@ class SevenSsrySpider(scrapy.Spider):
                 "category" : response.meta["category_english"],
                 "title" : response.xpath("//span[@itemprop='name']/text()").extract_first(),
                 "contents":  None,
-                "date" :  agos_changer(translate_text(response.xpath("//span[@class='tie-date']/text()").extract_first())),
+                "date" :  agos_changer(response.xpath("//span[@class='tie-date']/text()").extract_first()),
                 "author_name" : '7ssry',
                 "image_url" : response.xpath("//div[@class='single-post-thumb']/img/@src").extract_first(),
 

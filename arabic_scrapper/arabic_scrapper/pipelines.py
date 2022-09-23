@@ -62,7 +62,7 @@ class ArabicScrapperPipeline:
                 vdo_url text DEFAULT NULL,
 
                 active_id int DEFAULT NULL,
-                trending_count int DEFAULT NULL,
+                trending_count varchar(255) DEFAULT NULL,
                 
                 FOREIGN KEY (main_category_id) REFERENCES main_categories(id),
                 FOREIGN KEY (sub_category_id) REFERENCES sub_categories(id),
