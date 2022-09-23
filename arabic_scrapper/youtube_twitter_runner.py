@@ -1,5 +1,5 @@
 import datetime
-st = str(datetime.datetime.now())
+st = str(datetime.now())
 with open("/tmp/time_log.txt","a") as doc:
   doc.write(f"\n start time is {st}")
   
@@ -42,6 +42,6 @@ d.addBoth(lambda _: reactor.stop())
 reactor.run() 
 
 
-et = str(datetime.datetime.now())
+et = str(datetime.now())
 with open("/tmp/time_log.txt","a") as doc:
   doc.write(f"\n end time is {et}")
