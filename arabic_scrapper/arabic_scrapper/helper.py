@@ -90,7 +90,7 @@ def agos_changer(value): # used to change "1 year/min/sec ago" to accurate date 
     date = GoogleTranslator(source='auto', target='en').translate(date).split(" ")
 
     if(date[0].count("/") == 2):
-        return datetime.now().isoformat()
+        return parser.parse(date[0]).isoformat()
     else:
         if date[0]=="a": # in some cases one is translated as a -->one year ago(in arabic)-->a year ago(english)
             date[0]="one"
