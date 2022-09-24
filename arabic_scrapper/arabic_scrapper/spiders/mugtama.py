@@ -32,7 +32,10 @@ class MugtamaSpider(scrapy.Spider):
         author = response.xpath("//span[@class='itemAuthor']/text()").extract_first()
         author = author.replace('\n','')
         author = author.replace('\t','')
-        contents=" ".join(response.xpath("//div[@class='itemFullText']/p[@style='text-align: justify;']/strong/span/text()").extract())+" ".join(response.xpath("//div[@class='itemFullText']//p/span/text()").extract())+" ".join(response.xpath('//*[@class="itemFullText"]/div[2]//p/strong/span/text()').extract())
+
+        contents=response.xpath("//div[@class='itemFullText']/p[@style='text-align: justify;']/strong/span/text()").extract()+response.xpath('//*[@style="font-size: 12pt;"]/strong/span/text()').extract()+response.xpath("//div[@class='itemFullText']/p[@style='text-align: justify;']/strong/span/text()").extract()+response.xpath("//div[@class='itemFullText']//p/span/text()").extract()+response.xpath('//*[@class="itemFullText"]/div[2]//p/strong/span/text()').extract()+response.xpath('//*[@class="itemFullText"]//p//strong/text()').extract()
+        contents="".join(contents[0:len(contents)])
+
         yield {
                 "news_agency_name": "mugtama magazine",
                 "page_url" : response.url,

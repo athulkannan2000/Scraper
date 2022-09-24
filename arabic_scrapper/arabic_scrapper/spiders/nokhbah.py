@@ -44,7 +44,7 @@ class NokhbahSpider(scrapy.Spider):
 
         nokhbah_news["title"]=response.xpath('//h1[@class="single-post-title"]/span/text()').extract_first()
         
-        contents=response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/strong/text()').extract()+response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/text()').extract()+response.xpath('//div[@id="pastingspan1"]/text()').extract()+response.xpath('//section[@id="paragraphs"]/p/text()').extract()+response.xpath('//span[@id="divArtContent"]/text()').extract()+response.xpath('//span[@id="divArtContent"]/p/text()').extract()+response.xpath('//div[@id="maincontent"]/p/text()').extract()+response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/strong/span/text()').extract()+response.xpath('//*[@class="desc"]/text()').extract()
+        contents=response.xpath('//div[@class="entry-content clearfix single-post-content"]//div/text()').extract()+response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/strong/text()').extract()+response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/text()').extract()+response.xpath('//div[@id="pastingspan1"]/text()').extract()+response.xpath('//section[@id="paragraphs"]/p/text()').extract()+response.xpath('//span[@id="divArtContent"]/text()').extract()+response.xpath('//span[@id="divArtContent"]/p/text()').extract()+response.xpath('//div[@id="maincontent"]/p/text()').extract()+response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/strong/span/text()').extract()
         #print("/////////////contents//////////////",contents,type(contents))
         contents="".join(contents[0:len(contents)])
         nokhbah_news["contents"]=contents
