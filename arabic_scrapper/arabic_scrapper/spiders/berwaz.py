@@ -38,7 +38,7 @@ class BerwazSpider(scrapy.Spider):
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" :  response.xpath("//h1[@class='post-title entry-title']/text()").extract_first(),
-                "contents": response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract_first(),
+                "contents": " ".join(response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract()+response.xpath('//*[@class="entry-content entry clearfix"]//p/text()').extract()),
                 "date" :  self.date_formatter(translate_text(response.xpath("//span[@class='date meta-item tie-icon']/text()").extract_first())),
                 "author_name" :response.xpath("//span[@class='meta-author']/a/text()").extract_first(),
                 "image_url" : "https://www.berwaz.com.kw" + response.xpath("//figure[@class='single-featured-image']/img/@src").extract_first(),

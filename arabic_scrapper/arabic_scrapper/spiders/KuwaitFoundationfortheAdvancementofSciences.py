@@ -28,6 +28,8 @@ class KuwaitFoundationfortheAdvancementofSciencesSpider(scrapy.Spider):
         contents = response.xpath("//div[@class='col-12 text-justify']/p[2]/text()").extract_first()
         if(contents == None):
             contents = response.xpath("//div[@class='col-12 text-justify']/ul/li/p/text()").extract_first()
+            if contents==None:
+                contents=" ".join(response.xpath('//*[@class="col-12 text-justify"]//p/text()'))
 
         date = response.xpath("//div[@class='col-12 text-justify']/div[@id='date-posted']/p/text()").extract()[1]
         date = date.replace('\n','')

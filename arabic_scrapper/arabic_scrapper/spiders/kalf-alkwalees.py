@@ -29,6 +29,8 @@ class KalfAlkwaleesSpider(scrapy.Spider):
             contents = response.xpath("//div[@class='entry']/div[@class='desc']/div[@id='pastingspan1']/text()").extract_first()
             if(contents == None):
                 contents = response.xpath("//div[@class='entry']/p/text()").extract_first()
+                if(contents==None):
+                    contents=" ".join(response.xpath('//*[@class="desc"]//div/text()').extract())
         
         yield {
                 "news_agency_name": self.name,
