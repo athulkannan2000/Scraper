@@ -45,14 +45,14 @@ HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 # ######################////////pywright////////////////################
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 150
+CONCURRENT_REQUESTS = 50
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
-CONCURRENT_REQUESTS_PER_DOMAIN = 15
+CONCURRENT_REQUESTS_PER_DOMAIN = 20
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 REACTOR_THREADPOOL_MAXSIZE = 40
