@@ -26,6 +26,6 @@ with open('/tmp/cron_log.txt',"a") as f:
     
 for spiderClass in classes:
     runner.crawl(spiderClass)
-d = runner.join()
-d.addBoth(lambda _: reactor.stop())
-reactor.run() 
+d = runner.join()  #Returns a deferred that is fired when all managed crawlers have completed their executions #simply managing asyn responses # https://docs.twisted.org/en/twisted-18.7.0/core/howto/defer.html
+d.addBoth(lambda _: reactor.stop()) #stops the twisted reactor
+reactor.run()  # the script will block here until all crawling jobs are finished

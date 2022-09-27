@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import scrapy
 import pandas as pd
 from arabic_scrapper.helper import parser_parse_isoformat, translate_text, load_dataset_lists, datetime_now_isoformat
@@ -31,21 +32,28 @@ class AldustorSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        data = response.xpath("//div[@class='article_content article_contents2']/div/text()").extract_first()
-        if(data):
-            data = data.split(" |")
-            content = " ".join(data)
-        else:
-            data = None
-            content = None
+        contents = response.xpath("//div[@class='article_content article_contents2']/div/text()").extract_first() 
+        if(contents == None):
+            contents = response.xpath("//div[@class='article_content article_contents2']/p/text()").extract()
+            if(contents[0] == "" and len(contents) > 1):
+                contents = contents[1]
+            else:
+                contents = contents[0]
 
+        if(contents is NULL or contents == ""):
+                contents = response.xpath("//div[@class='article_content article_contents2']/div/span/text()").extract_first()
+                if(contents == None):
+                    contents = response.xpath("//div[@class='article_content article_contents2']/p/span/text()").extract_first()
+
+        contents = contents.strip()
+             
         yield  {
                 "news_agency_name": "parliament aldustor agency",
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" : response.xpath("//h1[@class='entry_title']/span/text()").extract_first(),
-                "contents":  content,
-                "date" :  self.dateformatter(data),
+                "contents":  contents,
+                "date" :  parser_parse_isoformat(translate_text(response.xpath("//span[@id='ContentPlaceHolder1_lblDate']/text()").extract_first())),
                 "author_name" : "parliament aldustor agency",
                 "image_url" : "http://aldustor.kna.kw" + response.xpath("//div[@class='article_image']/img/@src").extract_first(),
          

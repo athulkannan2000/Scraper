@@ -39,7 +39,7 @@ class MinistryofFinanceSpider(scrapy.Spider):
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" :  title,
-                "contents": response.xpath("//span[@id='ContentPlaceHolder1_lblNewsDetails1']/text()").extract_first(),
+                "contents": " ".join(response.xpath("//span[@id='ContentPlaceHolder1_lblNewsDetails1']/text()").extract()+response.xpath('//*[@class="NewsDetails"]//p//span/text()').extract()),
                 "date" :  parser_parse_isoformat(date),
                 "author_name" : "Ministry of Finance",
                 "image_url" : image_url,

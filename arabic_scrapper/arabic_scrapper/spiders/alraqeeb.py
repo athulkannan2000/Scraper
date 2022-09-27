@@ -27,7 +27,7 @@ class AlraqeebNewsSpider(scrapy.Spider):
                 "news_agency_name": self.name,
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
-                "title" :  response.xpath("//h1[@class='post-title entry-title']/text()").extract_first(),
+                "title" :  " ".join(response.xpath("//h1[@class='post-title entry-title']/text()").extract()+response.xpath('//*[@class="entry-content entry clearfix"]//h1/text()').extract()),
                 "contents": response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract_first(),
                 "date" :  parser_parse_isoformat(response.xpath("//span[@class='date meta-item tie-icon']/text()").extract_first()),
                 "author_name" : "AlraqeebNews",
