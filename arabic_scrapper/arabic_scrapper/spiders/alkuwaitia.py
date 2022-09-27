@@ -1,3 +1,5 @@
+from asyncio.windows_events import NULL
+from importlib.resources import contents
 import scrapy
 from arabic_scrapper.helper import load_dataset_lists, parser_parse_isoformat, translate_text, datetime_now_isoformat
 
@@ -24,12 +26,18 @@ class AlkuwaitiaSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
+        contents = response.xpath("//div[@class='News_Details']/div[@class='desc']/div/text()").extract_first()
+        if(contents == None):
+            contents = response.xpath("//div[@class='News_Details']/div[@class='desc']/div/strong/text()").extract_first()
+            if(contents == None):
+                contents = response.xpath("//div[@class='News_Details']/div[@class='desc']/div/div/text()").extract_first()
+
         yield {
                 "news_agency_name": "alkuwaitia newspaper",
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" : response.xpath("//div[@class='title']/h3/text()").extract_first(),
-                "contents": response.xpath("//div[@id='pastingspan1']/text()").extract_first(),
+                "contents": contents,
                 "date" :  parser_parse_isoformat(translate_text(response.xpath("//div[@class='date']/span/text()").extract_first())),
                 "author_name" : "alkuwaitia newspaper",
                 "image_url" : "https://alkuwaityah.com" + response.xpath("//div[@class='News_img']/img/@src").extract_first(),
