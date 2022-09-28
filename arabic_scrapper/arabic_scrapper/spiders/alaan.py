@@ -1,3 +1,4 @@
+from importlib.resources import contents
 import scrapy
 from arabic_scrapper.helper import load_dataset_lists, parser_parse_isoformat, translate_text, datetime_now_isoformat
 
@@ -28,12 +29,18 @@ class AlaanSpider(scrapy.Spider):
         title = title.replace("\n","")
         title = title.replace(" ","")
 
+        contents = response.xpath("//div[@id='id_body']/p[@class='needsclick']/text()[normalize-space()]").getall()
+        contents = ''.join(contents)
+        if(contents == None or len(contents) == 0):
+            contents = response.xpath("//div[@id='id_body']/p/text()[normalize-space()]").getall()
+            contents = ''.join(contents)
+
         yield {
                 "news_agency_name": "alaan newspaper",
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" : title,
-                "contents":  response.xpath("//p[@class='needsclick']/text()").extract_first(),
+                "contents": contents,
                 "date" :  parser_parse_isoformat(translate_text(response.xpath("//span[@class='article-date']/text()").extract_first())),
                 "author_name" : "alaan newspaper",
                 "image_url" : response.xpath("//meta[@property='og:image']/@content").extract_first(),

@@ -23,12 +23,19 @@ class AlfouzSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
+        contents = response.xpath("//div[@class='entry-content entry clearfix']/p[contains(@style,'text-align: justify;')]/text()[normalize-space()]").getall()
+        contents = ''.join(contents)
+        if(contents == None or len(contents) == 0):
+            contents = response.xpath("//div[@class='entry-content entry clearfix']/p[@class='s2']/span/span[@class='bumpedFont15']/text()").extract()[0]
+            if(contents == None):
+                 contents = response.xpath("//div[@class='entry-content entry clearfix']/p[@class='s2']/span/text()").extract_first()
+       
         yield {
                 "news_agency_name": self.name,
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" : response.xpath("//h1[@class='post-title entry-title']/text()").extract_first(),
-                "contents":  response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract_first(),
+                "contents":  contents,
                 "date" : agos_changer(response.xpath("//span[@class='date meta-item']/span/text()").extract_first()),
                 "author_name" : "alfouz",
                 "image_url" : response.xpath("//figure[@class='single-featured-image']/img/@src").extract_first(),
