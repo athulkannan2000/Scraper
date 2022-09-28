@@ -22,13 +22,7 @@ class AldustorSpider(scrapy.Spider):
 
             url = f'http://aldustor.kna.kw{url}'
             yield scrapy.Request(url = url, callback = self.parse_page, meta = response.meta)
-
-
-    def dateformatter(self,value):
-        if(value == None):
-            return value
-        else:
-            return parser_parse_isoformat(translate_text(value[0]))
+            
 
     def parse_page(self,response):
 
