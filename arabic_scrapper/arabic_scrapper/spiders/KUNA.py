@@ -26,18 +26,19 @@ class KunaSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents =  response.xpath("//div[@class='post-content']/p/text()").extract_first()
-        if(contents == None):
-            contents = response.xpath("//div[@class='post-content']/text()").extract_first()
-            if(contents == None):
-                contents = response.xpath("//div[@class='post-content']/p/strong/text()").extract_first()
-                if(contents == None):
-                    contents = response.xpath("//div[@class='post-content']/p[2]/text()").extract_first()
+        contents =  response.xpath("//div[@class='post-content']/p/text()").extract()
+        if(not len(contents)):
+            contents = response.xpath("//div[@class='post-content']/text()").extract()
+            if(not len(contents)):
+                contents = response.xpath("//div[@class='post-content']/p/strong/text()").extract()
+                if(not len(contents)):
+                    contents = response.xpath("//div[@class='post-content']/p[2]/text()").extract()
+
+        contents = " ".join(contents)
 
         contents = contents.replace('\r','')
         contents = contents.replace('\n','')
         contents = contents.replace('\t','')
-        contents = contents.replace(' ','')
 
         if(contents == ''): contents = None
 

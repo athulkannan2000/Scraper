@@ -34,9 +34,11 @@ class BerwazSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents = response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract_first()
+        contents = response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract()
         if(contents == None):
-            contents = response.xpath("//div[@class='entry-content entry clearfix']/p/strong/text()").extract_first()
+            contents = response.xpath("//div[@class='entry-content entry clearfix']/p/strong/text()").extract()
+
+        contents = " ".join(contents)
     
         yield {
                 "news_agency_name": "Berwaz News",

@@ -2,11 +2,11 @@ import scrapy
 from arabic_scrapper.helper import load_dataset_lists, datetime_now_isoformat
 
 
-news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("annahar")
+news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("alnahar")
 now = datetime_now_isoformat()
 
 class AnnaharSpider(scrapy.Spider):
-    name = 'annahar'
+    name = 'alnahar'
     start_urls = news_sites_list
 
     def start_requests(self):
@@ -24,12 +24,15 @@ class AnnaharSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
+        contents = response.xpath("//div[@class='item-content']/p/span/text()").extract()
+        contents = " ".join(contents)
+
         yield {
                 "news_agency_name": self.name,
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" : response.xpath("//div[@class='title-left title-style04 underline04']/h3/a/strong/text()").extract_first(),
-                "contents": response.xpath("//div[@class='item-content']/p/span/text()").extract_first(),
+                "contents": contents,
                 "date" : datetime_now_isoformat(),
                 "author_name" : self.name,
                 "image_url" : "https://www.annaharkw.com" + response.xpath("//div[@class='news']/div/div/img[@class='img-responsive img-full']/@src").extract_first(),

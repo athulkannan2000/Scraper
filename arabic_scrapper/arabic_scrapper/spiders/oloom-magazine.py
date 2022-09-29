@@ -27,12 +27,15 @@ class OloomMagazineSpider(scrapy.Spider):
         if(date == None):
             date = datetime_now_isoformat()
 
+        contents = response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract()
+        contents = " ".join(contents)
+
         yield ({ 
                 "news_agency_name": "oloom magazine",
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" :   response.xpath("//h1[@class='post-title entry-title']/text()").extract_first(),
-                "contents": response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract_first(),
+                "contents": contents,
                 "date" :   date,
                 "author_name" : "oloom magazine",
                 "image_url" :  response.xpath("//meta[@name='twitter:image']/@content").extract_first(),

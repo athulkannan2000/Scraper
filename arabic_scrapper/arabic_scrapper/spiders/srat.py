@@ -36,7 +36,7 @@ class SratSpider(scrapy.Spider):
         srat_item["title"]=response.xpath('//*[@class="post-title entry-title"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="entry-content entry clearfix"]//p/text()').extract()+response.xpath('//*[@class="entry-content entry clearfix"]//div/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         srat_item["contents"]=contents
 
         srat_item["image_url"]=response.xpath('//*[@class="single-featured-image"]/img/@src').extract_first()

@@ -58,7 +58,7 @@ class DiwanSpider(scrapy.Spider):
         dom = etree.HTML(str(soup))
 
         contents=dom.xpath('//*[@class="news-texts"]//p/text()')
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
 
 
         diwan_item=GeneralItem()

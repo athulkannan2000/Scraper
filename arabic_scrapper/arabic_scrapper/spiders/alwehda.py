@@ -25,13 +25,13 @@ class AlwehdaSpider(scrapy.Spider):
 
     def parse_page(self,response):
  
-        contents = response.xpath("//div[@class='story_content']/span/text()").extract_first()
+        contents = response.xpath("//div[@class='story_content']/span/text()").extract()
         if(contents == None):
-            contents = response.xpath("//div[@class='story_content']/div/text()").extract()[1]
+            contents = response.xpath("//div[@class='story_content']/div/text()").extract()
             if(contents == None):
-                contents = response.xpath("//div[@class='story_content']/div/span/text()").extract_first()
-                # if(contents == None):
-                #     contents = response.xpath("//div[@class='story_content']/div[2]/span/text()").extract_first() 
+                contents = response.xpath("//div[@class='story_content']/div/span/text()").extract()
+
+        contents = " ".join(contents)
 
         yield {
                 "news_agency_name": "alwehda news",

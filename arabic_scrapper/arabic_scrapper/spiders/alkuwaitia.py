@@ -26,11 +26,13 @@ class AlkuwaitiaSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents = response.xpath("//div[@class='News_Details']/div[@class='desc']/div/text()").extract_first()
-        if(contents == None):
-            contents = response.xpath("//div[@class='News_Details']/div[@class='desc']/div/strong/text()").extract_first()
-            if(contents == None):
-                contents = response.xpath("//div[@class='News_Details']/div[@class='desc']/div/div/text()").extract_first()
+        contents = response.xpath("//div[@class='News_Details']/div[@class='desc']/div/text()").extract()
+        if(not len(contents)):
+            contents = response.xpath("//div[@class='News_Details']/div[@class='desc']/div/strong/text()").extract()
+            if(not len(contents)):
+                contents = response.xpath("//div[@class='News_Details']/div[@class='desc']/div/div/text()").extract()
+
+        contents = " ".join(contents)
 
         yield {
                 "news_agency_name": "alkuwaitia newspaper",

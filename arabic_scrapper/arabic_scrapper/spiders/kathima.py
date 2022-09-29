@@ -37,7 +37,7 @@ class KathimaSpider(scrapy.Spider):
         kathija_item["title"]=response.xpath('//*[@class="post-title entry-title"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="entry-content entry clearfix"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         kathija_item["contents"]=contents
 
         img_url=response.xpath('//*[@class="wp-block-image size-large"]/img/@src').extract_first()

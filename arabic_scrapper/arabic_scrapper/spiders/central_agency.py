@@ -42,7 +42,7 @@ class CentralAgencySpider(scrapy.Spider):
         central_agency_item["title"]=str(response.xpath('//*[@class="newsItemDetail"]/h4/text()').extract_first())
         
         contents=response.xpath('//*[@class="NewsBody"]//p/span/text()').extract()+response.xpath('//*[@class="NewsBody"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         central_agency_item["contents"]=contents
 
         central_agency_item["image_url"]="https://www.cait.gov.kw/"+str(response.xpath('//*[@class="NewsBody"]/img/@src').extract_first())

@@ -26,9 +26,12 @@ class AlfouzSpider(scrapy.Spider):
         contents = response.xpath("//div[@class='entry-content entry clearfix']/p[contains(@style,'text-align: justify;')]/text()[normalize-space()]").getall()
         contents = ''.join(contents)
         if(contents == None or len(contents) == 0):
-            contents = response.xpath("//div[@class='entry-content entry clearfix']/p[@class='s2']/span/span[@class='bumpedFont15']/text()").extract()[0]
+            contents = response.xpath("//div[@class='entry-content entry clearfix']/p[@class='s2']/span/span[@class='bumpedFont15']/text()").extract()
             if(contents == None):
-                 contents = response.xpath("//div[@class='entry-content entry clearfix']/p[@class='s2']/span/text()").extract_first()
+                 contents = response.xpath("//div[@class='entry-content entry clearfix']/p[@class='s2']/span/text()").extract()
+
+
+        contents = "".join(contents)
        
         yield {
                 "news_agency_name": self.name,

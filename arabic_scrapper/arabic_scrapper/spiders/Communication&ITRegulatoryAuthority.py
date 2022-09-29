@@ -23,13 +23,15 @@ class CommunicationAndITRegulatoryAuthoritySpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents = response.xpath("//div[contains(@class,'ExternalClass')]/div/text()").extract_first()
-        if(contents == None):
-            contents = response.xpath("//div[contains(@class,'ExternalClass')]/span/text()").extract_first()
-            if(contents == None):
-                contents = response.xpath("//div[contains(@class,'ExternalClass')]/p/text()").extract_first()
-                if(contents == None):
-                    contents = response.xpath("//div[contains(@class,'ExternalClass')]/p/span/text()").extract_first()
+        contents = response.xpath("//div[contains(@class,'ExternalClass')]/div/text()").extract()
+        if(not len(contents)):
+            contents = response.xpath("//div[contains(@class,'ExternalClass')]/span/text()").extract()
+            if(not len(contents)):
+                contents = response.xpath("//div[contains(@class,'ExternalClass')]/p/text()").extract()
+                if(not len(contents)):
+                    contents = response.xpath("//div[contains(@class,'ExternalClass')]/p/span/text()").extract()
+
+        contents = " ".join(contents)
         
         date = translate_text(response.xpath("//div[@class='DateTime']/text()").extract_first())
         date = date.split(": ")

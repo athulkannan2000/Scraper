@@ -22,24 +22,23 @@ class AldustorSpider(scrapy.Spider):
 
             url = f'http://aldustor.kna.kw{url}'
             yield scrapy.Request(url = url, callback = self.parse_page, meta = response.meta)
-            
+
+
 
     def parse_page(self,response):
 
-        contents = response.xpath("//div[@class='article_content article_contents2']/div/text()").extract_first() 
-        if(contents == None):
+        contents = response.xpath("//div[@class='article_content article_contents2']/div/text()").extract() 
+        if(not len(contents)):
             contents = response.xpath("//div[@class='article_content article_contents2']/p/text()").extract()
-            if(contents[0] == "" and len(contents) > 1):
-                contents = contents[1]
-            else:
-                contents = contents[0]
+            if(not len(contents)):
+                contents = response.xpath("//div[@class='article_content article_contents2']/div/span/text()").extract()
+                if(not len(contents)):
+                    contents = response.xpath("//div[@class='article_content article_contents2']/p/span/text()").extract()
 
-        if(contents is NULL or contents == ""):
-                contents = response.xpath("//div[@class='article_content article_contents2']/div/span/text()").extract_first()
-                if(contents == None):
-                    contents = response.xpath("//div[@class='article_content article_contents2']/p/span/text()").extract_first()
 
+        contents = " ".join(contents[0:len(contents)])
         contents = contents.strip()
+
              
         yield  {
                 "news_agency_name": "parliament aldustor agency",

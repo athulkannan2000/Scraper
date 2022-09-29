@@ -24,12 +24,15 @@ class AlhakeaSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
+        contents =  response.xpath("//section[@id='paragraphs']/p[@class='ar']/text()").extract()
+        contents = " ".join(contents)
+
         yield {
                 "news_agency_name": "alhakea newspaper",
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" : response.xpath("//h1[@class='name post-title entry-title']/span/text()").extract_first(),
-                "contents":  response.xpath("//section[@id='paragraphs']/p[@class='ar']/text()").extract_first(),
+                "contents": contents,
                 "date" :  parser_parse_isoformat(response.xpath("//span[@class='tie-date']/text()").extract_first()),
                 "author_name" :response.xpath("//span[@class='post-meta-author']/a/text()").extract_first(),
                 "image_url" : response.xpath("//div[@class='single-post-thumb']/img/@src").extract_first(),

@@ -41,7 +41,7 @@ class NationalAssemblySpider(scrapy.Spider):
         national_assembly["title"]=response.xpath('//*[@class="text-uppercase"][1]/text()').extract_first()
         
         contents=response.xpath('//div//b/font/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         national_assembly["contents"]=contents
 
         images="http://www.kna.kw/"+response.xpath('//li/a/img/@src').extract_first()

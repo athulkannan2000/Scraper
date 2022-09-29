@@ -24,9 +24,11 @@ class AssafeerSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents =  response.xpath("//div[@class='entry']/p/text()").extract_first()
+        contents =  response.xpath("//div[@class='entry']/p/text()").extract()
         if(contents == None):
-            contents =  response.xpath("//div[@class='entry']/div[@class='paragraphs']/p/text()").extract_first()
+            contents =  response.xpath("//div[@class='entry']/div[@class='paragraphs']/p/text()").extract()
+        
+        contents = " ".join(contents)
 
         yield {
                 "news_agency_name": "assafeer newspaper",

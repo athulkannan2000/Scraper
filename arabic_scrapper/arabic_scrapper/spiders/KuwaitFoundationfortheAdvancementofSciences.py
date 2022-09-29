@@ -25,11 +25,13 @@ class KuwaitFoundationfortheAdvancementofSciencesSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents = response.xpath("//div[@class='col-12 text-justify']/p[2]/text()").extract_first()
-        if(contents == None):
-            contents = response.xpath("//div[@class='col-12 text-justify']/ul/li/p/text()").extract_first()
-            if contents==None:
-                contents=" ".join(response.xpath('//*[@class="col-12 text-justify"]//p/text()'))
+        contents = response.xpath("//div[@class='col-12 text-justify']/p[2]/text()").extract()
+        if(not len(contents)):
+            contents = response.xpath("//div[@class='col-12 text-justify']/ul/li/p/text()").extract()
+            if (not len(contents)):
+                contents= response.xpath('//*[@class="col-12 text-justify"]//p/text()').extract()
+
+        contents = " ".join(contents)
 
         date = response.xpath("//div[@class='col-12 text-justify']/div[@id='date-posted']/p/text()").extract()[1]
         date = date.replace('\n','')

@@ -45,7 +45,7 @@ class BarqSpider(scrapy.Spider):
         barq_item["title"]=response.xpath('//*[@class="ptopic-title"]/h3/text()').extract_first()
         
         contents=response.xpath('//*[@class="ptopic-body"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         barq_item["contents"]=contents
 
         barq_item["image_url"]=response.xpath('//*[@class="ptopic-title"]/img/@src').extract_first()

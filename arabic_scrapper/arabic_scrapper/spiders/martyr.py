@@ -42,7 +42,7 @@ class MartyrSpider(scrapy.Spider):
         martyr_item["title"]=response.xpath('//*[@class="blog-post_title"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="blog-post_content"]//p/span/text()').extract()+response.xpath('//*[@class="blog-post_content"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         martyr_item["contents"]=contents
 
         martyr_item["image_url"]=response.xpath('//*[@class="blog-post_media_part"]/img/@src').extract_first()

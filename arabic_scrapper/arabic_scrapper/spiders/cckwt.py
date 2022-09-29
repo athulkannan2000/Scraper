@@ -1,3 +1,4 @@
+from importlib.resources import contents
 import scrapy
 from arabic_scrapper.helper import load_dataset_lists, parser_parse_isoformat, translate_text, datetime_now_isoformat
 
@@ -23,13 +24,15 @@ class CckwtSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        
+        contents = response.xpath("//div[@class='entry']/p/text()").extract()
+        contents = " ".join(contents)
+
         yield {
                 "news_agency_name": self.name,
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" :  response.xpath("//h1[@class='name post-title entry-title']/span[@itemprop='name']/text()").extract_first(),
-                "contents": response.xpath("//div[@class='entry']/p/text()").extract_first(),
+                "contents": contents,
                 "date" :  parser_parse_isoformat (translate_text(response.xpath("//div[@class='post-inner']/p[@class='post-meta']/span/text()").extract_first())),
                 "author_name" : self.name,
                 "image_url" : response.xpath("//div[@class='single-post-thumb']/img/@src").extract_first(),

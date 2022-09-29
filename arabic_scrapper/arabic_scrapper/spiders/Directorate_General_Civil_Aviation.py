@@ -41,7 +41,7 @@ class DirectorateGeneralCivilAviationSpider(scrapy.Spider):
         Directorate_General_item["title"]=response.xpath('//*[@class="mb-4 text-center fs-5 fw-500"]/strong/text()').extract_first()
         
         contents=response.xpath('//*[@class="col-lg-12 mt-4 mb-5"]//p/span/text()').extract()+response.xpath('//*[@class="col-lg-12 mt-4 mb-5"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         Directorate_General_item["contents"]=contents
 
         images=response.xpath('//*[@class="col-lg-12 mt-4 mb-5"]/a/@href').extract_first()

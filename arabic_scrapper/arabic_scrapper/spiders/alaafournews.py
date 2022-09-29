@@ -65,7 +65,7 @@ class AlaafournewsSpider(scrapy.Spider):
         contents=response.xpath('//*[@class="itemFullText"]//p/strong/span/text()').extract()
         if contents==None:
             contents=response.xpath('//*[@class="itemFullText"]//p/span/strong/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         alaafournews["contents"]=contents
         alaafournews["image_url"]="https://mugtama.com"+response.xpath('//*[@class="itemImage"]/a/img/@data-src').extract_first()
         alaafournews["date"]=date

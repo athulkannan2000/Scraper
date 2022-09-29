@@ -41,7 +41,7 @@ class ZawayaSpider(scrapy.Spider):
         zawaya_item["title"]=response.xpath('//*[@class="post-inner"]/h1/span/text()').extract_first()
         
         contents=response.xpath('//*[@class="entry"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         zawaya_item["contents"]=contents
 
         zawaya_item["image_url"]=response.xpath('//*[@class="single-post-thumb"]/img/@src').extract_first()

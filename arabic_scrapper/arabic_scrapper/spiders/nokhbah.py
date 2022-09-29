@@ -46,7 +46,7 @@ class NokhbahSpider(scrapy.Spider):
         
         contents=response.xpath('//div[@class="entry-content clearfix single-post-content"]//div/text()').extract()+response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/strong/text()').extract()+response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/text()').extract()+response.xpath('//div[@id="pastingspan1"]/text()').extract()+response.xpath('//section[@id="paragraphs"]/p/text()').extract()+response.xpath('//span[@id="divArtContent"]/text()').extract()+response.xpath('//span[@id="divArtContent"]/p/text()').extract()+response.xpath('//div[@id="maincontent"]/p/text()').extract()+response.xpath('//div[@class="entry-content clearfix single-post-content"]/p/strong/span/text()').extract()
         #print("/////////////contents//////////////",contents,type(contents))
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         nokhbah_news["contents"]=contents
 
         nokhbah_news["image_url"]= response.xpath('//div[@class="single-featured"]/a/img/@data-src').extract_first()

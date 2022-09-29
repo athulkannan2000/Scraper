@@ -41,7 +41,7 @@ class KuwaitAuthoritySpider(scrapy.Spider):
         kuwait_authority["title"]=response.xpath('//*[@class="info content-box"]/h3/text()').extract_first()
         
         contents=response.xpath('//*[@class="info content-box"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         kuwait_authority["contents"]=contents
 
         images=response.xpath('//*[@class="thumb"]/img/@src').extract()
