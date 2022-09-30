@@ -24,8 +24,20 @@ class AlhakeaSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents =  response.xpath("//section[@id='paragraphs']/p[@class='ar']/text()").extract()
-        contents = " ".join(contents)
+
+        contents = " ".join(
+            response.xpath("//section[@id='paragraphs']/p[@class='ar']/text()").extract() +
+            response.xpath("//div[@class='post_content']/p/text()").extract() +
+            response.xpath("//div[@id='maincontent']/p/text()").extract() +
+            response.xpath("//div[@class='entry']/div[@id='pastingspan1']/text()").extract() +
+            response.xpath("//div[@class='entry']/div/text()").extract() +
+            response.xpath("//div[@class='entry']/p/text()").extract() +
+            response.xpath("//div[@class='desc']/div[@id='pastingspan1']/text()").extract() +
+            response.xpath("//div[@class='desc']/div[@id='pastingspan1']/div[@id='pastingspan1']/text()").extract() +
+            response.xpath("//div[@class='post-content description']/p/text()").extract()
+        )
+
+        contents = contents.strip()
 
         yield {
                 "news_agency_name": "alhakea newspaper",

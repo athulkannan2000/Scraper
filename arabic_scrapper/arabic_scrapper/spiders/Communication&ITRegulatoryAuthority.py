@@ -2,7 +2,7 @@ import scrapy
 from arabic_scrapper.helper import load_dataset_lists, parser_parse_isoformat, translate_text, datetime_now_isoformat
 
 
-news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("The official account of Communication & IT Regulatory Authority")
+news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("The official account of Communication & IT Regulatory Authority ")
 now = datetime_now_isoformat()
 
 class CommunicationAndITRegulatoryAuthoritySpider(scrapy.Spider):
@@ -23,15 +23,12 @@ class CommunicationAndITRegulatoryAuthoritySpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents = response.xpath("//div[contains(@class,'ExternalClass')]/div/text()").extract()
-        if(not len(contents)):
-            contents = response.xpath("//div[contains(@class,'ExternalClass')]/span/text()").extract()
-            if(not len(contents)):
-                contents = response.xpath("//div[contains(@class,'ExternalClass')]/p/text()").extract()
-                if(not len(contents)):
-                    contents = response.xpath("//div[contains(@class,'ExternalClass')]/p/span/text()").extract()
-
-        contents = " ".join(contents)
+        contents = " ".join(
+            response.xpath("//div[contains(@class,'ExternalClass')]/div/text()").extract() + 
+            response.xpath("//div[contains(@class,'ExternalClass')]/span/text()").extract() +
+            response.xpath("//div[contains(@class,'ExternalClass')]/p/text()").extract() +
+            response.xpath("//div[contains(@class,'ExternalClass')]/p/span/text()").extract()
+        )
         
         date = translate_text(response.xpath("//div[@class='DateTime']/text()").extract_first())
         date = date.split(": ")

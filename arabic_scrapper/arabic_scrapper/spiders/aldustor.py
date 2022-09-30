@@ -27,16 +27,13 @@ class AldustorSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents = response.xpath("//div[@class='article_content article_contents2']/div/text()").extract() 
-        if(not len(contents)):
-            contents = response.xpath("//div[@class='article_content article_contents2']/p/text()").extract()
-            if(not len(contents)):
-                contents = response.xpath("//div[@class='article_content article_contents2']/div/span/text()").extract()
-                if(not len(contents)):
-                    contents = response.xpath("//div[@class='article_content article_contents2']/p/span/text()").extract()
+        contents = " ".join(
+            response.xpath("//div[@class='article_content article_contents2']/div/text()").extract() +
+            response.xpath("//div[@class='article_content article_contents2']/p/text()").extract() +
+            response.xpath("//div[@class='article_content article_contents2']/div/span/text()").extract() +
+            response.xpath("//div[@class='article_content article_contents2']/p/span/text()").extract()
+        )
 
-
-        contents = " ".join(contents[0:len(contents)])
         contents = contents.strip()
 
              
