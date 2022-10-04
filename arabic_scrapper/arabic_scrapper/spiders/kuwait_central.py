@@ -40,7 +40,7 @@ class KuwaitCentralSpider(scrapy.Spider):
         kuwait_central["title"]=response.xpath('//h3/span/text()').extract_first()
         
         contents=response.xpath('//article/span/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         kuwait_central["contents"]=contents
 
         kuwait_central["image_url"]="https://www.csb.gov.kw/"+str(response.xpath('//div[@class="row margin-bottom-0 "]/div/table/tbody/tr/td/img/@src').extract_first())

@@ -48,7 +48,7 @@ class AlwatanSpider(scrapy.Spider):
         dom = etree.HTML(str(soup))
 
         contents=dom.xpath('//*[@id="divArtContent"]/text()')
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
 
 
         alwatan_item=GeneralItem()

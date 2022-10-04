@@ -31,7 +31,7 @@ class Q8timesSpider(scrapy.Spider):
         q8_item["category"]=response.meta["catagory"]
         q8_item["title"]=response.xpath('//*[@class="name post-title entry-title"]/span/text()').extract_first()
         contents=response.xpath('//*[@class="entry"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         q8_item["contents"]=contents
         q8_item["image_url"]=response.xpath('//div[@class="entry"]/p/a/img/@src').extract_first()
         date =str(datetime.now())

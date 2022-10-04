@@ -24,11 +24,15 @@ class KalfAlkwaleesSpider(scrapy.Spider):
 
     def parse_page(self,response):
     
-        contents = response.xpath("//div[@class='entry']/section/p[@class='ar']/text()").extract_first()
-        if(contents == None):
-            contents = response.xpath("//div[@class='entry']/div[@class='desc']/div[@id='pastingspan1']/text()").extract_first()
-            if(contents == None):
-                contents = response.xpath("//div[@class='entry']/p/text()").extract_first()
+        contents = response.xpath("//div[@class='entry']/section/p[@class='ar']/text()").extract()
+        if(not len(contents)):
+            contents = response.xpath("//div[@class='entry']/div[@class='desc']/div[@id='pastingspan1']/text()").extract()
+            if(not len(contents)):
+                contents = response.xpath("//div[@class='entry']/p/text()").extract()
+                if(not len(contents)):
+                    contents = response.xpath('//*[@class="desc"]//div/text()').extract()
+
+        contents = " ".join(contents)
         
         yield {
                 "news_agency_name": self.name,

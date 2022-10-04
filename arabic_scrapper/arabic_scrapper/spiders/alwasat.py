@@ -1,7 +1,7 @@
 import scrapy
 from arabic_scrapper.helper import parser_parse_isoformat, load_dataset_lists, datetime_now_isoformat
 
-news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("al wasat")
+news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("alwasat")
 now = datetime_now_isoformat()
 
 class AlwasatSpider(scrapy.Spider):
@@ -23,12 +23,15 @@ class AlwasatSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
+        contents = response.xpath("//div[@class='Articlebody']/div[@id='pastingspan1']/span/text()").extract()
+        contents = " ".join(contents)
+
         yield {
-                "news_agency_name": "al wasat",
+                "news_agency_name": "alwasat",
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" : response.xpath("//span[@class='artside_small']/text()").extract_first(),
-                "contents": response.xpath("//div[@class='Articlebody']/div[@id='pastingspan1']/span/text()").extract_first(),
+                "contents": contents,
                 "date" : parser_parse_isoformat(response.xpath("//div[@align='right']/span[2]/font/text()").extract_first()),
                 "author_name" : response.xpath("//span[@class='ArticleWriter']/text()").extract_first(),
                 "image_url" : "http://www.alwasat.com.kw/" + response.xpath("//img[@class='imgBorder']/@src").extract_first(),

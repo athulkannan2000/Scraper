@@ -41,7 +41,8 @@ class MinistryofInformationSpider(scrapy.Spider):
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" :  response.xpath("//h1[@class='post-title entry-title']/text()").extract_first(),
-                "contents": response.xpath("//div[@class='entry-content entry clearfix']/p/span/text()").extract_first(),
+                "contents": " ".join(response.xpath("//div[@class='entry-content entry clearfix']/p/span/text()").extract()+response.xpath('//*[@class="entry-content entry clearfix"]//p//span/text()').extract()+response.xpath('//*[@class="entry-content entry clearfix"]//p/text()').extract()),
+                
                 "date" :  parser_parse_isoformat(translate_text(response.xpath("//span[@id='ContentPlaceHolder1_labDate']/text()").extract_first())),
                 "author_name" : "Ministry of Information",
                 "image_url" : image_url,

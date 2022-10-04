@@ -30,7 +30,7 @@ class YouthPublicAuthoritySpider(scrapy.Spider):
                 title=dom.xpath('//*[@id="PageContent_title"]/text()')[0]
                 contents=dom.xpath('//*[@id="PageContent_Span2"]/text()')+dom.xpath('//*[@id="PageContent_lbl"]/text()')
                 images=dom.xpath('//*[@class="text-center"]/img/@src')[0]
-                contents="".join(contents[0:len(contents)])
+                contents=" ".join(contents[0:len(contents)])
                 yield scrapy.Request(url="https://www.google.com/",callback=self.details_scrapper,meta={"date":str(date),"title":str(title),"contents":contents,"images":str(images),"current_url":str(link),"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
 

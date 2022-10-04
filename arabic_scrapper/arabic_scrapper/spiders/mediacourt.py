@@ -1,3 +1,4 @@
+from certifi import contents
 import scrapy
 from arabic_scrapper.helper import parser_parse_isoformat,load_dataset_lists, datetime_now_isoformat
 
@@ -24,12 +25,16 @@ class MediacourtSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
+        contents = response.xpath("//div[@class='entry-content']/p/text()").extract()
+
+        contents = " ".join(contents)
+
         yield{
                 "news_agency_name": self.name,
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" : response.xpath("//h1[@class='post-tile entry-title']/text()").extract_first(),
-                "contents":  response.xpath("//div[@class='entry-content']/p/text()").extract_first(),
+                "contents": contents,
                 "date" :  parser_parse_isoformat(response.xpath("//div[@class='mom-post-meta single-post-meta']/span/time/@datetime").extract_first()),
                 "author_name" : self.name,
                 "image_url" : response.xpath("//div[@class='feature-img']/img/@src").extract_first(),

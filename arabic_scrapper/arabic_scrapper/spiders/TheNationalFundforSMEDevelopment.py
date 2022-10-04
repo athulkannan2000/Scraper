@@ -23,19 +23,14 @@ class TheNationalFundforSMEDevelopmentSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents = response.xpath("//div[@class='program-row content-box']/div[@class='prog-detail']/p/text()").extract_first() 
-        if(contents == None):
-            contents = response.xpath("//div[@class='program-row content-box']/h2/text()").extract_first() 
-            if(contents == None):
-                contents = response.xpath("//div[@class='program-row content-box']/h3/text()").extract_first() 
-                if(contents == None):
-                    contents = response.xpath("//div[@class='program-row content-box']/div[@class='prog-detail']/p/strong/text()").extract_first() 
-                    if(contents == None):
-                        contents = response.xpath("//div[@class='program-row content-box']/div[@class='prog-detail']/p/strong/text()").extract_first() 
-
         image_url = response.xpath("//div[@class='program-row content-box']/div[@class='prog-detail']/p/span/text()").extract_first()
         if(image_url == None):
             image_url = response.xpath("//div[@class='ps-current']/li[@class='elt_1']/img/@src").extract_first()
+
+        contents = " ".join(response.xpath("//div[@class='program-row content-box']/div[@class='prog-detail']/p/text()").extract() +
+                response.xpath("//div[@class='program-row content-box']/h2/text()").extract() + response.xpath("//div[@class='program-row content-box']/h3/text()").extract() + 
+                 response.xpath("//div[@class='program-row content-box']/div[@class='prog-detail']/p/strong/text()").extract() 
+        )
 
         yield ({ 
                 "news_agency_name": "The National Fund for SME Development",
@@ -44,7 +39,7 @@ class TheNationalFundforSMEDevelopmentSpider(scrapy.Spider):
                 "title" :   response.xpath("//div[@class='program-row content-box']/h3/text()").extract_first(),
                 "contents": contents, 
                 "date" :   parser_parse_isoformat(translate_text(response.xpath("//div[@class='program-row content-box']/ul[@class='info']/li/text()").extract_first())),
-                "author_name" : None,
+                "author_name" : "The National Fund for SME Development",
                 "image_url" :  image_url,
 
                 "main_category": response.meta["main_category"],

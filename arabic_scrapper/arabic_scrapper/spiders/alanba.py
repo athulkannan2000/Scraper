@@ -47,7 +47,7 @@ class AlanbaScrapperSpider(scrapy.Spider):
         alanba_item["category"]=response.meta["catagory"]
         alanba_item["title"]=response.xpath('//*[@id="dvOrgArticle"]/article/h1/text()').extract_first() 
         contents=response.xpath('//*[@id="maincontent"]/p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         alanba_item["contents"]=contents
         alanba_item["image_url"]=response.xpath('//*[@class="pic_multipic post_thumb"]/a/@href').extract_first()
         alanba_item["date"]=date

@@ -1,3 +1,4 @@
+from importlib.resources import contents
 import scrapy
 from arabic_scrapper.helper import load_dataset_lists, datetime_now_isoformat
 
@@ -22,13 +23,16 @@ class AlMashadalyoumSpider(scrapy.Spider):
     
 
     def parse_page(self,response):
+
+        contents =  response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract()
+        contents = " ".join(contents)
     
         yield {
                 "news_agency_name": "AlMashad alyoum",
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" :  response.xpath("//h1[@class='post-title entry-title']/text()").extract_first(),
-                "contents": response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract_first(),
+                "contents": contents,
                 "date" :  now,
                 "author_name" : None,
                 "image_url" : response.xpath("//figure[@class='single-featured-image']/img/@data-src").extract_first(),

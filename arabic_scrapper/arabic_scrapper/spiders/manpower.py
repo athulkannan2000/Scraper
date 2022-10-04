@@ -38,7 +38,7 @@ class ManpowerSpider(scrapy.Spider):
         capt_gov["title"]=response.xpath('//div[@class="inner"]/h3/text()').extract_first()
         
         contents=response.xpath('//p[@style="user-select: auto;"]/text()').extract()+response.xpath('//div[@class="text-box"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         capt_gov["contents"]=contents
 
         image_url = response.xpath('//div[@class="frame"]/img/@src').extract_first()

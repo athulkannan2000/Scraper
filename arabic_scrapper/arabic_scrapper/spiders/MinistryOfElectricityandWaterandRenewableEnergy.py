@@ -36,13 +36,16 @@ class MinistryOfElectricityandWaterandRenewableEnergySpider(scrapy.Spider):
         if(image_url != None):
             image_url = "https://www.mew.gov.kw/" + image_url
 
+        contents = response.xpath("//section[@class='default_page news_details_page']/p/text()").extract()
+        contents = " ".join(contents)
+
     
         yield ({
                 "news_agency_name": "Ministry Of Electricity and Water and Renewable Energy",
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" :  response.xpath("//section[@class='default_page news_details_page']/a[@class='news_title']/text()").extract_first(),
-                "contents": response.xpath("//section[@class='default_page news_details_page']/p/text()").extract_first(),
+                "contents": contents,
                 "date" :  parser_parse_isoformat(response.xpath("//section[@class='default_page news_details_page']/a[@class='news_date']/text()").extract_first()),
                 "author_name" : "Ministry Of Electricity and Water and Renewable Energy",
                 "image_url" : image_url,

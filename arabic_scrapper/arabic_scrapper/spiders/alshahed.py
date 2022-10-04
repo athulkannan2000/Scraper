@@ -1,3 +1,4 @@
+from importlib.resources import contents
 import scrapy
 import pandas as pd
 from arabic_scrapper.helper import load_dataset_lists, datetime_now_isoformat, parser_parse_isoformat
@@ -23,12 +24,15 @@ class AlshahedSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
+        contents = response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract()
+        contents = " ".join(contents)
+
         yield {
                 "news_agency_name": self.name,
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" : response.xpath("//h1[@class='post-title entry-title']/text()").extract_first(),
-                "contents": response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract_first(),
+                "contents": contents,
                 "date" : parser_parse_isoformat(response.xpath("//span[@class='date meta-item tie-icon']/text()").extract_first()),
                 "author_name" : response.xpath("//span[@class='meta-author']/a/text()").extract_first(),
                 "image_url" : response.xpath("//figure[@class='wp-block-image size-large']/img/@src").extract_first(),

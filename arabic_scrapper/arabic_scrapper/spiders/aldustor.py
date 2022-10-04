@@ -23,29 +23,26 @@ class AldustorSpider(scrapy.Spider):
             yield scrapy.Request(url = url, callback = self.parse_page, meta = response.meta)
 
 
-    def dateformatter(self,value):
-        if(value == None):
-            return value
-        else:
-            return parser_parse_isoformat(translate_text(value[0]))
 
     def parse_page(self,response):
 
-        data = response.xpath("//div[@class='article_content article_contents2']/div/text()").extract_first()
-        if(data):
-            data = data.split(" |")
-            content = " ".join(data)
-        else:
-            data = None
-            content = None
+        contents = " ".join(
+            response.xpath("//div[@class='article_content article_contents2']/div/text()").extract() +
+            response.xpath("//div[@class='article_content article_contents2']/p/text()").extract() +
+            response.xpath("//div[@class='article_content article_contents2']/div/span/text()").extract() +
+            response.xpath("//div[@class='article_content article_contents2']/p/span/text()").extract()
+        )
 
+        contents = contents.strip()
+
+             
         yield  {
                 "news_agency_name": "parliament aldustor agency",
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" : response.xpath("//h1[@class='entry_title']/span/text()").extract_first(),
-                "contents":  content,
-                "date" :  self.dateformatter(data),
+                "contents":  contents,
+                "date" :  parser_parse_isoformat(translate_text(response.xpath("//span[@id='ContentPlaceHolder1_lblDate']/text()").extract_first())),
                 "author_name" : "parliament aldustor agency",
                 "image_url" : "http://aldustor.kna.kw" + response.xpath("//div[@class='article_image']/img/@src").extract_first(),
          

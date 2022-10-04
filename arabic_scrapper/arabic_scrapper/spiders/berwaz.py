@@ -1,3 +1,4 @@
+from importlib.resources import contents
 import scrapy
 from arabic_scrapper.helper import load_dataset_lists, datetime_now_isoformat, parser_parse_isoformat, translate_text
 
@@ -32,13 +33,19 @@ class BerwazSpider(scrapy.Spider):
     
 
     def parse_page(self,response):
+
+        contents = response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract()
+        if(contents == None):
+            contents = response.xpath("//div[@class='entry-content entry clearfix']/p/strong/text()").extract()
+
+        contents = " ".join(contents)
     
         yield {
                 "news_agency_name": "Berwaz News",
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" :  response.xpath("//h1[@class='post-title entry-title']/text()").extract_first(),
-                "contents": response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract_first(),
+                "contents": contents,
                 "date" :  self.date_formatter(translate_text(response.xpath("//span[@class='date meta-item tie-icon']/text()").extract_first())),
                 "author_name" :response.xpath("//span[@class='meta-author']/a/text()").extract_first(),
                 "image_url" : "https://www.berwaz.com.kw" + response.xpath("//figure[@class='single-featured-image']/img/@src").extract_first(),

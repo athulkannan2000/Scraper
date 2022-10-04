@@ -41,7 +41,7 @@ class ApressnewsSpider(scrapy.Spider):
         apressnews_item["title"]=response.xpath('//*[@class="post-title entry-title"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="entry-content entry clearfix"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         apressnews_item["contents"]=contents
 
         apressnews_item["image_url"]=response.xpath('//*[@class="single-featured-image"]/img/@src').extract_first()

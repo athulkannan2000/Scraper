@@ -22,14 +22,14 @@ def load_dataset_lists(news_agency_name,url_type=None):
             media_type = news_agencies_list.loc[(news_agencies_list["News Agency in English"] == f'{news_agency_name}') & (news_agencies_list["Platform -EN"] == f'{url_type}')]["Media or Text - EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
             urgency = news_agencies_list.loc[(news_agencies_list["News Agency in English"] == f'{news_agency_name}') & (news_agencies_list["Platform -EN"] == f'{url_type}')]["Urgency"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
         
-        else:
-            news_sites_list = news_agencies_list.loc[news_agencies_list["News Agency in English"] == f'{news_agency_name}']["Hyper link"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
-            categories_english = news_agencies_list.loc[news_agencies_list["News Agency in English"] == f'{news_agency_name}']["Category -EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
-            main_category = news_agencies_list.loc[news_agencies_list["News Agency in English"] == f'{news_agency_name}']["Main Category EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
-            sub_category = news_agencies_list.loc[news_agencies_list["News Agency in English"]== f'{news_agency_name}']["Sub Category En"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
-            platform = news_agencies_list.loc[news_agencies_list["News Agency in English"]== f'{news_agency_name}']["Platform -EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
-            media_type = news_agencies_list.loc[news_agencies_list["News Agency in English"]== f'{news_agency_name}']["Media or Text - EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
-            urgency = news_agencies_list.loc[news_agencies_list["News Agency in English"]== f'{news_agency_name}']["Urgency"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
+        else:     ############## Default only for Websites as Twitter and Youtube URLs are fetched in their own files 
+            news_sites_list = news_agencies_list.loc[(news_agencies_list["News Agency in English"] == f'{news_agency_name}') & (news_agencies_list["Platform -EN"] == "Website")]["Hyper link"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
+            categories_english = news_agencies_list.loc[(news_agencies_list["News Agency in English"] == f'{news_agency_name}') & (news_agencies_list["Platform -EN"] == "Website")]["Category -EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
+            main_category = news_agencies_list.loc[(news_agencies_list["News Agency in English"] == f'{news_agency_name}') & (news_agencies_list["Platform -EN"] == "Website")]["Main Category EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
+            sub_category = news_agencies_list.loc[(news_agencies_list["News Agency in English"]== f'{news_agency_name}') & (news_agencies_list["Platform -EN"] == "Website")]["Sub Category En"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
+            platform = news_agencies_list.loc[(news_agencies_list["News Agency in English"]== f'{news_agency_name}') & (news_agencies_list["Platform -EN"] == "Website")]["Platform -EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
+            media_type = news_agencies_list.loc[(news_agencies_list["News Agency in English"]== f'{news_agency_name}') & (news_agencies_list["Platform -EN"] == "Website")]["Media or Text - EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
+            urgency = news_agencies_list.loc[(news_agencies_list["News Agency in English"]== f'{news_agency_name}') & (news_agencies_list["Platform -EN"] == "Website")]["Urgency"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
 
 
         return (news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency)

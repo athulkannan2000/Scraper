@@ -24,13 +24,13 @@ class ZakatHouseSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents = response.xpath("//div[@class='zdes']/p[@dir='RTL']/span/text()").extract_first()
-        if(contents == None):
-            contents = response.xpath("//div[@class='zdes']/p[@style='text-align: right;']/span/text()").extract_first()
-            if(contents == None):
-                contents = response.xpath("//div[@class='zdes']/p/span/text()").extract_first()
-                if(contents == None):
-                    contents = response.xpath("//div[@class='zdes']/p/text()").extract_first()
+
+        contents = " ".join(
+            response.xpath("//div[@class='zdes']/p[@dir='RTL']/span/text()").extract() + 
+            response.xpath("//div[@class='zdes']/p[@style='text-align: right;']/span/text()").extract() + 
+            response.xpath("//div[@class='zdes']/p/span/text()").extract() + 
+            response.xpath("//div[@class='zdes']/p/text()").extract()
+        )
 
         yield ({ 
                 "news_agency_name": "zakat house",

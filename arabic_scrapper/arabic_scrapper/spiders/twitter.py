@@ -1,7 +1,3 @@
-from ast import YieldFrom
-from multiprocessing import dummy
-from urllib import response
-from urllib.request import Request
 import scrapy
 import pandas as pd
 import tweepy
@@ -11,6 +7,7 @@ from dateutil import parser
 from datetime import datetime
 from arabic_scrapper.items import GeneralItem
 from arabic_scrapper.pipelines import ArabicScrapperPipeline
+import re
 
 dataset=pd.read_csv('arabic_scrapper/spiders/News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv')
 dataset=dataset.loc[dataset["Platform -EN"]=="Twitter"]
@@ -40,6 +37,9 @@ except:
      
 now = datetime.now()
 
+exp='[\u0627-\u064a0-9A-Za-z]+'
+link_remover=r'http://\S+|https://\S+|www.\S+'
+
 class TwitterSpider(scrapy.Spider):
     name = 'twitter'
     def start_requests(self):
@@ -60,8 +60,12 @@ class TwitterSpider(scrapy.Spider):
 
                 try:
                     tw_text=tweet.text
+                    tw_text=re.sub(link_remover,"",tw_text)
+                    tw_text=" ".join(re.findall(exp,tw_text))
                 except:
                     tw_text=tweet.full_text
+                    tw_text=re.sub(link_remover,"",tw_text)
+                    tw_text=" ".join(re.findall(exp,tw_text))
 
                 media_type_="text"
         
@@ -118,62 +122,4 @@ class TwitterSpider(scrapy.Spider):
     def dummy(self,response):
         return None
 
-    # def details_saver(self,response):
-    #     # created=str(parser.parse(str(tweet.created_at)))
-    #     created=str(parser.parse(str(response.meta["tweet"].created_at)))
-    #     id="https://twitter.com/twitter/statuses/"+str(response.meta["tweet"].id)
-    #     try:
-    #         tw_text=response.meta["tweet"].text
-    #     except:
-    #         tw_text=response.meta["tweet"].full_text
-    #     media_type="text"
-
-    #     try:
-    #         type=response.meta["tweet"].extended_entities["media"][0]["type"] #added try beacuse in some response extended entities is not there it is present only if the tweet contains image or video
-    #     except:
-    #         type="text"
-    #         pass
-
-    #     if type=="video":
-    #         media_type="media"
-
-    #     try:
-    #         video_url=response.meta["tweet"].extended_entities["media"][0]["video_info"]["variants"][0]["url"]
-    #     except :
-    #         video_url=None
-
-    #     try:
-    #         image_url=response.meta["tweet"].extended_entities["media"][0]["media_url"]
-    #     except:
-    #         image_url=None
-
-    #     # #print("$$$$$$$$$$$$$$",type(id),type(tw_text),type(page_url),"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-    #     db_item=GeneralItem()
-    #     db_item["news_agency_name"]= response.meta["name"]
-    #     db_item["page_url"]= response.meta["page_url"]
-    #     db_item["category"]= response.meta["cat"]
-    #     db_item["title"]=str(tw_text)     
-    #     db_item["contents"]=None
-    #     db_item["image_url"]=image_url
-    #     db_item["date"]=str(now.strftime("%Y:%m:%d %H:%M:%S"))
-    #     db_item["author_name"]=None
-    #     db_item["main_category"]=str(response.meta["main_cat"])
-    #     db_item["sub_category"]=str(response.meta["sub_cat"])
-    #     db_item["platform"]=str(response.meta["plat"])
-    #     db_item["media_type"]=media_type
-    #     db_item["urgency"]=str(response.meta["urgency"])
-    #     db_item["created_at"]=str(now.strftime("%Y:%m:%d %H:%M:%S"))
-    #     db_item["updated_at"]=str(now.strftime("%Y:%m:%d %H:%M:%S"))
-    #     db_item["deleted_at"]=None
-    #     db_item["tweet_created_at"]=str(created) 
-    #     db_item["tweet_text"]=str(tw_text)
-    #     db_item["tweet_id"]=str(id)
-
-    #     db_item["vdo_title"]=None
-    #     db_item["vdo_description"]=None
-    #     db_item["vdo_published_at"]=None
-    #     db_item["vdo_thumbnail"]=None
-    #     db_item["vdo_url"]=video_url
-    #     #print("$$$$$$$$$$$$$$$$$$$$$ OOOOOKKKKKK saved sucessfully $$$$$$$$$$$$$$$$$$$$$$$:\n",db_item)
-    #     yield db_item
-            # ea
+    

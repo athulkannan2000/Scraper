@@ -32,12 +32,16 @@ class AlsabahSpider(scrapy.Spider):
         for text in card_selector:
 
             sel = Selector(text = text)
+
+            contents = sel.xpath("//div[@class='article']/p/text()").extract()
+            contents = " ".join(contents)
+
             yield {
                 "news_agency_name": self.name,
                 "page_url" : response.url + sel.xpath("//div[@class='article']/h1/a/@href").extract_first(),
                 "category" : response.meta["category_english"],
                 "title" : sel.xpath("//div[@class='article']/h1/a/text()").extract_first(),
-                "contents": sel.xpath("//div[@class='article']/p/text()").extract_first(),
+                "contents": contents,
                 "date" : datetime_now_isoformat(),
                 "author_name" : None,
                 "image_url" : "http://www.alsabahpress.com/" + sel.xpath("//div[@class='article']/img/@src").extract_first(),

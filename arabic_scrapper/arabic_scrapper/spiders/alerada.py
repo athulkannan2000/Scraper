@@ -41,7 +41,7 @@ class AleradaSpider(scrapy.Spider):
         alerada_item["title"]=response.xpath('//*[@class="post-title entry-title"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="entry-content entry clearfix"]//p/text()').extract()+response.xpath('//*[@class="entry-content entry clearfix"]//div/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         alerada_item["contents"]=contents
 
         alerada_item["image_url"]="https://alerada.net"+response.xpath('//*[@class="single-featured-image"]//img/@src').extract_first()

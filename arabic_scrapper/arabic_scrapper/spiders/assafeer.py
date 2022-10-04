@@ -1,3 +1,4 @@
+from importlib.resources import contents
 import scrapy
 from arabic_scrapper.helper import load_dataset_lists, parser_parse_isoformat, translate_text, datetime_now_isoformat
 
@@ -23,12 +24,18 @@ class AssafeerSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
+        contents =  response.xpath("//div[@class='entry']/p/text()").extract()
+        if(contents == None):
+            contents =  response.xpath("//div[@class='entry']/div[@class='paragraphs']/p/text()").extract()
+        
+        contents = " ".join(contents)
+
         yield {
                 "news_agency_name": "assafeer newspaper",
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
                 "title" : response.xpath("//h1[@class='top-title']/text()").extract_first(),
-                "contents":  response.xpath("//div[@class='entry']/p/text()").extract_first(),
+                "contents": contents,
                 "date" :  parser_parse_isoformat(translate_text(response.xpath("//span[@class='ptime']/text()").extract_first())),
                 "author_name" : "assafeer newspaper",
                 "image_url" : response.xpath("//div[@class='top-media thumbnail']/img/@src").extract_first(),

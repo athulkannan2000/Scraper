@@ -40,7 +40,7 @@ class SabrSpider(scrapy.Spider):
         sabr_item["title"]=response.xpath('//*[@class="entry-title h1"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="entry-content herald-entry-content"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents=" ".join(contents[0:len(contents)])
         sabr_item["contents"]=contents
 
         sabr_item["image_url"]=response.xpath('//*[@class="herald-post-thumbnail herald-post-thumbnail-single"]/span/img/@src').extract_first()
