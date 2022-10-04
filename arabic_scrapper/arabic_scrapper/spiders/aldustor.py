@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import scrapy
 import pandas as pd
 from arabic_scrapper.helper import parser_parse_isoformat, translate_text, load_dataset_lists, datetime_now_isoformat
