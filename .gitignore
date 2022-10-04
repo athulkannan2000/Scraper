@@ -2,5 +2,5 @@ test.ipynb
 test.py
 .env
 .pyc
-# arabic_scrapper/arabic_scrapper/spiders/__pycache__/
-# arabic_scrapper/arabic_scrapper/__pycache__/
+arabic_scrapper/arabic_scrapper/spiders/__pycache__/
+arabic_scrapper/arabic_scrapper/__pycache__/
