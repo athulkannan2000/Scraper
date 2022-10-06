@@ -27,14 +27,13 @@ class MugtamaSpider(scrapy.Spider):
         title = response.xpath("//h2[@class='itemTitle']/text()").extract_first()
         title = title.replace('\n','')
         title = title.replace('\t','')
-        title = title.replace(' ','')
 
         author = response.xpath("//span[@class='itemAuthor']/text()").extract_first()
         author = author.replace('\n','')
         author = author.replace('\t','')
 
-        contents=response.xpath("//div[@class='itemFullText']/p[@style='text-align: justify;']/strong/span/text()").extract()+response.xpath('//*[@style="font-size: 12pt;"]/strong/span/text()').extract()+response.xpath("//div[@class='itemFullText']/p[@style='text-align: justify;']/strong/span/text()").extract()+response.xpath("//div[@class='itemFullText']//p/span/text()").extract()+response.xpath('//*[@class="itemFullText"]/div[2]//p/strong/span/text()').extract()+response.xpath('//*[@class="itemFullText"]//p//strong/text()').extract()
-        contents=" ".join(contents[0:len(contents)])
+        contents = response.xpath("//div[@class='itemFullText']/p[@style='text-align: justify;']/strong/span/text()").extract()+response.xpath('//*[@style="font-size: 12pt;"]/strong/span/text()').extract()+response.xpath("//div[@class='itemFullText']/p[@style='text-align: justify;']/strong/span/text()").extract()+response.xpath("//div[@class='itemFullText']//p/span/text()").extract()+response.xpath('//*[@class="itemFullText"]/div[2]//p/strong/span/text()').extract()+response.xpath('//*[@class="itemFullText"]//p//strong/text()').extract()
+        contents = " ".join(contents[0:len(contents)])
 
         yield {
                 "news_agency_name": "mugtama magazine",

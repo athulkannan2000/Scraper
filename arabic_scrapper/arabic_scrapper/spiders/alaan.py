@@ -27,7 +27,7 @@ class AlaanSpider(scrapy.Spider):
 
         title = response.xpath("//h1[@class='post-title']/text()").extract_first()
         title = title.replace("\n","")
-        title = title.replace(" ","")
+
 
         contents = response.xpath("//div[@id='id_body']/p[@class='needsclick']/text()[normalize-space()]").getall()
         contents = ' '.join(contents)
