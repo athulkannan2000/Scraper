@@ -25,7 +25,7 @@ class AlMashadalyoumSpider(scrapy.Spider):
     def parse_page(self,response):
 
         contents =  response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract()
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
     
         yield {
                 "news_agency_name": "AlMashad alyoum",

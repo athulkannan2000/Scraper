@@ -31,7 +31,7 @@ class AlwehdaSpider(scrapy.Spider):
             if(contents == None):
                 contents = response.xpath("//div[@class='story_content']/div/span/text()").extract()
 
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
 
         yield {
                 "news_agency_name": "alwehda news",

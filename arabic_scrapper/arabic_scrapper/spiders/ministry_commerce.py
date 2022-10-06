@@ -39,7 +39,7 @@ class MinistryCommerceSpider(scrapy.Spider):
         min_com_item["title"]=response.xpath('//*[@class="page-head"]/h2/text()').extract_first()
         
         contents=response.xpath('//*[@class="details"]//p/text()').extract()
-        contents=" ".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
         min_com_item["contents"]=contents
 
         images=response.xpath('//*[@class="image"]/img/@src').extract()

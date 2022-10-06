@@ -42,9 +42,9 @@ class GovernmentPerformanceSpider(scrapy.Spider):
         except IndexError:
             date=str(now.strftime("%Y:%m:%d %H:%M:%S"))
         try:
-            contents=str(" ".join(dom.xpath('//span//p/text()')))+" "+(" ".join(dom.xpath('//span//div/text()')))
+            contents=str("\n\n".join(dom.xpath('//span//p/text()')))+" "+("\n\n".join(dom.xpath('//span//div/text()')))
         except IndexError:
-            contents=str(" ".join(dom.xpath('//span//p/text()')))
+            contents=str("\n\n".join(dom.xpath('//span//p/text()')))
         try:
             image_url=str(dom.xpath('//div/div/img/@src')[0])
         except IndexError:

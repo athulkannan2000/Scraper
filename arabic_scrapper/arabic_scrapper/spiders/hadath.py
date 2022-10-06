@@ -46,7 +46,7 @@ class HadathSpider(scrapy.Spider):
         hadath["title"]=response.xpath('//*[@class="newsTitle marginTop20"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="newsText"]/div/text()').extract()+response.xpath('//*[@class="newsText"]/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
        
         hadath["contents"]=contents
 

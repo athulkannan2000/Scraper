@@ -26,7 +26,7 @@ class AldustorSpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents = " ".join(
+        contents = "\n\n".join(
             response.xpath("//div[@class='article_content article_contents2']/div/text()").extract() +
             response.xpath("//div[@class='article_content article_contents2']/p/text()").extract() +
             response.xpath("//div[@class='article_content article_contents2']/div/span/text()").extract() +

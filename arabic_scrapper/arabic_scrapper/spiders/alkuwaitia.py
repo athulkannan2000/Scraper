@@ -32,7 +32,7 @@ class AlkuwaitiaSpider(scrapy.Spider):
             if(not len(contents)):
                 contents = response.xpath("//div[@class='News_Details']/div[@class='desc']/div/div/text()").extract()
 
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
 
         yield {
                 "news_agency_name": "alkuwaitia newspaper",

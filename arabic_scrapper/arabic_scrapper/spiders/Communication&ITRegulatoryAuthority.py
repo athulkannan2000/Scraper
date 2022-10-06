@@ -23,7 +23,7 @@ class CommunicationAndITRegulatoryAuthoritySpider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        contents = " ".join(
+        contents = "\n\n".join(
             response.xpath("//div[contains(@class,'ExternalClass')]/div/text()").extract() + 
             response.xpath("//div[contains(@class,'ExternalClass')]/span/text()").extract() +
             response.xpath("//div[contains(@class,'ExternalClass')]/p/text()").extract() +

@@ -40,7 +40,7 @@ class SarmadSpider(scrapy.Spider):
         sarmad_item["title"]=response.xpath('//*[@class="post__title"]/h2/text()').extract_first()
         
         contents=response.xpath('//*[@class="post_description"]//p/span/text()').extract()+response.xpath('//*[@class="post_description"]//p/text()').extract()
-        contents=" ".join(contents)
+        contents="\n\n".join(contents)
         sarmad_item["contents"]=contents
 
         sarmad_item["image_url"]="https://sarmad.com/"+response.xpath('//*[@class="post_thumb"]/img/@src').extract_first()

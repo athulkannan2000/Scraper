@@ -28,7 +28,7 @@ class AssafeerSpider(scrapy.Spider):
         if(contents == None):
             contents =  response.xpath("//div[@class='entry']/div[@class='paragraphs']/p/text()").extract()
         
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
 
         yield {
                 "news_agency_name": "assafeer newspaper",

@@ -32,7 +32,7 @@ class KalfAlkwaleesSpider(scrapy.Spider):
                 if(not len(contents)):
                     contents = response.xpath('//*[@class="desc"]//div/text()').extract()
 
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
         
         yield {
                 "news_agency_name": self.name,

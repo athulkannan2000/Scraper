@@ -30,10 +30,10 @@ class AlaanSpider(scrapy.Spider):
 
 
         contents = response.xpath("//div[@id='id_body']/p[@class='needsclick']/text()[normalize-space()]").getall()
-        contents = ' '.join(contents)
+        contents = '\n\n'.join(contents)
         if(contents == None or len(contents) == 0):
             contents = response.xpath("//div[@id='id_body']/p/text()[normalize-space()]").getall()
-            contents = ' '.join(contents)
+            contents = '\n\n'.join(contents)
 
         yield {
                 "news_agency_name": "alaan newspaper",

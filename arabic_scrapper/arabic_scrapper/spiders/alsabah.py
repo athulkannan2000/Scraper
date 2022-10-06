@@ -34,7 +34,7 @@ class AlsabahSpider(scrapy.Spider):
             sel = Selector(text = text)
 
             contents = sel.xpath("//div[@class='article']/p/text()").extract()
-            contents = " ".join(contents)
+            contents = "\n\n".join(contents)
 
             yield {
                 "news_agency_name": self.name,

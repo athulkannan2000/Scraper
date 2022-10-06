@@ -41,7 +41,7 @@ class DasmanSpider(scrapy.Spider):
         dasman_item["title"]=response.xpath('//*[@class="entry-title"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="td-post-content tagdiv-type"]//p/strong/text()').extract()+response.xpath('//*[@class="td-post-content tagdiv-type"]//p/text()').extract()
-        contents=" ".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
         dasman_item["contents"]=contents
 
         dasman_item["image_url"]=response.xpath('//*[@class="td-post-featured-image"]//a/img/@src').extract_first()

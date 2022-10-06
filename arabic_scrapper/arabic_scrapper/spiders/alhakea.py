@@ -25,7 +25,7 @@ class AlhakeaSpider(scrapy.Spider):
     def parse_page(self,response):
 
 
-        contents = " ".join(
+        contents = "\n\n".join(
             response.xpath("//section[@id='paragraphs']/p[@class='ar']/text()").extract() +
             response.xpath("//div[@class='post_content']/p/text()").extract() +
             response.xpath("//div[@id='maincontent']/p/text()").extract() +

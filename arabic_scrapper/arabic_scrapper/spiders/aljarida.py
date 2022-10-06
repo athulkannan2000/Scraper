@@ -30,7 +30,7 @@ class AljaridaSpider(scrapy.Spider):
     def parse_page(self,response):
 
         contents = response.xpath("//section[@id='paragraphs']/p/text()").extract()
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
 
         yield {
                 "news_agency_name": self.name,
