@@ -40,16 +40,19 @@ class {class_name}Spider(scrapy.Spider):
     
 
     def parse_page(self,response):
-    
+
+        
+        contents = " ".join({contents})
+
         news_item = GeneralItem()
       
         news_item["news_agency_name"] = "{agency_name}"
         news_item["page_url"] = response.url
         news_item["category"] = response.meta["catagory"]
         news_item["title"] = response.xpath("{title}").extract_first(),
-        news_item["contents"] = response.xpath("{contents}").extract_first(),
+        news_item["contents"] = contents,
         news_item["image_url"] = response.xpath("{image_url}").extract_first(),
-        news_item["date"] = parser_parse_isoformat(translate_text("{date}").extract_first()),
+        news_item["date"] = {date},
         news_item["author_name"] = response.xpath("{author}").extract_first(),
         
         news_item["main_category"] = response.meta["main_category"]
@@ -69,18 +72,36 @@ class {class_name}Spider(scrapy.Spider):
 
 
 
-
-
-
 if __name__ == "__main__":
 
     agency_name = input("Agency Name: ")
     news_card_selector = input("Individual News Article XPath: ")
-    title = input("Title XPath: ")
-    contents = input("Contents XPath: ")
+    title = input("Title XPath: ")  
+    content_count = int(input("Number of XPaths for extracting contents(enter each XPath in new line): "))
+    contents_string = ""
+    while(content_count != 0):
+        contents = input("Contents XPath: ") 
+        if(content_count > 1):
+            contents_string = contents_string + f'response.xpath("{contents}").extract_first() + '
+        else:
+            contents_string = contents_string + f'response.xpath("{contents}").extract_first()'
+        
+        content_count = content_count - 1
+
+    contents = contents_string
+
     date = input("Date XPath: ")
+    arabic_date = input("Date contains Arabic?(Y/N): ")
     author = input("Author XPath: ")
     image_url = input("Image Url XPath: ")
+
+   
+
+    if(arabic_date.lower() == "y"):
+        date  = f'parser_parse_isoformat(translate_text(response.xpath("{date}").extract_first()))'
+    elif(arabic_date.lower() == "n"):
+        date  = f'parser_parse_isoformat(response.xpath("{date}").extract_first())'
+    
 
 
     generated_text = template_text(agency_name,news_card_selector,title,contents,date,author,image_url)
