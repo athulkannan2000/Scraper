@@ -40,7 +40,7 @@ class AlraiSpider(scrapy.Spider):
         
         
       
-        alrai_item["news_agency_name"]="alrai"
+        alrai_item["news_agency_name"]= "Alrai"
         alrai_item["page_url"]=response.meta["page_link"]
         alrai_item["category"]=response.meta["catagory"]
         alrai_item["title"]=response.xpath('//*[@class="article-title"]/text()').extract_first()

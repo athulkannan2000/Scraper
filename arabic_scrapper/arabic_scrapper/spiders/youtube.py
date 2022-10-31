@@ -10,8 +10,9 @@ from arabic_scrapper.items import GeneralItem
 from arabic_scrapper.pipelines import ArabicScrapperPipeline
 
 
-dataset=pd.read_csv("arabic_scrapper/spiders/News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv")
-dataset=dataset.loc[dataset["Platform -EN"]=="Youtube"]
+dataset = pd.read_csv("arabic_scrapper/spiders/News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv")
+#dataset=dataset.loc[(dataset["Platform -EN"]=="Youtube") & (dataset["Hyper link"]=="https://www.youtube.com/channel/UCCHPFymyaweZ68dBefLJ1xA/videos")]
+dataset = dataset.loc[dataset["Platform -EN"]=="Youtube"]
 names=dataset["News Agency in English"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
 site_list=dataset["Hyper link"].replace(to_replace= ['\r','\n'], value= '', regex=True).to_list() #list of sites to scrap
 catagory=dataset["Category -EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).to_list()
@@ -32,23 +33,28 @@ class YoutubeSpider(scrapy.Spider):
     def start_requests(self):
         pipeline=ArabicScrapperPipeline()
         for name,site,cat,main_cat,sub_cat,plat,med_type,urgency in zip(names,site_list,catagory,main_category,sub_category,platform,media_type,urgenci):
-            #print(name,site,urgency)
+
             diff=site.split("/")[-1]
             if diff=="videos":
-                channel_name=site.split("/")[-2]
-                request = youtube.channels().list(part = 'snippet, contentDetails,statistics',forUsername=channel_name)
-                response= request.execute() 
+                channel_identifier_type = site.split("/")[-3]
+                if(channel_identifier_type == "channel"):
+                    channel_name = site.split("/")[-2]
+                    request = youtube.channels().list(part = 'snippet, contentDetails,statistics',id=channel_name)
+                    response = request.execute()
+                else: 
+                    channel_name = site.split("/")[-2]
+                    request = youtube.channels().list(part = 'id, snippet, contentDetails,statistics',forUsername=channel_name)
+                    response = request.execute() 
                 try:
                     playlist_id=response["items"][0]['contentDetails']['relatedPlaylists']['uploads']
                 except KeyError:
                     continue
                 titles,descriptions,dts,image_urls,video_urls=self.scrapper(playlist_id,name,site,cat,main_cat,sub_cat,plat,med_type,urgency)
                 if titles==None:
-                    #print("############returned title#################")
                     continue
                 else:
                     for title,description,dt,image_url,video_url in zip(titles,descriptions,dts,image_urls,video_urls):
-                        # db_item=GeneralItem()
+
                         pipeline=ArabicScrapperPipeline()
                         pipeline.process_item(item={
                             "news_agency_name":str(name),
@@ -84,7 +90,6 @@ class YoutubeSpider(scrapy.Spider):
                 playlist_id=site.split("/")[3].split("=")[1]
                 titles,descriptions,dts,image_urls,video_urls=self.scrapper(playlist_id,name,site,cat,main_cat,sub_cat,plat,med_type,urgency)
                 if titles==None:
-                    #print("############returned title#################")
                     continue
                 else:
                     for title,description,dt,image_url,video_url in zip(titles,descriptions,dts,image_urls,video_urls):
@@ -127,7 +132,6 @@ class YoutubeSpider(scrapy.Spider):
         try:
             id_response = id_request.execute()
         except :
-            #print(playlist_id,"###########playlist not existing#########")
             return None,None,None,None,None
         tit=[]
         desc=[]
@@ -137,12 +141,9 @@ class YoutubeSpider(scrapy.Spider):
         for res in range(len(id_response["items"])):
             video_id=id_response["items"][res]["contentDetails"]["videoId"]
             video_url="https://www.youtube.com/embed/"+video_id
-            #print("\n video url",video_url)
 
-            #getting video details
             vdo_info_request = youtube.videos().list(part='snippet, statistics',id = video_id)
             vdo_info_response = vdo_info_request.execute()
-            # #print(vdo_info_response["items"])
             try:
                 title=vdo_info_response["items"][0]["snippet"]["title"]
                 description=vdo_info_response["items"][0]["snippet"]["description"]
@@ -154,8 +155,6 @@ class YoutubeSpider(scrapy.Spider):
             dt = str(parser.parse(date)).split(" ")[0]+" "+str(parser.parse(time)).split(" ")[1]
 
             image_url=vdo_info_response["items"][0]['snippet']['thumbnails']['default']['url'] 
-
-            #print("\ntitle :",type(title),"\n description :",type(description),"\npublished at :",type(published_at),"\n image_url :",type(image_url),"\n date and time",type(dt))
             
             tit.append(title)
             desc.append(description)

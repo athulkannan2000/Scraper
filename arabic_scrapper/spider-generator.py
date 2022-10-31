@@ -3,7 +3,7 @@ from slugify import slugify
 def write_file(agency_name,generated_text):
 
     file_name = agency_name.replace(" ","_").lower()
-    with open(f'./arabic_scrapper/{file_name}.py',"w") as f:   #change path to server config
+    with open(f'/root/Scraper/arabic_scrapper/arabic_scrapper/spiders/{file_name}.py',"w") as f:   #change path to server config
         f.write(generated_text)
 
     f.close()
