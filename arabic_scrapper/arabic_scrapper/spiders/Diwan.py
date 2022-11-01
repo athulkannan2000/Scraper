@@ -56,6 +56,9 @@ class DiwanSpider(scrapy.Spider):
         driver.quit()
         soup=BeautifulSoup(html,"lxml")
         dom = etree.HTML(str(soup))
+        print("################html variable###############",html,type(html))# <class 'str'>
+        print("########### Soup variable ##############",soup,type(soup)) #<class 'bs4.BeautifulSoup'>
+        print("########### dom variable ##############",dom,type(dom))
 
         contents=dom.xpath('//*[@class="news-texts"]//p/text()')
         contents=" ".join(contents[0:len(contents)])

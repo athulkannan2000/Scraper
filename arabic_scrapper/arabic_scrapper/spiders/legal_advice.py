@@ -32,9 +32,11 @@ class LegalAdviceSpider(scrapy.Spider):
             time.sleep(3)
             html=driver.page_source
             driver.quit()
+            
             soup=BeautifulSoup(html,"lxml") 
-         
+            
             dom = etree.HTML(str(soup)) 
+            
             # #print("//////////dom/////////", etree.tostring(dom))
     
             titles=dom.xpath('//*[@class="title1"]/text()')

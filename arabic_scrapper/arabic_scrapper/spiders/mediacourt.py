@@ -1,4 +1,4 @@
-from certifi import contents
+# from certifi import contents
 import scrapy
 from arabic_scrapper.helper import parser_parse_isoformat,load_dataset_lists, datetime_now_isoformat
 

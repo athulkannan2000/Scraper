@@ -5,3 +5,8 @@ mysql-connector-python==8.0.26
 word2number==1.1
 tweepy==4.10.1
 google-api-python-client==2.58.0
+scrapy==2.6.1
+pandas==1.5.0
+deep_translator==1.8.0
+xmltodict==0.13.0
+python-slugify==5.0.2
