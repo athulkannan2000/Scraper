@@ -35,7 +35,7 @@ class GeneralSecretariatSpider(scrapy.Spider):
         contents=[]
         for i in contents_tag:
             temp=i.xpath("//p/text()")
-            temp="".join(temp)
+            temp="\n\n".join(temp)
             contents.append(temp)
 
         image_url=dom.xpath("//*[@class='container1']/a/@href")

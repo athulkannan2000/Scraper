@@ -35,7 +35,7 @@ class TaleemSpider(scrapy.Spider):
         taleem_item["title"]=response.xpath('//*[@class="single-post-title"]/span/text()').extract_first()
         
         contents=response.xpath('//*[@class="entry-content clearfix single-post-content"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
         taleem_item["contents"]=contents
 
         taleem_item["image_url"]=response.xpath('//*[@class="post-thumbnail open-lightbox"]/img/@src').extract_first()

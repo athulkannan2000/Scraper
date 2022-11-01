@@ -38,7 +38,7 @@ class BerwazSpider(scrapy.Spider):
         if(contents == None):
             contents = response.xpath("//div[@class='entry-content entry clearfix']/p/strong/text()").extract()
 
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
     
         yield {
                 "news_agency_name": "Berwaz News",

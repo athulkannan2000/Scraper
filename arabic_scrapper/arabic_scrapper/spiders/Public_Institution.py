@@ -28,7 +28,7 @@ class PublicInstitutionSpider(scrapy.Spider):
         soup=BeautifulSoup(req.text,"lxml")
         dom = etree.HTML(str(soup)) 
         title   =str(dom.xpath('//*[@class="mb-1 mt-3"]/text()')[0])
-        content =str(" ".join(dom.xpath('//*[@dir="rtl"]/text()')))
+        content =str("\n\n".join(dom.xpath('//*[@dir="rtl"]/text()')))
         date    =str(dom.xpath('//small[1]/text()')[0])
         try:
             image=str(dom.xpath('//*[@class="d-block w-100"]/@src')[0])

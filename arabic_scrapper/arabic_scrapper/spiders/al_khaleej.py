@@ -42,7 +42,7 @@ class AlKhaleejSpider(scrapy.Spider):
         alkhaleej_item["title"]=response.xpath('//*[@class="post-title lg"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="entry-content clearfix"]//p/text()').extract()
-        contents=" ".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
         alkhaleej_item["contents"]=contents
         alkhaleej_item["image_url"]=response.xpath('//*[@class="post-content-area"]/div/img/@src').extract_first()
         alkhaleej_item["date"]=date

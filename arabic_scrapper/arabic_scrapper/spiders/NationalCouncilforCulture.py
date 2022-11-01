@@ -39,7 +39,7 @@ class NationalCouncilforCultureSpider(scrapy.Spider):
             image_url = "https://www.nccal.gov.kw/" + image_url
     
 
-        contents = " ".join( response.xpath("//div[contains(@id,'newsItem_')]/p/text()").extract() + response.xpath("//div[contains(@id,'newsItem_')]/p/br/text()").extract() + response.xpath("//div[contains(@id,'newsItem_')]/p/strong/text()").extract())
+        contents = "\n\n".join( response.xpath("//div[contains(@id,'newsItem_')]/p/text()").extract() + response.xpath("//div[contains(@id,'newsItem_')]/p/br/text()").extract() + response.xpath("//div[contains(@id,'newsItem_')]/p/strong/text()").extract())
 
         yield {
                 "news_agency_name": "National Council for Culture",

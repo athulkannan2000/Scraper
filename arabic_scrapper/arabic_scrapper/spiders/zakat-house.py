@@ -25,7 +25,7 @@ class ZakatHouseSpider(scrapy.Spider):
     def parse_page(self,response):
 
 
-        contents = " ".join(
+        contents = "\n\n".join(
             response.xpath("//div[@class='zdes']/p[@dir='RTL']/span/text()").extract() + 
             response.xpath("//div[@class='zdes']/p[@style='text-align: right;']/span/text()").extract() + 
             response.xpath("//div[@class='zdes']/p/span/text()").extract() + 

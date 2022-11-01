@@ -40,7 +40,7 @@ class GeneralAdminSpider(scrapy.Spider):
         general_admin_item["title"]=response.xpath('//*[@class="row margin-bottom-40"]/div/p[1]/text()').extract_first()
         
         contents=response.xpath('//*[@class="row margin-bottom-40"]/div/p[3]/text()').extract()
-        contents=" ".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
         general_admin_item["contents"]=contents
 
         general_admin_item["image_url"]="https://www.customs.gov.kw"+str(response.xpath('//*[@id="newsImage"]/@src').extract_first())

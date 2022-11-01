@@ -27,7 +27,7 @@ class TheNationalFundforSMEDevelopmentSpider(scrapy.Spider):
         if(image_url == None):
             image_url = response.xpath("//div[@class='ps-current']/li[@class='elt_1']/img/@src").extract_first()
 
-        contents = " ".join(response.xpath("//div[@class='program-row content-box']/div[@class='prog-detail']/p/text()").extract() +
+        contents = "\n\n".join(response.xpath("//div[@class='program-row content-box']/div[@class='prog-detail']/p/text()").extract() +
                 response.xpath("//div[@class='program-row content-box']/h2/text()").extract() + response.xpath("//div[@class='program-row content-box']/h3/text()").extract() + 
                  response.xpath("//div[@class='program-row content-box']/div[@class='prog-detail']/p/strong/text()").extract() 
         )

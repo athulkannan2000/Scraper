@@ -27,7 +27,7 @@ class MediacourtSpider(scrapy.Spider):
 
         contents = response.xpath("//div[@class='entry-content']/p/text()").extract()
 
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
 
         yield{
                 "news_agency_name": self.name,

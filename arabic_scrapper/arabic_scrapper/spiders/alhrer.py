@@ -65,7 +65,7 @@ class AlhrerSpider(scrapy.Spider):
         alhrer_item["title"]=response.xpath('//*[@class="post-tile entry-title"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="entry-content"]//p/text()').extract()
-        contents=" ".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
         alhrer_item["contents"]=contents
 
         alhrer_item["image_url"]=response.xpath('//*[@class="feature-img"]/img/@src').extract_first()

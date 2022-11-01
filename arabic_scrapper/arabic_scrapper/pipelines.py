@@ -5,6 +5,7 @@
 import os
 from dotenv import load_dotenv
 import mysql.connector
+from arabic_scrapper.helper import parser_parse_isoformat
 try:
     from arabic_scrapper.helper import news_list,agos_changer
 except ImportError:
@@ -100,7 +101,7 @@ class ArabicScrapperPipeline:
                 "title" : item["title"],
                 "contents": item["contents"],
                 "image_url" : item["image_url"],
-                "published_date_and_time" : item["date"],
+                "published_date_and_time" : parser_parse_isoformat(item["date"]),
                 "author_name" : item["author_name"],
                 "main_category_id" : main_cat_, 
                 "sub_category_id": sub_cat_, 
@@ -141,7 +142,7 @@ class ArabicScrapperPipeline:
                 "title" : item["title"],
                 "contents" : item["contents"],
                 "image_url" : item["image_url"],
-                "published_date_and_time" : item["date"],
+                "published_date_and_time" : parser_parse_isoformat(item["date"]),
                 "author_name" : item["author_name"],
                 "main_category_id" : main_cat_, 
                 "sub_category_id" : sub_cat_, 

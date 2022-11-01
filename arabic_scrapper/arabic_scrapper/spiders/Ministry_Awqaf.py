@@ -42,7 +42,7 @@ class MinistryAwqafSpider(scrapy.Spider):
         ministry_awqaf["title"]=response.xpath('//*[@id="MainContent_title"]/text()').extract_first()
         
         contents=response.xpath('//p//span/text()').extract()+response.xpath('//p/text()').extract()
-        contents=" ".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
         ministry_awqaf["contents"]=contents
 
         images=response.xpath('//*[@id="MainContent_divImage"]/img/@src').extract_first()

@@ -40,7 +40,7 @@ class HmakSpider(scrapy.Spider):
         hmak_item["title"]=response.xpath('//*[@class="post-title entry-title"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="entry-content entry clearfix"]//p/text()').extract()+response.xpath('//*[@class="entry-content entry clearfix"]//ul//li/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
         hmak_item["contents"]=contents
 
         hmak_item["image_url"]=response.xpath('//*[@class="single-featured-image"]/img/@src').extract_first()

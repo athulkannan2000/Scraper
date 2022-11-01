@@ -40,7 +40,7 @@ class MinistryJusticeSpider(scrapy.Spider):
         ministry_justice["title"]=response.xpath('//*[@class="customeTitle"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="site-content"]/p/text()').extract()
-        contents=" ".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
         ministry_justice["contents"]=contents
 
         images="https://pp.moj.gov.kw/"+response.xpath('//*[@class="site-content"]/img/@src').extract_first()

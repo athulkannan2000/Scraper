@@ -61,7 +61,7 @@ class DiwanSpider(scrapy.Spider):
         print("########### dom variable ##############",dom,type(dom))
 
         contents=dom.xpath('//*[@class="news-texts"]//p/text()')
-        contents=" ".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
 
 
         diwan_item=GeneralItem()

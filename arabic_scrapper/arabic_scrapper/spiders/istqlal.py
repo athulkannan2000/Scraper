@@ -39,7 +39,7 @@ class IstqlalSpider(scrapy.Spider):
         istqlal_item["title"]=response.xpath('//*[@class="post-title entry-title"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="entry-content entry clearfix"]//div/text()').extract()+response.xpath('//*[@class="entry-content entry clearfix"]//h4/text()').extract()+response.xpath('//*[@class="entry-content entry clearfix"]//p/text()').extract()
-        contents="".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
         istqlal_item["contents"]=contents
 
         istqlal_item["image_url"]=response.xpath('//*[@class="single-featured-image"]/img/@src').extract_first()

@@ -37,7 +37,7 @@ class MinistryOfElectricityandWaterandRenewableEnergySpider(scrapy.Spider):
             image_url = "https://www.mew.gov.kw/" + image_url
 
         contents = response.xpath("//section[@class='default_page news_details_page']/p/text()").extract()
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
 
     
         yield ({

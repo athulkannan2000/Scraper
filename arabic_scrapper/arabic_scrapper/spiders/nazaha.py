@@ -52,7 +52,7 @@ class NazahaSpider(scrapy.Spider):
      
 
         contents=dom.xpath('//p/text()')
-        contents=" ".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
 
         title=dom.xpath('//*[@class="NewsTitle"]/text()')
         title="".join(title)

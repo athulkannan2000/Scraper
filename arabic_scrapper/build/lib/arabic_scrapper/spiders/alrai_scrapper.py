@@ -39,7 +39,7 @@ class AlraiSpider(scrapy.Spider):
         # #print('//////////////////////////////response',response)
         
         contents=response.xpath('//*[@class="article-desc selectionShareable"]//p/text()').extract()
-        contents=" ".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
         # alanba_item["contents"]=contents
         img_url=response.xpath('//*[@class="section-news-carousel"]//div[@class="layout-ratio"]/img/@src').extract()
         img_url=" ".join(img_url[0:len(img_url)])

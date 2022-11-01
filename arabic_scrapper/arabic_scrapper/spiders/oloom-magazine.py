@@ -28,7 +28,7 @@ class OloomMagazineSpider(scrapy.Spider):
             date = datetime_now_isoformat()
 
         contents = response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract()
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
 
         yield ({ 
                 "news_agency_name": "oloom magazine",

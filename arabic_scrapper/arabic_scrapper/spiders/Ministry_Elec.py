@@ -39,7 +39,7 @@ class MinistryElecSpider(scrapy.Spider):
         ministry_elec["title"]=response.xpath('//*[@class="news_title"]/text()').extract_first()
         
         contents=response.xpath('//*[@class="default_page news_details_page"]//p/text()').extract()
-        contents=" ".join(contents[0:len(contents)])
+        contents="\n\n".join(contents[0:len(contents)])
         ministry_elec["contents"]=contents
 
         images="https://www.mew.gov.kw"+response.xpath('//*[@class="thumbnail img_round"]/img/@src').extract_first()

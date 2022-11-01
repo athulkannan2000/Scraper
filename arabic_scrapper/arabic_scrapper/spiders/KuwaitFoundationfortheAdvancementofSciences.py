@@ -31,7 +31,7 @@ class KuwaitFoundationfortheAdvancementofSciencesSpider(scrapy.Spider):
             if (not len(contents)):
                 contents= response.xpath('//*[@class="col-12 text-justify"]//p/text()').extract()
 
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
 
         date = response.xpath("//div[@class='col-12 text-justify']/div[@id='date-posted']/p/text()").extract()[1]
         date = date.replace('\n','')

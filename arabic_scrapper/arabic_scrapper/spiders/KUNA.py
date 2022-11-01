@@ -34,7 +34,7 @@ class KunaSpider(scrapy.Spider):
                 if(not len(contents)):
                     contents = response.xpath("//div[@class='post-content']/p[2]/text()").extract()
 
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
 
         contents = contents.replace('\r','')
         contents = contents.replace('\n','')

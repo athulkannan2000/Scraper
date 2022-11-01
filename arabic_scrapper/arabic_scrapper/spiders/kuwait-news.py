@@ -27,7 +27,7 @@ class KuwaitNewsSpider(scrapy.Spider):
 
         contents = response.xpath("//div[@class='entry-content entry clearfix']/p/text()").extract()
 
-        contents = " ".join(contents)
+        contents = "\n\n".join(contents)
 
         yield {
                 "news_agency_name": "kuwait news",

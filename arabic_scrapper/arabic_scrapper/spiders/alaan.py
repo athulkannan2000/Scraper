@@ -27,13 +27,13 @@ class AlaanSpider(scrapy.Spider):
 
         title = response.xpath("//h1[@class='post-title']/text()").extract_first()
         title = title.replace("\n","")
-        title = title.replace(" ","")
+
 
         contents = response.xpath("//div[@id='id_body']/p[@class='needsclick']/text()[normalize-space()]").getall()
-        contents = ' '.join(contents)
+        contents = '\n\n'.join(contents)
         if(contents == None or len(contents) == 0):
             contents = response.xpath("//div[@id='id_body']/p/text()[normalize-space()]").getall()
-            contents = ' '.join(contents)
+            contents = '\n\n'.join(contents)
 
         yield {
                 "news_agency_name": "alaan newspaper",
