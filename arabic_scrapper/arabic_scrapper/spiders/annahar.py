@@ -27,11 +27,13 @@ class AnnaharSpider(scrapy.Spider):
         contents = response.xpath("//div[@class='item-content']/p/span/text()").extract()
         contents = "\n\n".join(contents)
 
+        title = response.xpath("//div[@class='title-left title-style04 underline04']/h3/a/strong/text()").extract_first()
+
         yield {
                 "news_agency_name": self.name,
                 "page_url" : response.url,
                 "category" : response.meta["category_english"],
-                "title" : response.xpath("//div[@class='title-left title-style04 underline04']/h3/a/strong/text()").extract_first(),
+                "title" : title.strip(),
                 "contents": contents,
                 "date" : datetime_now_isoformat(),
                 "author_name" : self.name,

@@ -18,7 +18,7 @@ class HadathSpider(scrapy.Spider):
     name = 'hadath'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
-            #print("////page,catagori///",page,catagori)
+
             yield scrapy.Request(url=page,callback=self.link_extractor,meta={"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
     def link_extractor(self,response):
@@ -26,7 +26,7 @@ class HadathSpider(scrapy.Spider):
         #print("/////////////news links//////////",news_links)
         for link in news_links:
             link = "https://hadathkw.net"+link[2:]
-            #print("link",link)
+
             if link=="":
                 continue #some pages may not have textual contents on that case it become empty
             else:  
@@ -43,12 +43,13 @@ class HadathSpider(scrapy.Spider):
         hadath["page_url"]=response.meta["page_link"]
         hadath["category"]=response.meta["catagory"]
 
-        hadath["title"]=response.xpath('//*[@class="newsTitle marginTop20"]/text()').extract_first()
-        
+        title = response.xpath('//div[@class="innerContent "]/h1[@class="newsTitle marginTop20"]/text()').extract_first()
+        hadath["title"] = title.strip()
+
         contents=response.xpath('//*[@class="newsText"]/div/text()').extract()+response.xpath('//*[@class="newsText"]/text()').extract()
         contents="\n\n".join(contents[0:len(contents)])
        
-        hadath["contents"]=contents
+        hadath["contents"]=contents.strip()
 
         hadath["image_url"]="https://hadathkw.net"+response.xpath('//div[@class="innerContent "]/img/@src').extract_first()
         hadath["date"]=date
