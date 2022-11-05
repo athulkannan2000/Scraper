@@ -43,6 +43,7 @@ class CentralBankKuwaitSpider(scrapy.Spider):
         
         contents=response.xpath('//*[@class="lead"]/text()').extract()
         contents="\n\n".join(contents[0:len(contents)])
+        contents = contents.strip()
         national_assembly["contents"]=contents
 
         images=None

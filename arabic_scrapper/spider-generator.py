@@ -1,9 +1,16 @@
+import os
 from slugify import slugify
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def write_file(agency_name,generated_text):
 
     file_name = agency_name.replace(" ","_").lower()
-    with open(f'/root/Scraper/arabic_scrapper/arabic_scrapper/spiders/{file_name}.py',"w") as f:   #change path to server config
+
+    file_path = os.getenv("spider_generator_output_path")
+    file_path = f'{file_path}/{file_name}.py'  
+    with open(file_path,"w") as f:   #change path to server config
         f.write(generated_text)
 
     f.close()
@@ -41,27 +48,27 @@ class {class_name}Spider(scrapy.Spider):
 
     def parse_page(self,response):
 
-        
+        # Please replace empty space with two new-line characters when joining as it cannot be inserted in f-string literals
         contents = " ".join({contents})
 
         news_item = GeneralItem()
       
         news_item["news_agency_name"] = "{agency_name}"
         news_item["page_url"] = response.url
-        news_item["category"] = response.meta["catagory"]
-        news_item["title"] = response.xpath("{title}").extract_first(),
-        news_item["contents"] = contents,
-        news_item["image_url"] = response.xpath("{image_url}").extract_first(),
-        news_item["date"] = {date},
-        news_item["author_name"] = response.xpath("{author}").extract_first(),
+        news_item["category"] = response.meta["category_english"]
+        news_item["title"] = response.xpath("{title}").extract_first()
+        news_item["contents"] = contents
+        news_item["image_url"] = response.xpath("{image_url}").extract_first()
+        news_item["date"] = {date}
+        news_item["author_name"] = response.xpath("{author}").extract_first()
         
         news_item["main_category"] = response.meta["main_category"]
         news_item["sub_category"] = response.meta["sub_category"]
         news_item["platform"] = response.meta["platform"]
         news_item["media_type"] = response.meta["media_type"]
         news_item["urgency"] = response.meta["urgency"]
-        news_item["created_at"] = str(now.strftime("%Y:%m:%d %H:%M:%S"))
-        news_item["updated_at"] = str(now.strftime("%Y:%m:%d %H:%M:%S"))
+        news_item["created_at"] = now
+        news_item["updated_at"] = now
         news_item["deleted_at"] = None
 
         yield news_item
@@ -82,9 +89,9 @@ if __name__ == "__main__":
     while(content_count != 0):
         contents = input("Contents XPath: ") 
         if(content_count > 1):
-            contents_string = contents_string + f'response.xpath("{contents}").extract_first() + '
+            contents_string = contents_string + f'response.xpath("{contents}").extract() + '
         else:
-            contents_string = contents_string + f'response.xpath("{contents}").extract_first()'
+            contents_string = contents_string + f'response.xpath("{contents}").extract()'
         
         content_count = content_count - 1
 

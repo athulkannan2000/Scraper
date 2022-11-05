@@ -24,15 +24,17 @@ class PublicAuthorityHousingSpider(scrapy.Spider):
             dates = dom.xpath('//*[@class="txtsmall_colorB"]/text()') #date is present in the outside page
             dates = [str(parser.parse(i)).replace("-","/") for i in dates]
             images=dom.xpath('//*[@class="imgframe"]/img/@src')
+            page_urls = dom.xpath('//div[@class="row"]/div[@class="col-md-9 col-xs-12"]/a/@href')
 
             # #print(contents,len(contents),"\n",dates,len(dates),"\n",titles,len(titles),"\n")
-            for title,content,date,image in zip(titles,contents,dates,images):
+            for title,content,date,image,page_url in zip(titles,contents,dates,images,page_urls):
                 content="https://www.pahw.gov.kw"+content
-                title=str(title)
+                title=str(title).strip()
                 content=str(content)
                 date=str(date)
                 image="https://www.pahw.gov.kw"+str(image)
-                yield scrapy.Request(url="https://www.google.com/",callback=self.details_scrapper,meta={"page_link":page,"image":image,"title":title,"content":content,"date":date,"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc},dont_filter=True)
+                page_url= "https://www.pahw.gov.kw" + str(page_url)
+                yield scrapy.Request(url="https://www.google.com/",callback=self.details_scrapper,meta={"page_link":page_url,"image":image,"title":title,"content":content,"date":date,"current_url":page,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc},dont_filter=True)
                 
     def details_scrapper(self,response):
         ###########################Used to store data in Mysql################################

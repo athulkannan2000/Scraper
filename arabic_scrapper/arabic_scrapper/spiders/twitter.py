@@ -10,7 +10,7 @@ from arabic_scrapper.pipelines import ArabicScrapperPipeline
 import re
 
 dataset=pd.read_csv('arabic_scrapper/spiders/News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv')
-#dataset=dataset.loc[(dataset["Platform -EN"]=="Twitter") & (dataset["Hyper link"]=="https://twitter.com/AlAnba_News_KW")]
+#dataset=dataset.loc[(dataset["Platform -EN"]=="Twitter") & (dataset["Hyper link"]=="https://twitter.com/parliamentary0")]
 dataset=dataset.loc[dataset["Platform -EN"]=="Twitter"]
 
 names=dataset["News Agency in English"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
