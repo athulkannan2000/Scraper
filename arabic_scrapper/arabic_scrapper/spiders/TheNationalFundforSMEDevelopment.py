@@ -29,7 +29,8 @@ class TheNationalFundforSMEDevelopmentSpider(scrapy.Spider):
 
         contents = "\n\n".join(response.xpath("//div[@class='program-row content-box']/div[@class='prog-detail']/p/text()").extract() +
                 response.xpath("//div[@class='program-row content-box']/h2/text()").extract() + response.xpath("//div[@class='program-row content-box']/h3/text()").extract() + 
-                 response.xpath("//div[@class='program-row content-box']/div[@class='prog-detail']/p/strong/text()").extract() 
+                 response.xpath("//div[@class='program-row content-box']/div[@class='prog-detail']/p/strong/text()").extract() +
+                 response.xpath("//h3/strong[@style='user-select: auto;']/text()").extract()  
         )
 
         yield ({ 

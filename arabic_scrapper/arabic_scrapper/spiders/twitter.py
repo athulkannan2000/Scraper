@@ -13,6 +13,8 @@ dataset=pd.read_csv('arabic_scrapper/spiders/News Aggregator Websites & Categori
 # dataset=pd.read_csv("News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv")
 # dataset=dataset.loc[(dataset["Platform -EN"]=="Twitter") & (dataset["News Agency in English"]=="25 feb news")]
 # print('$$$$$$$$$$$$$$$$$$$$$$$4',dataset["Hyper link"].tolist())
+#dataset=dataset.loc[(dataset["Platform -EN"]=="Twitter") & (dataset["Hyper link"]=="https://twitter.com/parliamentary0")]
+dataset=dataset.loc[dataset["Platform -EN"]=="Twitter"]
 
 names=dataset["News Agency in English"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
 site_list=dataset["Hyper link"].replace(to_replace= ['\r','\n'], value= '', regex=True).to_list() #list of sites to scrap
@@ -65,6 +67,7 @@ class TwitterSpider(scrapy.Spider):
                 created=str(parser.parse(str(tweet.created_at)))
                 id="https://twitter.com/twitter/statuses/"+str(tweet.id)
 
+                print("id:",id,"\nthis test: ",tweet.text)
                 try:
                     tw_text=tweet.text
                     tw_text=re.sub(link_remover,"",tw_text)
@@ -75,7 +78,7 @@ class TwitterSpider(scrapy.Spider):
                     tw_text=" ".join(re.findall(exp,tw_text))
 
                 media_type_="text"
-        
+                print("AFTER test: ",str(tw_text))
                 try:
                     type=tweet.extended_entities["media"][0]["type"] #added try beacuse in some response extended entities is not there it is present only if the tweet contains image or video
                 except:
