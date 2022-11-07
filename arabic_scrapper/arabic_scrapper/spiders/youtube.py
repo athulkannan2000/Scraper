@@ -1,4 +1,4 @@
-from email.mime import image
+# from email.mime import image
 import scrapy
 import pandas as pd
 from dotenv import load_dotenv
@@ -12,7 +12,11 @@ from arabic_scrapper.pipelines import ArabicScrapperPipeline
 
 dataset = pd.read_csv("arabic_scrapper/spiders/News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv")
 #dataset=dataset.loc[(dataset["Platform -EN"]=="Youtube") & (dataset["Hyper link"]=="https://www.youtube.com/channel/UCCHPFymyaweZ68dBefLJ1xA/videos")]
-dataset = dataset.loc[dataset["Platform -EN"]=="Youtube"]
+# dataset=pd.read_csv("News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv")
+# dataset = dataset.loc[(dataset["Platform -EN"]=="Youtube") & (dataset["News Agency in English"]=="Fn1")]
+# print(dataset["Hyper link"])
+# print("############## Dataset ###############",dataset)
+
 names=dataset["News Agency in English"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
 site_list=dataset["Hyper link"].replace(to_replace= ['\r','\n'], value= '', regex=True).to_list() #list of sites to scrap
 catagory=dataset["Category -EN"].replace(to_replace= ['\r','\n'], value= '', regex=True).to_list()

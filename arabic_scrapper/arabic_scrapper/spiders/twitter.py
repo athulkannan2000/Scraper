@@ -10,7 +10,9 @@ from arabic_scrapper.pipelines import ArabicScrapperPipeline
 import re
 
 dataset=pd.read_csv('arabic_scrapper/spiders/News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv')
-dataset=dataset.loc[dataset["Platform -EN"]=="Twitter"]
+# dataset=pd.read_csv("News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv")
+# dataset=dataset.loc[(dataset["Platform -EN"]=="Twitter") & (dataset["News Agency in English"]=="25 feb news")]
+# print('$$$$$$$$$$$$$$$$$$$$$$$4',dataset["Hyper link"].tolist())
 
 names=dataset["News Agency in English"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
 site_list=dataset["Hyper link"].replace(to_replace= ['\r','\n'], value= '', regex=True).to_list() #list of sites to scrap
@@ -39,6 +41,8 @@ now = datetime.now()
 
 exp='[\u0627-\u064a0-9A-Za-z]+'
 link_remover=r'http://\S+|https://\S+|www.\S+'
+p = re.compile('[a-z]+')
+at = re.compile('@[a-z]+')
 
 class TwitterSpider(scrapy.Spider):
     name = 'twitter'
@@ -48,11 +52,14 @@ class TwitterSpider(scrapy.Spider):
             #print(page_url,type(page_url))
             username=page_url.split("/")[-1]
             try:
+                print("$$$$$$$$$$$$$$$ Username $$$$$$$$$$$$$$$$$$",username)
                 user = api.get_user(screen_name=username) # Store user as a variable
+                print("########## page_url #############",page_url)
             except: #some of the users doesn't exist so that may result in 404
                 continue
+            print("############### User Name :")
             tweets = api.user_timeline(id=username, count=10)
-            #print("$$$$$$$$$$$$$$$$$$$$$$NO of tweets$$$$$$$$$$$$$$$$$$",len(tweets))
+            print("$$$$$$$$$$$$$$$$$$$$$$NO of tweets$$$$$$$$$$$$$$$$$$",len(tweets))
             for tweet in tweets:
                 ####################
                 created=str(parser.parse(str(tweet.created_at)))
@@ -87,8 +94,34 @@ class TwitterSpider(scrapy.Spider):
                     image_url=tweet.extended_entities["media"][0]["media_url"]
                 except:
                     image_url=None
+                #################### Code to eliminate tweets which has more than 4 english words ####################
+                st=str(tw_text)
+                st = re.sub(link_remover,"",st)
+                x = st.split()
+                # to calculate the number of english words is a string
+                en_w_count=0
+                with_at = 0
+                # data = []
+                for i in x:
+                    # print("#### words ######",i)
+                    n = p.match(i)
+                    m = at.match(i)
+                    if n:
+                        #print("Value: " ,n)
+                        #print("Complete value : ", n.group())
+                        en_w_count = en_w_count+1
+                    elif m:
+                        # print("String data: ",i)
+                        # print("String data with @: ",m.group())
+                        with_at = with_at+1
+                    else:
+                        # data.append(i) #why we need data variable
+                        pass
+                if en_w_count >4:
+                    print("Eliminated : ",str(tw_text))
+                    continue
                 ####################
-                print("########i am here ")
+                # print("########i am here ")
                 pipeline=ArabicScrapperPipeline()
                 pipeline.process_item(item={
                     "news_agency_name":name,
