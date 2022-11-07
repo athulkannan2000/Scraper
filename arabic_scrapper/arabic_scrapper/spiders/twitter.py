@@ -54,20 +54,20 @@ class TwitterSpider(scrapy.Spider):
             #print(page_url,type(page_url))
             username=page_url.split("/")[-1]
             try:
-                print("$$$$$$$$$$$$$$$ Username $$$$$$$$$$$$$$$$$$",username)
+                # print("$$$$$$$$$$$$$$$ Username $$$$$$$$$$$$$$$$$$",username)
                 user = api.get_user(screen_name=username) # Store user as a variable
-                print("########## page_url #############",page_url)
+                # print("########## page_url #############",page_url)
             except: #some of the users doesn't exist so that may result in 404
                 continue
-            print("############### User Name :")
+            # print("############### User Name :")
             tweets = api.user_timeline(id=username, count=10)
-            print("$$$$$$$$$$$$$$$$$$$$$$NO of tweets$$$$$$$$$$$$$$$$$$",len(tweets))
+            # print("$$$$$$$$$$$$$$$$$$$$$$NO of tweets$$$$$$$$$$$$$$$$$$",len(tweets))
             for tweet in tweets:
                 ####################
                 created=str(parser.parse(str(tweet.created_at)))
                 id="https://twitter.com/twitter/statuses/"+str(tweet.id)
 
-                print("id:",id,"\nthis test: ",tweet.text)
+                # print("id:",id,"\nthis test: ",tweet.text)
                 try:
                     tw_text=tweet.text
                     tw_text=re.sub(link_remover,"",tw_text)
@@ -78,7 +78,7 @@ class TwitterSpider(scrapy.Spider):
                     tw_text=" ".join(re.findall(exp,tw_text))
 
                 media_type_="text"
-                print("AFTER test: ",str(tw_text))
+                # print("AFTER test: ",str(tw_text))
                 try:
                     type=tweet.extended_entities["media"][0]["type"] #added try beacuse in some response extended entities is not there it is present only if the tweet contains image or video
                 except:
@@ -104,7 +104,7 @@ class TwitterSpider(scrapy.Spider):
                 # to calculate the number of english words is a string
                 en_w_count=0
                 with_at = 0
-                # data = []
+                data = []
                 for i in x:
                     # print("#### words ######",i)
                     n = p.match(i)
@@ -118,11 +118,13 @@ class TwitterSpider(scrapy.Spider):
                         # print("String data with @: ",m.group())
                         with_at = with_at+1
                     else:
-                        # data.append(i) #why we need data variable
-                        pass
+                        data.append(i) #why we need data variable
+        
+
+                data=" ".join(data)
                 if en_w_count >4:
-                    print("Eliminated : ",str(tw_text))
-                    continue
+                    print("Eliminated : ",str(tw_text)) 
+                    continue #skip that tweet
                 ####################
                 # print("########i am here ")
                 pipeline=ArabicScrapperPipeline()
@@ -144,7 +146,7 @@ class TwitterSpider(scrapy.Spider):
                     "updated_at":str(now.strftime("%Y:%m:%d %H:%M:%S")),
                     "deleted_at":None,
                     "tweet_created_at":str(created),
-                    "tweet_text":str(tw_text),
+                    "tweet_text":data,
                     "tweet_id":str(id),
                     "vdo_title":None,
                     "vdo_description":None,

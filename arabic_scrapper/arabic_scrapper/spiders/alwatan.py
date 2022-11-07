@@ -32,6 +32,7 @@ class AlwatanSpider(scrapy.Spider):
             soup=BeautifulSoup(html,"lxml") #donwloading the entiring page 
             dom = etree.HTML(str(soup)) 
             urls=dom.xpath('//*[@rel="nofollow"]//@href')
+            print("####### urls :######")
             for url in urls:
                 page_url="http://alwatan.kuwait.tt/"+url
                 yield scrapy.Request(url=page_url,callback=self.link_extractor,meta={"current_url":page_url,"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
