@@ -10,10 +10,7 @@ from arabic_scrapper.pipelines import ArabicScrapperPipeline
 import re
 
 dataset=pd.read_csv('arabic_scrapper/spiders/News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv')
-# dataset=pd.read_csv("News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv")
-# dataset=dataset.loc[(dataset["Platform -EN"]=="Twitter") & (dataset["News Agency in English"]=="25 feb news")]
-# print('$$$$$$$$$$$$$$$$$$$$$$$4',dataset["Hyper link"].tolist())
-#dataset=dataset.loc[(dataset["Platform -EN"]=="Twitter") & (dataset["Hyper link"]=="https://twitter.com/parliamentary0")]
+
 dataset=dataset.loc[dataset["Platform -EN"]=="Twitter"]
 
 names=dataset["News Agency in English"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
@@ -64,6 +61,7 @@ class TwitterSpider(scrapy.Spider):
             # print("$$$$$$$$$$$$$$$$$$$$$$NO of tweets$$$$$$$$$$$$$$$$$$",len(tweets))
             for tweet in tweets:
                 ####################
+                # print("######## Tweet #######",tweet,type()
                 created=str(parser.parse(str(tweet.created_at)))
                 id="https://twitter.com/twitter/statuses/"+str(tweet.id)
 
@@ -81,6 +79,7 @@ class TwitterSpider(scrapy.Spider):
                 # print("AFTER test: ",str(tw_text))
                 try:
                     type=tweet.extended_entities["media"][0]["type"] #added try beacuse in some response extended entities is not there it is present only if the tweet contains image or video
+                                     
                 except:
                     type="text"
                     pass
@@ -94,7 +93,10 @@ class TwitterSpider(scrapy.Spider):
                     video_url=None
 
                 try:
-                    image_url=tweet.extended_entities["media"][0]["media_url"]
+                    image_urls=[]
+                    for i in tweet.extended_entities["media"]:
+                        image_urls.append(i["media_url"])
+                    image_urls=",".join(image_urls)
                 except:
                     image_url=None
                 #################### Code to eliminate tweets which has more than 4 english words ####################
@@ -122,9 +124,10 @@ class TwitterSpider(scrapy.Spider):
         
 
                 data=" ".join(data)
-                if en_w_count >4:
+                if en_w_count >4 or tweet.in_reply_to_status_id_str!=None:
                     print("Eliminated : ",str(tw_text)) 
                     continue #skip that tweet
+
                 ####################
                 # print("########i am here ")
                 pipeline=ArabicScrapperPipeline()
