@@ -50,6 +50,7 @@ class TwitterSpider(scrapy.Spider):
         for name,page_url,cat,main_cat,sub_cat,plat,media_typ,urgenc in zip(names,site_list,catagory,main_category,sub_category,platform,media_type,urgency):
             #print(page_url,type(page_url))
             username=page_url.split("/")[-1]
+            print('####### UserName #######',username)
             try:
                 # print("$$$$$$$$$$$$$$$ Username $$$$$$$$$$$$$$$$$$",username)
                 user = api.get_user(screen_name=username) # Store user as a variable
@@ -57,7 +58,7 @@ class TwitterSpider(scrapy.Spider):
             except: #some of the users doesn't exist so that may result in 404
                 continue
             # print("############### User Name :")
-            tweets = api.user_timeline(id=username, count=10)
+            tweets = api.user_timeline(id=username, count=1)
             # print("$$$$$$$$$$$$$$$$$$$$$$NO of tweets$$$$$$$$$$$$$$$$$$",len(tweets))
             for tweet in tweets:
                 ####################

@@ -9,13 +9,8 @@ from googleapiclient.discovery import build
 from arabic_scrapper.items import GeneralItem
 from arabic_scrapper.pipelines import ArabicScrapperPipeline
 
-
-dataset = pd.read_csv("arabic_scrapper/spiders/News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv")
-#dataset=dataset.loc[(dataset["Platform -EN"]=="Youtube") & (dataset["Hyper link"]=="https://www.youtube.com/channel/UCCHPFymyaweZ68dBefLJ1xA/videos")]
-# dataset=pd.read_csv("News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv")
-# dataset = dataset.loc[(dataset["Platform -EN"]=="Youtube") & (dataset["News Agency in English"]=="Fn1")]
-# print(dataset["Hyper link"])
-# print("############## Dataset ###############",dataset)
+dataset=pd.read_csv("arabic_scrapper/spiders/News Aggregator Websites & Categories list - EN-AR - version 1 (1).xlsx - GOV and Private.csv")
+dataset=dataset.loc[dataset["Platform -EN"]=="Youtube"]
 
 names=dataset["News Agency in English"].replace(to_replace= ['\r','\n'], value= '', regex=True).tolist()
 site_list=dataset["Hyper link"].replace(to_replace= ['\r','\n'], value= '', regex=True).to_list() #list of sites to scrap
@@ -39,6 +34,7 @@ class YoutubeSpider(scrapy.Spider):
         for name,site,cat,main_cat,sub_cat,plat,med_type,urgency in zip(names,site_list,catagory,main_category,sub_category,platform,media_type,urgenci):
 
             diff=site.split("/")[-1]
+            print(diff,site)
             if diff=="videos":
                 channel_identifier_type = site.split("/")[-3]
                 if(channel_identifier_type == "channel"):
@@ -90,8 +86,9 @@ class YoutubeSpider(scrapy.Spider):
 
 
                 
-            else: # if the link cotains playlist id
+            else: # if the link cotains playlist id                
                 playlist_id=site.split("/")[3].split("=")[1]
+
                 titles,descriptions,dts,image_urls,video_urls=self.scrapper(playlist_id,name,site,cat,main_cat,sub_cat,plat,med_type,urgency)
                 if titles==None:
                     continue
