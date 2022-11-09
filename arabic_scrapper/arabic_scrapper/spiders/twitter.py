@@ -58,7 +58,7 @@ class TwitterSpider(scrapy.Spider):
             except: #some of the users doesn't exist so that may result in 404
                 continue
             # print("############### User Name :")
-            tweets = api.user_timeline(id=username, count=1)
+            tweets = api.user_timeline(id=username, count=10)
             # print("$$$$$$$$$$$$$$$$$$$$$$NO of tweets$$$$$$$$$$$$$$$$$$",len(tweets))
             for tweet in tweets:
                 ####################
