@@ -151,7 +151,7 @@ class TwitterSpider(scrapy.Spider):
                     "category": cat,
                     "title":str(tw_text),     
                     "contents":None,
-                    "image_url":image_url,
+                    "image_url":image_urls,
                     "date":str(now.strftime("%Y:%m:%d %H:%M:%S")),
                     "author_name":None,
                     "main_category":main_cat,
