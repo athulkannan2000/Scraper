@@ -113,7 +113,7 @@ class TwitterSpider(scrapy.Spider):
                         image_urls.append(i["media_url"])
                     image_urls=",".join(image_urls)
                 except:
-                    image_url=None
+                    image_urls=None
 
                 
 
