@@ -44,6 +44,7 @@ p = re.compile('[a-z]+')
 at = re.compile('@[a-z]+')
 h = re.compile('#[a-zA-Z]+')
 link_remover=r'http://\S+|https://\S+|www.\S+'
+hastag_remover=r'#[\u0627-\u064a0-9A-Za-z]+'
 
 class TwitterSpider(scrapy.Spider):
     name = 'twitter'
@@ -140,7 +141,8 @@ class TwitterSpider(scrapy.Spider):
                 text=re.sub(link_remover,"",tweet.full_text)
                 #text=re.sub(p,"",text)
                 text=re.sub(at,"",text)
-                text=re.sub(h,"",text) 
+                text=re.sub(h,"",text)
+                text=re.sub(hastag_remover,'',text) 
                 if en_w_count>4:
                   continue
 
