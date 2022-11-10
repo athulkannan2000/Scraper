@@ -38,10 +38,12 @@ except:
      
 now = datetime.now()
 
-exp='[\u0627-\u064a0-9A-Za-z]+'
-link_remover=r'http://\S+|https://\S+|www.\S+'
+# exp='[\u0627-\u064a0-9A-Za-z]+'
+
 p = re.compile('[a-z]+')
 at = re.compile('@[a-z]+')
+h = re.compile('#[a-zA-Z]+')
+link_remover=r'http://\S+|https://\S+|www.\S+'
 
 class TwitterSpider(scrapy.Spider):
     name = 'twitter'
@@ -58,11 +60,11 @@ class TwitterSpider(scrapy.Spider):
             except: #some of the users doesn't exist so that may result in 404
                 continue
             # print("############### User Name :")
-            tweets = api.user_timeline(id=username, count=10)
+            # tweets = api.user_timeline(id=username, count=10)
+            tweets = api.user_timeline(id=username, tweet_mode='extended',count=10) #### New
             # print("$$$$$$$$$$$$$$$$$$$$$$NO of tweets$$$$$$$$$$$$$$$$$$",len(tweets))
             for tweet in tweets:
-                ####################
-                # print("######## Tweet #######",tweet,type()
+
                 created=str(parser.parse(str(tweet.created_at)))
                 id="https://twitter.com/twitter/statuses/"+str(tweet.id)
 
@@ -70,16 +72,17 @@ class TwitterSpider(scrapy.Spider):
                 try:
                     tw_text=tweet.text
                     tw_text=re.sub(link_remover,"",tw_text)
-                    tw_text=" ".join(re.findall(exp,tw_text))
+                    # tw_text=" ".join(re.findall(exp,tw_text)) #finding only arabic
                 except:
                     tw_text=tweet.full_text
                     tw_text=re.sub(link_remover,"",tw_text)
-                    tw_text=" ".join(re.findall(exp,tw_text))
+                    # tw_text=" ".join(re.findall(exp,tw_text))
 
                 media_type_="text"
                 # print("AFTER test: ",str(tw_text))
+
                 try:
-                    type=tweet.extended_entities["media"][0]["type"] #added try beacuse in some response extended entities is not there it is present only if the tweet contains image or video
+                    type = tweet.extended_entities["media"][0]["type"] #added try beacuse in some response extended entities is not there it is present only if the tweet contains image or video
                                      
                 except:
                     type="text"
@@ -93,6 +96,17 @@ class TwitterSpider(scrapy.Spider):
                 except :
                     video_url=None
 
+                ########### old ##########
+
+                # try:
+                #     image_urls=[]
+                #     for i in tweet.extended_entities["media"]:
+                #         image_urls.append(i["media_url"])
+                #     image_urls=",".join(image_urls)
+                # except:
+                #     image_url=None
+
+                ########### New ##########
                 try:
                     image_urls=[]
                     for i in tweet.extended_entities["media"]:
@@ -100,37 +114,36 @@ class TwitterSpider(scrapy.Spider):
                     image_urls=",".join(image_urls)
                 except:
                     image_url=None
+
+                
+
                 #################### Code to eliminate tweets which has more than 4 english words ####################
                 st=str(tw_text)
-                st = re.sub(link_remover,"",st)
+                text=re.sub(link_remover,"",st)
+                st=str(text)
                 x = st.split()
                 # to calculate the number of english words is a string
                 en_w_count=0
-                with_at = 0
-                data = []
                 for i in x:
                     # print("#### words ######",i)
                     n = p.match(i)
                     m = at.match(i)
+                    o = h.match(i)
                     if n:
                         #print("Value: " ,n)
-                        #print("Complete value : ", n.group())
+                        print("Complete value : ", n.group())
                         en_w_count = en_w_count+1
-                    elif m:
-                        # print("String data: ",i)
-                        # print("String data with @: ",m.group())
-                        with_at = with_at+1
-                    else:
-                        data.append(i) #why we need data variable
-        
+                
+                 
+                print("# of Eng_words: ",en_w_count)
 
-                data=" ".join(data)
-                if en_w_count >4 or tweet.in_reply_to_status_id_str!=None:
-                    print("Eliminated : ",str(tw_text)) 
-                    continue #skip that tweet
+                text=re.sub(link_remover,"",tweet.full_text)
+                #text=re.sub(p,"",text)
+                text=re.sub(at,"",text)
+                text=re.sub(h,"",text) 
+                if en_w_count>4:
+                  continue
 
-                ####################
-                # print("########i am here ")
                 pipeline=ArabicScrapperPipeline()
                 pipeline.process_item(item={
                     "news_agency_name":name,
@@ -150,7 +163,7 @@ class TwitterSpider(scrapy.Spider):
                     "updated_at":str(now.strftime("%Y:%m:%d %H:%M:%S")),
                     "deleted_at":None,
                     "tweet_created_at":str(created),
-                    "tweet_text":data,
+                    "tweet_text":text,
                     "tweet_id":str(id),
                     "vdo_title":None,
                     "vdo_description":None,

@@ -40,7 +40,12 @@ class DasmanSpider(scrapy.Spider):
         dasman_item["category"]=response.meta["catagory"]
         dasman_item["title"]=response.xpath('//*[@class="entry-title"]/text()').extract_first()
         
-        contents=response.xpath('//*[@class="td-post-content tagdiv-type"]//p/strong/text()').extract()+response.xpath('//*[@class="td-post-content tagdiv-type"]//p/text()').extract()
+        contents=response.xpath('//*[@class="td-post-content tagdiv-type"]//p/text()').extract()
+        
+        #  response.xpath('//*[@class="td-post-content tagdiv-type"]//p/strong/text()').extract() 
+        
+        
+
         contents="\n\n".join(contents[0:len(contents)])
         dasman_item["contents"]=contents
 
