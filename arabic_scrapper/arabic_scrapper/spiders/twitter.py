@@ -44,7 +44,8 @@ p = re.compile('[a-z]+')
 at = re.compile('@[a-z]+')
 h = re.compile('#[a-zA-Z]+')
 link_remover=r'http://\S+|https://\S+|www.\S+'
-hastag_remover=r'#[\u0627-\u064a0-9A-Za-z]+'
+# hastag_remover=r'#[\u0627-\u064a0-9A-Za-z]+'
+hash=r'#'
 
 class TwitterSpider(scrapy.Spider):
     name = 'twitter'
@@ -97,17 +98,6 @@ class TwitterSpider(scrapy.Spider):
                 except :
                     video_url=None
 
-                ########### old ##########
-
-                # try:
-                #     image_urls=[]
-                #     for i in tweet.extended_entities["media"]:
-                #         image_urls.append(i["media_url"])
-                #     image_urls=",".join(image_urls)
-                # except:
-                #     image_url=None
-
-                ########### New ##########
                 try:
                     image_urls=[]
                     for i in tweet.extended_entities["media"]:
@@ -116,23 +106,28 @@ class TwitterSpider(scrapy.Spider):
                 except:
                     image_urls=None
 
-                
+                try:
+                    if tweet.retweeted_status:
+                        print("$$$$$$$$$$$$ its a retweet $$$$$$$$$$$$$$$")
+                        continue
+                    else:
+                        pass
+                except:
+                    pass
 
                 #################### Code to eliminate tweets which has more than 4 english words ####################
                 st=str(tw_text)
                 text=re.sub(link_remover,"",st)
                 st=str(text)
                 x = st.split()
-                # to calculate the number of english words is a string
+
                 en_w_count=0
                 for i in x:
                     # print("#### words ######",i)
                     n = p.match(i)
-                    m = at.match(i)
+                    m = at.match(i) 
                     o = h.match(i)
                     if n:
-                        #print("Value: " ,n)
-                        print("Complete value : ", n.group())
                         en_w_count = en_w_count+1
                 
                  
@@ -142,7 +137,9 @@ class TwitterSpider(scrapy.Spider):
                 #text=re.sub(p,"",text)
                 text=re.sub(at,"",text)
                 text=re.sub(h,"",text)
-                text=re.sub(hastag_remover,'',text) 
+                # text=re.sub(hastag_remover,'',text) #removes entire hashtag
+                text=re.sub(hash,'',text) #removes only hash not entire hastag
+
                 if en_w_count>4:
                   continue
 
