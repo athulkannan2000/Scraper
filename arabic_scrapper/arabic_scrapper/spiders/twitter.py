@@ -42,7 +42,8 @@ now = datetime.now()
 
 p = re.compile('[a-z]+')
 at = re.compile('@[a-z]+')
-h = re.compile('#[a-zA-Z]+')
+#h = re.compile('#[a-zA-Z]+')
+h = re.compile('#')
 link_remover=r'http://\S+|https://\S+|www.\S+'
 # hastag_remover=r'#[\u0627-\u064a0-9A-Za-z]+'
 hash=r'#'
@@ -120,15 +121,20 @@ class TwitterSpider(scrapy.Spider):
                 text=re.sub(link_remover,"",st)
                 st=str(text)
                 x = st.split()
-
+                latest_text=[]
                 en_w_count=0
                 for i in x:
                     # print("#### words ######",i)
                     n = p.match(i)
-                    m = at.match(i) 
-                    o = h.match(i)
                     if n:
-                        en_w_count = en_w_count+1
+                        en_w_count = en_w_count+1                    
+                    elif at.match(i):
+                        continue
+                    elif h.match(i):
+                        i=i[1:]
+                    #m = at.match(i) 
+                    #o = h.match(i)
+                    latest_text.append(i)
                 
                  
                 print("# of Eng_words: ",en_w_count)
@@ -139,7 +145,9 @@ class TwitterSpider(scrapy.Spider):
                 text=re.sub(h,"",text)
                 # text=re.sub(hastag_remover,'',text) #removes entire hashtag
                 text=re.sub(hash,'',text) #removes only hash not entire hastag
+                # --------------------Update on 21 Nov------------------------
 
+                text = ' '.join(latest_text)
                 if en_w_count>4:
                   continue
 
