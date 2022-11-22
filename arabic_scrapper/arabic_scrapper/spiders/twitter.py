@@ -117,10 +117,10 @@ class TwitterSpider(scrapy.Spider):
                     pass
 
                 #################### Code to eliminate tweets which has more than 4 english words ####################
-                st=str(tw_text)
-                text=re.sub(link_remover,"",st)
-                st=str(text)
-                x = st.split()
+                #st=str(tw_text)
+                #text=re.sub(link_remover,"",st)
+                #st=str(text)
+                x = tw_text.split()
                 latest_text=[]
                 en_w_count=0
                 for i in x:
@@ -139,12 +139,12 @@ class TwitterSpider(scrapy.Spider):
                  
                 print("# of Eng_words: ",en_w_count)
 
-                text=re.sub(link_remover,"",tweet.full_text)
-                #text=re.sub(p,"",text)
-                text=re.sub(at,"",text)
-                text=re.sub(h,"",text)
-                # text=re.sub(hastag_remover,'',text) #removes entire hashtag
-                text=re.sub(hash,'',text) #removes only hash not entire hastag
+                #text=re.sub(link_remover,"",tweet.full_text)
+                ##text=re.sub(p,"",text)
+                #text=re.sub(at,"",text)
+                #text=re.sub(h,"",text)
+                ## text=re.sub(hastag_remover,'',text) #removes entire hashtag
+                #text=re.sub(hash,'',text) #removes only hash not entire hastag
                 # --------------------Update on 21 Nov------------------------
 
                 text = ' '.join(latest_text)
@@ -156,7 +156,7 @@ class TwitterSpider(scrapy.Spider):
                     "news_agency_name":name,
                     "page_url": page_url,
                     "category": cat,
-                    "title":str(tw_text),     
+                    "title":str(tw_text[:60]),     
                     "contents":None,
                     "image_url":image_urls,
                     "date":str(now.strftime("%Y:%m:%d %H:%M:%S")),
