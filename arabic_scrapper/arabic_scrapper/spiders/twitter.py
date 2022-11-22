@@ -156,7 +156,7 @@ class TwitterSpider(scrapy.Spider):
                     "news_agency_name":name,
                     "page_url": page_url,
                     "category": cat,
-                    "title":str(tw_text[:60]),     
+                    "title":str(text[:60]),     
                     "contents":None,
                     "image_url":image_urls,
                     "date":str(now.strftime("%Y:%m:%d %H:%M:%S")),
