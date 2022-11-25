@@ -1,6 +1,9 @@
 import json
 import scrapy
 from arabic_scrapper.helper import load_dataset_lists, datetime_now_isoformat
+import requests
+import re
+
 
 news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("alqabas")
 now = datetime_now_isoformat()
@@ -35,13 +38,19 @@ class AlqabasSpider(scrapy.Spider):
         articles = response_text["data"]["result"][3]["data"] 
 
         for article in articles:
+            url = 'https://api.alqabas.com/api/article/elastic/'+str(article["id"])
+            response_API = requests.get(url)
+            data = response_API.text
+            content = json.loads(data)
+            text = content['data']['result']['content']
+            content = re.sub(r'<.*?>', '', text)
 
             yield {
                 "news_agency_name": self.name,
                 "page_url" : f'https://www.alqabas.com/article/{article["id"]}',
                 "category" : response.meta["category_english"],
                 "title" : article["title"],
-                "contents": article["description"],
+                "contents": content,
                 "date" :  article["createdDate"],
                 "author_name" : 'alqabas',
                 "image_url" : article["image"],
