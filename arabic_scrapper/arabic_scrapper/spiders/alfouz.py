@@ -1,5 +1,6 @@
 import scrapy
 from arabic_scrapper.helper import load_dataset_lists, agos_changer, datetime_now_isoformat
+import re
 
 news_sites_list,categories_english,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("alfouz")
 now = datetime_now_isoformat()
@@ -24,14 +25,14 @@ class AlfouzSpider(scrapy.Spider):
     def parse_page(self,response):
 
         contents = response.xpath("//div[@class='entry-content entry clearfix']/p[contains(@style,'text-align: justify;')]/text()[normalize-space()]").getall()
-        contents = '\n\n'.join(contents)
+        #contents = '\n\n'.join(contents)
         if(contents == None or len(contents) == 0):
             contents = response.xpath("//div[@class='entry-content entry clearfix']/p[@class='s2']/span/span[@class='bumpedFont15']/text()").extract()
             if(contents == None):
                  contents = response.xpath("//div[@class='entry-content entry clearfix']/p[@class='s2']/span/text()").extract()
 
-
-        contents = "\n\n".join(contents)
+        contents = re.split("\n+", contents)
+        contents = "\n".join(contents)
        
         yield {
                 "news_agency_name": self.name,

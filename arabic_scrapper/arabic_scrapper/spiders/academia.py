@@ -7,6 +7,7 @@ from dateutil import parser
 from deep_translator import GoogleTranslator
 from arabic_scrapper.helper import load_dataset_lists
 from datetime import datetime
+import re
 
 
 site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("academia")
@@ -26,10 +27,11 @@ class AcademiaSpider(scrapy.Spider):
                 published_date=news["pubDate"]
                 author=news["dc:creator"]
                 contents=news["content:encoded"]
+                contents = re.sub(r'<.*?>', '', contents)
                 date=news["pubDate"]
                 date = str(parser.parse(GoogleTranslator(source='auto', target='en').translate(date))).replace("-","/")
-                # yield scrapy.Request(url=page_url,callback=self.data_extractor,meta={'title':title,"contents":contents, "news_agency_name":"alrai", "page_url":page_url, "catagory":catagori,"published_date_and_time":date,"author":author})
-                yield scrapy.Request(url=page_url,callback=self.data_extractor,meta={'title':title,"contents":contents, "news_agency_name":"alrai", "page_url":page_url, "catagory":catagori,"published_date_and_time":date,"author":author,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
+                # yield scrapy.Request(url=page_url,callback=self.data_extractor,meta={'title':title,"contents":contents, "news_agency_name":"academia", "page_url":page_url, "catagory":catagori,"published_date_and_time":date,"author":author})
+                yield scrapy.Request(url=page_url,callback=self.data_extractor,meta={'title':title,"contents":contents, "news_agency_name":"academia", "page_url":page_url, "catagory":catagori,"published_date_and_time":date,"author":author,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
  
  
     def data_extractor(self, response):

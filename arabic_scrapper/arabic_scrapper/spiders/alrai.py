@@ -48,7 +48,7 @@ class AlraiSpider(scrapy.Spider):
         contents=response.xpath('//*[@class="article-desc"]//p/text()').extract()
         contents= "\n\n".join(contents[0:len(contents)])
         alrai_item["contents"]=contents
-        alrai_item["image_url"]=response.xpath('//*[@class="layout-ratio"]/img/@src').extract_first()
+        alrai_item["image_url"]=response.xpath('//div[@class="relative"]/div[@class="layout-ratio"]/img/@src').extract_first()
         alrai_item["date"]=date
         alrai_item["author_name"]="alrai"
         
