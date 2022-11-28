@@ -44,7 +44,7 @@ p = re.compile('[a-z]+')
 at = re.compile('@[a-z]+')
 #h = re.compile('#[a-zA-Z]+')
 h = re.compile('#')
-link_remover=r'http://\S+|https://\S+|www.\S+'
+#link_remover=r'http://\S+|https://\S+|www.\S+'
 # hastag_remover=r'#[\u0627-\u064a0-9A-Za-z]+'
 hash=r'#'
 
@@ -74,11 +74,11 @@ class TwitterSpider(scrapy.Spider):
                 # print("id:",id,"\nthis test: ",tweet.text)
                 try:
                     tw_text=tweet.text
-                    tw_text=re.sub(link_remover,"",tw_text)
+                    #tw_text=re.sub(link_remover,"",tw_text)
                     # tw_text=" ".join(re.findall(exp,tw_text)) #finding only arabic
                 except:
                     tw_text=tweet.full_text
-                    tw_text=re.sub(link_remover,"",tw_text)
+                    #tw_text=re.sub(link_remover,"",tw_text)
                     # tw_text=" ".join(re.findall(exp,tw_text))
 
                 media_type_="text"
