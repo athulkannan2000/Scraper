@@ -118,7 +118,7 @@ class TwitterSpider(scrapy.Spider):
 
                 #################### Code to eliminate tweets which has more than 4 english words ####################
                 #st=str(tw_text)
-                text=re.sub(link_remover,"",st)
+                #text=re.sub(link_remover,"",st)
                 #st=str(text)
                 x = tw_text.split()
                 latest_text=[]
