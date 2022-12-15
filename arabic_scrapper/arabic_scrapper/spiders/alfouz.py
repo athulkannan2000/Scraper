@@ -31,8 +31,8 @@ class AlfouzSpider(scrapy.Spider):
             if(contents == None):
                  contents = response.xpath("//div[@class='entry-content entry clearfix']/p[@class='s2']/span/text()").extract()
 
-        contents = re.split("\n+", contents)
-        contents = "\n".join(contents)
+        #contents = re.split("\n+", contents)
+        #contents = "\n".join(contents)
        
         yield {
                 "news_agency_name": self.name,
