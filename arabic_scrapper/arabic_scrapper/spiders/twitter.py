@@ -131,7 +131,7 @@ class TwitterSpider(scrapy.Spider):
                     # !!!!!!!!! Dec 23 !!!!!!!
                     tw_text = re.sub(r'@\w+', '', tw_text)
                     english_words = re.findall(r'\b[a-zA-Z]+\b', tw_text)
-                    if english_words >4:
+                    if len(english_words) >4:
                         continue
                     '''
                     x = tw_text.split()
