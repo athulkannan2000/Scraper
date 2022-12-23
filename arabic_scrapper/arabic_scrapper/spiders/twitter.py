@@ -67,121 +67,134 @@ class TwitterSpider(scrapy.Spider):
             # tweets = api.user_timeline(id=username, count=10)
             tweets = api.user_timeline(id=username, tweet_mode='extended',count=10) #### New
             # print("$$$$$$$$$$$$$$$$$$$$$$NO of tweets$$$$$$$$$$$$$$$$$$",len(tweets))
+
             for tweet in tweets:
-
-                created=str(parser.parse(str(tweet.created_at)))
-                id="https://twitter.com/twitter/statuses/"+str(tweet.id)
-
-                # print("id:",id,"\nthis test: ",tweet.text)
                 try:
-                    tw_text=tweet.text
-                    tw_text=re.sub(link_remover,"",tw_text)
-                    # tw_text=" ".join(re.findall(exp,tw_text)) #finding only arabic
-                except:
-                    tw_text=tweet.full_text
-                    tw_text=re.sub(link_remover,"",tw_text)
-                    # tw_text=" ".join(re.findall(exp,tw_text))
+                    if tweet.retweeted_status is not None:
+                        print("Retweet")
+                except:        
+                    created=str(parser.parse(str(tweet.created_at)))
+                    id="https://twitter.com/twitter/statuses/"+str(tweet.id)
 
-                media_type_="text"
-                # print("AFTER test: ",str(tw_text))
+                    # print("id:",id,"\nthis test: ",tweet.text)
+                    try:
+                        tw_text=tweet.text.replace("#", "")
+                        #tw_text=re.sub(link_remover,"",tw_text)
+                        tw_text = re.sub(r'http\S+', '', tw_text)
+                        # tw_text=" ".join(re.findall(exp,tw_text)) #finding only arabic
+                    except:
+                        tw_text=tweet.full_text.replace("#", "")
+                        #tw_text=re.sub(link_remover,"",tw_text)
+                        tw_text = re.sub(r'http\S+', '', tw_text)
+                        # tw_text=" ".join(re.findall(exp,tw_text))
 
-                try:
-                    type = tweet.extended_entities["media"][0]["type"] #added try beacuse in some response extended entities is not there it is present only if the tweet contains image or video
-                                     
-                except:
-                    type="text"
-                    pass
-                
-                if type=="video":
-                    media_type_="media"
+                    media_type_="text"
+                    # print("AFTER test: ",str(tw_text))
 
-                try:
-                    video_url=tweet.extended_entities["media"][0]["video_info"]["variants"][0]["url"]
-                except :
-                    video_url=None
-
-                try:
-                    image_urls=[]
-                    for i in tweet.extended_entities["media"]:
-                        image_urls.append(i["media_url"])
-                    image_urls=",".join(image_urls)
-                except:
-                    image_urls=None
-
-                try:
-                    if tweet.retweeted_status:
-                        print("$$$$$$$$$$$$ its a retweet $$$$$$$$$$$$$$$")
-                        continue
-                    else:
+                    try:
+                        type = tweet.extended_entities["media"][0]["type"] #added try beacuse in some response extended entities is not there it is present only if the tweet contains image or video
+                                        
+                    except:
+                        type="text"
                         pass
-                except:
-                    pass
+                    
+                    if type=="video":
+                        media_type_="media"
 
-                #################### Code to eliminate tweets which has more than 4 english words ####################
-                #st=str(tw_text)
-                #text=re.sub(link_remover,"",st)
-                #st=str(text)
-                x = tw_text.split()
-                latest_text=[]
-                en_w_count=0
-                for i in x:
-                    # print("#### words ######",i)
-                    n = p.match(i)
-                    if n:
-                        en_w_count = en_w_count+1                    
-                    elif at.match(i):
+                    try:
+                        video_url=tweet.extended_entities["media"][0]["video_info"]["variants"][0]["url"]
+                    except :
+                        video_url=None
+
+                    try:
+                        image_urls=[]
+                        for i in tweet.extended_entities["media"]:
+                            image_urls.append(i["media_url"])
+                        image_urls=",".join(image_urls)
+                    except:
+                        image_urls=None
+
+                    try:
+                        if tweet.retweeted_status:
+                            print("$$$$$$$$$$$$ its a retweet $$$$$$$$$$$$$$$")
+                            continue
+                        else:
+                            pass
+                    except:
+                        pass
+
+                    #################### Code to eliminate tweets which has more than 4 english words ####################
+                    #st=str(tw_text)
+                    #text=re.sub(link_remover,"",st)
+                    #st=str(text)
+                    
+                    # !!!!!!!!! Dec 23 !!!!!!!
+                    tw_text = re.sub(r'@\w+', '', tw_text)
+                    english_words = re.findall(r'\b[a-zA-Z]+\b', tw_text)
+                    if english_words >4:
                         continue
-                    elif h.match(i):
-                        i=i[1:]
-                    #m = at.match(i) 
-                    #o = h.match(i)
-                    latest_text.append(i)
-                
-                 
-                print("# of Eng_words: ",en_w_count)
+                    '''
+                    x = tw_text.split()
+                    latest_text=[]
+                    en_w_count=0
+                    for i in x:
+                        # print("#### words ######",i)
+                        n = p.match(i)
+                        if n:
+                            en_w_count = en_w_count+1                    
+                        elif at.match(i):
+                            continue
+                        elif h.match(i):
+                            i=i[1:]
+                        #m = at.match(i) 
+                        #o = h.match(i)
+                        latest_text.append(i)
+                    '''
+                    
+                    print("# of Eng_words: ",english_words)
 
-                #text=re.sub(link_remover,"",tweet.full_text)
-                ##text=re.sub(p,"",text)
-                #text=re.sub(at,"",text)
-                #text=re.sub(h,"",text)
-                ## text=re.sub(hastag_remover,'',text) #removes entire hashtag
-                #text=re.sub(hash,'',text) #removes only hash not entire hastag
-                # --------------------Update on 21 Nov------------------------
+                    #text=re.sub(link_remover,"",tweet.full_text)
+                    ##text=re.sub(p,"",text)
+                    #text=re.sub(at,"",text)
+                    #text=re.sub(h,"",text)
+                    ## text=re.sub(hastag_remover,'',text) #removes entire hashtag
+                    #text=re.sub(hash,'',text) #removes only hash not entire hastag
+                    # --------------------Update on 21 Nov------------------------
+                    '''
+                    text = ' '.join(latest_text)
+                    text=re.sub(at,"",latest_text)
+                    if en_w_count>4:
+                    continue'''
 
-                text = ' '.join(latest_text)
-                text=re.sub(at,"",latest_text)
-                if en_w_count>4:
-                  continue
-
-                pipeline=ArabicScrapperPipeline()
-                pipeline.process_item(item={
-                    "news_agency_name":name,
-                    "page_url": page_url,
-                    "category": cat,
-                    "title":str(text),     
-                    "contents":None,
-                    "image_url":image_urls,
-                    "date":str(now.strftime("%Y:%m:%d %H:%M:%S")),
-                    "author_name":None,
-                    "main_category":main_cat,
-                    "sub_category":sub_cat,
-                    "platform":plat,    
-                    "media_type":media_type_,
-                    "urgency":urgenc,
-                    "created_at":str(now.strftime("%Y:%m:%d %H:%M:%S")),
-                    "updated_at":str(now.strftime("%Y:%m:%d %H:%M:%S")),
-                    "deleted_at":None,
-                    "tweet_created_at":str(created),
-                    "tweet_text":text,
-                    "tweet_id":str(id),
-                    "vdo_title":None,
-                    "vdo_description":None,
-                    "vdo_published_at":None,
-                    "vdo_thumbnail":None,
-                    "vdo_url":video_url
-                },spider="twitter")
-                yield scrapy.Request(url="https://google.com",callback=self.dummy)
-                # yield scrapy.Request(url="https://google.com",callback=self.details_saver,dont_filter=True,meta={"tweet":tweet,"name":name,"page_url":page_url,"cat":cat,"main_cat":main_cat,"sub_cat":sub_cat,"plat":plat,"media_typ":media_typ,"urgency":urgenc})
+                    pipeline=ArabicScrapperPipeline()
+                    pipeline.process_item(item={
+                        "news_agency_name":name,
+                        "page_url": page_url,
+                        "category": cat,
+                        "title":str(tw_text),     
+                        "contents":None,
+                        "image_url":image_urls,
+                        "date":str(now.strftime("%Y:%m:%d %H:%M:%S")),
+                        "author_name":None,
+                        "main_category":main_cat,
+                        "sub_category":sub_cat,
+                        "platform":plat,    
+                        "media_type":media_type_,
+                        "urgency":urgenc,
+                        "created_at":str(now.strftime("%Y:%m:%d %H:%M:%S")),
+                        "updated_at":str(now.strftime("%Y:%m:%d %H:%M:%S")),
+                        "deleted_at":None,
+                        "tweet_created_at":str(created),
+                        "tweet_text":tw_text,
+                        "tweet_id":str(id),
+                        "vdo_title":None,
+                        "vdo_description":None,
+                        "vdo_published_at":None,
+                        "vdo_thumbnail":None,
+                        "vdo_url":video_url
+                    },spider="twitter")
+                    yield scrapy.Request(url="https://google.com",callback=self.dummy)
+                    # yield scrapy.Request(url="https://google.com",callback=self.details_saver,dont_filter=True,meta={"tweet":tweet,"name":name,"page_url":page_url,"cat":cat,"main_cat":main_cat,"sub_cat":sub_cat,"plat":plat,"media_typ":media_typ,"urgency":urgenc})
                 
     def dummy(self,response):
         return None
