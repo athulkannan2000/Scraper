@@ -41,7 +41,7 @@ class KunaSpider(scrapy.Spider):
         contents = contents.replace('\t','')
 
         if(contents == ''): contents = None
-
+        contents = re.sub(r'\.', '.\n', contents)
         image_url = response.xpath("//figure[@class='post-img']/img/@src").extract_first()
         if(image_url != None):
             image_url = image_url.replace('./','')
