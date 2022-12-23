@@ -1,6 +1,7 @@
 from email.mime import image
 from importlib.resources import contents
 import scrapy
+import re
 from arabic_scrapper.helper import load_dataset_lists, parser_parse_isoformat, datetime_now_isoformat
 
 
