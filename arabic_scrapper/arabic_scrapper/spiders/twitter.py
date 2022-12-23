@@ -41,7 +41,8 @@ now = datetime.now()
 # exp='[\u0627-\u064a0-9A-Za-z]+'
 
 p = re.compile('[a-z]+')
-at = re.compile('@[a-z]+')
+#at = re.compile('@[a-z]+')
+at = re.compile(r'@\w+')
 #h = re.compile('#[a-zA-Z]+')
 h = re.compile('#')
 link_remover=r'http://\S+|https://\S+|www.\S+'
@@ -148,6 +149,7 @@ class TwitterSpider(scrapy.Spider):
                 # --------------------Update on 21 Nov------------------------
 
                 text = ' '.join(latest_text)
+                text=re.sub(at,"",latest_text)
                 if en_w_count>4:
                   continue
 
