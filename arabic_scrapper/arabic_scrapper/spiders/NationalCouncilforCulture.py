@@ -25,18 +25,20 @@ class NationalCouncilforCultureSpider(scrapy.Spider):
 
     def parse_page(self,response):
         
-        image_url = response.xpath("//div[contains(@id,'newsItem_')]/div[@dir='rt1']/img/@src").extract_first()
-        if(image_url == None):
-            image_url = response.xpath("//div[contains(@id,'newsItem_')]/p/img/@src").extract_first()
-            if(image_url == None):
-                image_url = response.xpath("//div[contains(@id,'newsItem_')]/p/span/img/@src").extract_first()
-                if(image_url == None):
-                    image_url = response.xpath("//div[contains(@id,'newsItem_')]/div[@dir='ltr']/img/@src").extract_first()
-                    if(image_url == None):
-                        image_url = response.xpath("//div[contains(@id,'newsItem_')]/p[@style='text-align: center;']/strong/img/@src").extract_first()
-                    
+        image_url = response.xpath("//img/@src").extract()
+        Gen_link = [
+            '/Themes/NccalUnify/assets/img/logo1.png',
+            '/Themes/NccalUnify/assets/img/logo_mobile.png',
+            '/Themes/NccalUnify/assets/img/newkuwait.png',
+            '/Themes/NccalUnify/assets/img/kw-14-29-logo.png',
+            '/Themes/NccalUnify/assets/img/tasdeed.png'
+            ]
+            
+        for i in Gen_link:
+            image_url.remove(i)
+        #print("/n/n Image url List: " + image_url)
         if(image_url != None):
-            image_url = "https://www.nccal.gov.kw/" + image_url
+            image_url = "https://www.nccal.gov.kw/" + image_url[0]
     
 
         contents = "\n\n".join( response.xpath("//div[contains(@id,'newsItem_')]/p/text()").extract() + response.xpath("//div[contains(@id,'newsItem_')]/p/br/text()").extract() + response.xpath("//div[contains(@id,'newsItem_')]/p/strong/text()").extract())
