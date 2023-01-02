@@ -56,7 +56,7 @@ class CentralAgencyForpublicTendersSpider(scrapy.Spider):
         #print("////////%%%%%%%%%%%%%%%% i am here %%%%%%%%%%%%%%%%%%%///////////////")
         Youth_Public_item=GeneralItem()
 
-        Youth_Public_item["news_agency_name"]=" Youth Public Authority"
+        Youth_Public_item["news_agency_name"]="central agency for public tenders"
         Youth_Public_item["page_url"]=response.meta["current_url"]
         Youth_Public_item["category"]=response.meta["catagory"]
         Youth_Public_item["title"]=response.meta["title"]
