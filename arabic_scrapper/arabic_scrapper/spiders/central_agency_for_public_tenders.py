@@ -54,25 +54,25 @@ class CentralAgencyForpublicTendersSpider(scrapy.Spider):
     def details_scrapper(self,response):
         ###########################Used to store data in Mysql################################
         #print("////////%%%%%%%%%%%%%%%% i am here %%%%%%%%%%%%%%%%%%%///////////////")
-        Youth_Public_item=GeneralItem()
+        CAPT_item=GeneralItem()
 
-        Youth_Public_item["news_agency_name"]="central agency for public tenders"
-        Youth_Public_item["page_url"]=response.meta["current_url"]
-        Youth_Public_item["category"]=response.meta["catagory"]
-        Youth_Public_item["title"]=response.meta["title"]
-        Youth_Public_item["contents"]=response.meta["contents"]
-        Youth_Public_item["image_url"]=response.meta["images"]
-        Youth_Public_item["date"]=response.meta["date"]
-        Youth_Public_item["author_name"]=" Youth Public Authority"
-        Youth_Public_item["main_category"]=response.meta["main_category"]
-        Youth_Public_item["sub_category"]=response.meta["sub_category"]
-        Youth_Public_item["platform"]=response.meta["platform"]
-        Youth_Public_item["media_type"]=response.meta["media_type"]
-        Youth_Public_item["urgency"]=response.meta["urgency"]
-        Youth_Public_item["created_at"]=str(now.strftime("%Y:%m:%d %H:%M:%S"))
-        Youth_Public_item["updated_at"]=str(now.strftime("%Y:%m:%d %H:%M:%S"))
-        Youth_Public_item["deleted_at"]=None
-        yield  Youth_Public_item
+        CAPT_item["news_agency_name"]=" central agency for public tenders"
+        CAPT_item["page_url"]=response.meta["current_url"]
+        CAPT_item["category"]=response.meta["catagory"]
+        CAPT_item["title"]=response.meta["title"]
+        CAPT_item["contents"]=response.meta["contents"]
+        CAPT_item["image_url"]=response.meta["images"]
+        CAPT_item["date"]=response.meta["date"]
+        CAPT_item["author_name"]=" central agency for public tenders"
+        CAPT_item["main_category"]=response.meta["main_category"]
+        CAPT_item["sub_category"]=response.meta["sub_category"]
+        CAPT_item["platform"]=response.meta["platform"]
+        CAPT_item["media_type"]=response.meta["media_type"]
+        CAPT_item["urgency"]=response.meta["urgency"]
+        CAPT_item["created_at"]=str(now.strftime("%Y:%m:%d %H:%M:%S"))
+        CAPT_item["updated_at"]=str(now.strftime("%Y:%m:%d %H:%M:%S"))
+        CAPT_item["deleted_at"]=None
+        yield  CAPT_item
 
 
 
