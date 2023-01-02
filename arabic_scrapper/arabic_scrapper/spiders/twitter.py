@@ -65,7 +65,7 @@ class TwitterSpider(scrapy.Spider):
                 continue
             # print("############### User Name :")
             # tweets = api.user_timeline(id=username, count=10)
-            tweets = api.user_timeline(id=username, tweet_mode='extended',count=10) #### New
+            tweets = api.user_timeline(id=username, tweet_mode='extended',exclude_replies=True, count=10) #### New
             # print("$$$$$$$$$$$$$$$$$$$$$$NO of tweets$$$$$$$$$$$$$$$$$$",len(tweets))
 
             for tweet in tweets:
