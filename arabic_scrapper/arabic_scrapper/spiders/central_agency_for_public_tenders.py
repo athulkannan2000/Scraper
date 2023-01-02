@@ -10,7 +10,7 @@ from lxml import etree
 site_list,catagory,main_category,sub_category,platform,media_type,urgency = load_dataset_lists("central agency for public tenders")
 now = datetime.now()
 
-class YouthPublicAuthoritySpider(scrapy.Spider):
+class CentralAgencyForpublicTendersSpider(scrapy.Spider):
     name = 'capt'
     def start_requests(self):
         for page,catagori,main_categor,sub_categor,platfor,media_typ,urgenc in zip(site_list,catagory,main_category,sub_category,platform,media_type,urgency): 
