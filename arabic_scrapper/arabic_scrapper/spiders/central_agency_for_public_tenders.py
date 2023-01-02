@@ -48,7 +48,7 @@ class CentralAgencyForpublicTendersSpider(scrapy.Spider):
                     if len(content)==0:
                         content = dom.xpath('//*[@style="text-align: center;"]/span/span/span/strong/span/span/text()')+dom.xpath('//div[@class="page-width"]/p/strong/text()')
                     images=None
-                yield scrapy.Request(url="https://www.google.com/",callback=self.details_scrapper,meta={"date":str(date),"title":str(title),"contents":contents,"images":str(images),"current_url":str(link),"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
+                yield scrapy.Request(url="https://www.google.com/",callback=self.details_scrapper,meta={"date":str(date),"title":str(title),"contents":content,"images":str(images),"current_url":str(link),"catagory":catagori,"main_category":main_categor,"sub_category":sub_categor,"platform":platfor,"media_type":media_typ,"urgency":urgenc})
 
 
     def details_scrapper(self,response):
