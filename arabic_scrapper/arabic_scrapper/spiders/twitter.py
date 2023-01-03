@@ -133,6 +133,7 @@ class TwitterSpider(scrapy.Spider):
                     english_words = re.findall(r'\b[a-zA-Z]+\b', tw_text)
                     if len(english_words) >4:
                         continue
+                    tw_text = re.sub(r"_", "", tw_text)
                     '''
                     x = tw_text.split()
                     latest_text=[]
