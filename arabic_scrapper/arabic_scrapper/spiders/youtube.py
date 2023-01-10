@@ -43,7 +43,7 @@ class YoutubeSpider(scrapy.Spider):
                     response = request.execute()
                 else: 
                     channel_name = site.split("/")[-2]
-                    request = youtube.channels().list(part = 'id, snippet, contentDetails,statistics',forUsername=channel_name, maxResults=20,)
+                    request = youtube.channels().list(part = 'id, snippet, contentDetails,statistics',forUsername=channel_name, maxResults=20)
                     response = request.execute() 
                 try:
                     playlist_id=response["items"][0]['contentDetails']['relatedPlaylists']['uploads']
