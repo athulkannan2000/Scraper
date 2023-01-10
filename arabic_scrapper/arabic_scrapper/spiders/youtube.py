@@ -39,11 +39,11 @@ class YoutubeSpider(scrapy.Spider):
                 channel_identifier_type = site.split("/")[-3]
                 if(channel_identifier_type == "channel"):
                     channel_name = site.split("/")[-2]
-                    request = youtube.channels().list(part = 'snippet, contentDetails,statistics',id=channel_name)
+                    request = youtube.channels().list(part = 'snippet, contentDetails,statistics',id=channel_name, maxResults=20)
                     response = request.execute()
                 else: 
                     channel_name = site.split("/")[-2]
-                    request = youtube.channels().list(part = 'id, snippet, contentDetails,statistics',forUsername=channel_name)
+                    request = youtube.channels().list(part = 'id, snippet, contentDetails,statistics',forUsername=channel_name, maxResults=20,)
                     response = request.execute() 
                 try:
                     playlist_id=response["items"][0]['contentDetails']['relatedPlaylists']['uploads']
