@@ -42,7 +42,7 @@ class AlanbaScrapperSpider(scrapy.Spider):
         date=response.xpath('//div[@class="post_date"]/text()').extract()
         date=date[1][1:-1]
         # #print("/////////////////",date)
-        alanba_item["news_agency_name"]="alanba "
+        alanba_item["news_agency_name"]="alanba"
         alanba_item["page_url"]=response.meta["page_link"]
         alanba_item["category"]=response.meta["catagory"]
         alanba_item["title"]=response.xpath('//*[@id="dvOrgArticle"]/article/h1/text()').extract_first() 
