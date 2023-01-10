@@ -49,7 +49,9 @@ class HadathSpider(scrapy.Spider):
         contents=response.xpath('//*[@class="newsText"]/div/text()').extract()+response.xpath('//*[@class="newsText"]/text()').extract()
         contents="\n\n".join(contents[0:len(contents)])
        
-        hadath["contents"]=contents.strip()
+        contents = contents.replace("\n", "")
+        contents = contents.replace(".", ".\n")
+        hadath["contents"]=contents
 
         hadath["image_url"]="https://hadathkw.net"+response.xpath('//div[@class="innerContent "]/img/@src').extract_first()
         hadath["date"]=date
